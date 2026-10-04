@@ -22,4 +22,5 @@ Thumbs.db
 .local/
 data/private/
 *.tsbuildinfo
+next-env.d.ts
 work/
