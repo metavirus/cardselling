@@ -4,6 +4,11 @@ As of: 2026-10-04
 
 ## Later identity clarifications
 
+Owner reiterates ManaBox Sell.csv is canonical inventory; TCGSentry is hydration
+only. Psychic Frog MH3 #433 is confirmed nonfoil. Its foil TCGSentry row is an
+incompatible enrichment candidate, not an unresolved physical identity. Do not
+ask the owner to recheck canonical facts merely because enrichment disagrees.
+
 See `identity-clarifications.md`: owner confirms Japanese SOA rows are intentional
 Japanese cards from English packs, and Gigantosaurus M19 #185 is Japanese.
 The eight Phyrexian-treatment rows were overflagged as physical uncertainty.

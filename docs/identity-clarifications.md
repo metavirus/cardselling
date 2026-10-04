@@ -28,7 +28,24 @@ using printed language and treatment; English-labelled rows linked to Japanese
 catalog records still need source mapping reconciliation. Do not infer that
 every SOA copy is Japanese from an explanation about the Japanese copies.
 
-## Implementation status
+## Canonical inventory versus enrichment — owner correction
+
+ManaBox Sell.csv is canonical physical inventory. TCGSentry is data hydration
+only; its fields do not compete with or override ManaBox's finish, language,
+printing identity or quantities. A conflicting enrichment row is an enrichment
+mapping failure, not evidence that the owner must reverify the inventory.
+
+The owner explicitly confirms Psychic Frog MH3 #433 is nonfoil, as recorded in
+ManaBox. Reject the TCGSentry foil row as an exact enrichment match for that
+holding. Obtain nonfoil pricing separately. No inventory correction is needed.
+
+Likewise, TCGSentry's merged English-labelled SOA rows and English-labelled
+Gigantosaurus cannot rewrite the canonical holdings. Missing Azusa/Harmonize
+rows mean missing enrichment, not missing or uncertain inventory. Only genuine
+conflicts within canonical evidence or an owner correction should reopen the
+physical facts; third-party hydration differences alone should not.
+
+## Implementation status (clarifications)
 
 Recorded as accepted owner context, not yet applied as a database correction.
 The frozen baseline script `scripts/reanalyze.mjs` still uses literal language

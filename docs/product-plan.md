@@ -1,5 +1,10 @@
 # Card selling product and decision baseline
 
+Owner clarification: ManaBox Sell.csv is canonical inventory; TCGSentry is data
+hydration only. Conflicting hydration must be rejected or mapped correctly, not
+treated as competing physical inventory evidence. Psychic Frog MH3 #433 is
+confirmed nonfoil. See `identity-clarifications.md` for accepted corrections.
+
 The October 4 market-source survey extends this baseline: see
 `market-source-survey.md`, `market-source-registry.json` and `synthesis-design.md`
 for source access, independent demand signals, capped transaction samples and the
