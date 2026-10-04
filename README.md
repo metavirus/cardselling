@@ -6,8 +6,8 @@ local PostgreSQL. Desktop first, with a responsive mobile layout.
 ## Status
 
 Starting-data audit: `docs/starting-data-audit.md` and `docs/data-readiness.json`.
-Original data and canonical inventory reconcile; active market evidence is still
-empty. Preserve this distinction before producing recommendations.
+Original data and canonical inventory reconcile. First controlled market ingestion
+is complete: see `docs/market-ingestion.md` for coverage, source findings and limits.
 
 The canonical database is adopted and verified locally: 723 inventory lots and
 817 copies. Prior exports/workbooks are historical evidence, not operational
@@ -41,6 +41,8 @@ The server-only `/api/health` endpoint reports readiness without connection deta
 | `npm run db:status` | Verify pinned cluster and live database identity |
 | `npm run db:check` | Verify app identity, rollback, and app-role privileges |
 | `npm run db:canonical-status` | Read canonical stock and evidence counts |
+| `npm run db:ingest-market` | Trial retained-capture ingestion; add `-- --apply` to persist |
+| `npm run db:verify-market` | Verify exact provider mappings, evidence semantics and coverage |
 | `npm run db:verify-canonical` | Verify canonical invariants with rolled-back test writes |
 | `npm run db:adopt-canonical` | One-time accepted baseline adoption; repeat is a no-op |
 | `npm run db:ingest` / `db:verify-ingestion` | Historical bootstrap only; blocked after canonical adoption |

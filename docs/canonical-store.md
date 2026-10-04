@@ -54,8 +54,9 @@ triggers also freeze the legacy snapshot/evidence tables against writes, includi
 truncate, after cutover. Source files/rows may receive new captures but existing
 rows cannot be updated or deleted. Refreshes belong in the new evidence tables.
 
-Initial eligible market evidence and new recommendation counts are intentionally
-zero. That is an honest unrefreshed state, not missing inventory. A future decision
+At cutover, eligible market evidence and new recommendation counts were zero.
+The first controlled ingestion is documented in `market-ingestion.md`; market
+evidence is now populated and recommendations remain empty. A future decision
 can cite historical evidence explicitly with its age and limitations, but nothing
 in the ordinary eligible-evidence view revives retired artifacts automatically.
 
@@ -71,6 +72,11 @@ in the ordinary eligible-evidence view revives retired artifacts automatically.
 - An accepted enrichment mapping still must agree with finish and printed language
   to enter `canonical_eligible_evidence`. Condition scope must be checked for each
   lot by the future comparison service. Eligible does not mean fresh or executable.
+- Mana Pool mappings now include each provider grade as separate comparison
+  evidence. Never sum or blend those grades into lot values. Its published ManaBox
+  CSV grade conversion differs from same-name matching; preserve the convention
+  and physical grade separately. Scope the capture, variant and justified provider
+  condition explicitly before price analysis.
 - Preserve source sample caps/completeness. Repeated last-20 sale samples are not
   independent sales and must not be summed into fabricated volume.
 - A quote's unknown capacity is null; zero is zero. Cash and store credit differ.

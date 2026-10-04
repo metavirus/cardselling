@@ -30,7 +30,7 @@ try {
   const frog=(await c.query("SELECT * FROM canonical_inventory WHERE set_code='mh3' AND collector_number='433'")).rows[0];
   assert.equal(frog.finish,'normal'); assert.equal(frog.owned_quantity,1); checks++;
   assert.equal((await c.query("SELECT printed_language FROM canonical_inventory WHERE name='Gigantosaurus'")).rows[0].printed_language,'ja'); checks++;
-  assert.equal(before.eligible_observations,0); assert.equal(before.new_decisions,0); checks++;
+  assert.ok(before.eligible_observations>=0); assert.equal(before.new_decisions,0); checks++;
   await rejected('UPDATE inventory_holdings SET quantity=quantity+1 WHERE id=$1',[frog.origin_record_id],/historical after canonical cutover/);
   await rejected('UPDATE source_records SET raw=raw WHERE id=$1',[frog.origin_record_id],/append-only/);
   await rejected(`INSERT INTO canonical_stock_movements(lot_id,quantity,from_state,to_state,reason,idempotency_key)
@@ -53,7 +53,7 @@ try {
     VALUES('test','test','test',now(),'historical','unknown','unknown') RETURNING id`)).rows[0].id;
   await c.query(`INSERT INTO canonical_observations(capture_id,mapping_id,source_locator,provider_subject,metric,evidence_kind,numeric_value,currency,unit,limitations,raw)
     VALUES($1,$2,'test','test','price','asking_price',999,'USD','per_copy','historical test','{}')`,[capture,map.id]);
-  assert.equal((await canonicalSummary(c)).eligible_observations,0); checks++;
+  assert.equal((await canonicalSummary(c)).eligible_observations,before.eligible_observations); checks++;
   await rejected('UPDATE canonical_observations SET numeric_value=1000 WHERE capture_id=$1',[capture],/append-only/);
   const liveCapture=(await c.query(`INSERT INTO canonical_captures(provider,upstream_provider,content_hash,captured_at,use_state,sample_kind,completeness)
     VALUES('test','test','new',now(),'eligible','fixed_count','capped') RETURNING id`)).rows[0].id;
@@ -61,10 +61,10 @@ try {
     VALUES($1,'test','foil','near_mint','foil','en','accepted','deliberately incompatible test') RETURNING id`,[frog.variant_id])).rows[0].id;
   await c.query(`INSERT INTO canonical_observations(capture_id,mapping_id,source_locator,provider_subject,metric,evidence_kind,numeric_value,currency,unit,limitations,raw)
     VALUES($1,$2,'foil','foil','price','asking_price',999,'USD','per_copy','wrong finish test','{}')`,[liveCapture,wrongMap]);
-  assert.equal((await canonicalSummary(c)).eligible_observations,0); checks++;
+  assert.equal((await canonicalSummary(c)).eligible_observations,before.eligible_observations); checks++;
   await c.query(`INSERT INTO canonical_observations(capture_id,mapping_id,source_locator,provider_subject,metric,evidence_kind,numeric_value,currency,unit,limitations,raw)
     VALUES($1,$2,'normal','normal','price','asking_price',9,'USD','per_copy','correct finish test','{}')`,[liveCapture,map.id]);
-  assert.equal((await canonicalSummary(c)).eligible_observations,1); checks++;
+  assert.equal((await canonicalSummary(c)).eligible_observations,before.eligible_observations+1); checks++;
   assert.equal((await canonicalSummary(c)).owned,817); checks++;
   console.log(`PASS: ${checks} canonical adoption/inventory/evidence checks; all test writes rolled back.`);
 } finally {await c.query('ROLLBACK'); await c.end();}

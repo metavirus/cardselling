@@ -2,7 +2,29 @@
 
 As of: 2026-10-04
 
-## Starting-data audit — current readiness boundary
+## Market ingestion — current readiness boundary
+
+See `market-ingestion.md`, `market-ingestion-research.json` and
+`market-signal-research.json`. Six newly registered source artifacts; Mana Pool
+provides 27,573 typed observations, including 22,089 sale-sample records, across
+3,590 provider-grade mappings for 718 accepted printing/finish/language variants.
+All 723 lots / 817 copies remain unchanged. Japanese Gigantosaurus now has an
+accepted language-specific Scryfall mapping; five SOA English-labelled mappings
+remain withheld. The later TCGSentry export is archived and retired, not current.
+
+Critical new finding: Mana Pool's published ManaBox CSV conversion maps near_mint
+to LP and excellent/good to MP. This is a provider import convention, not authority
+to downgrade physical stock. All five provider grades are separate comparison
+evidence; consumers must explicitly choose and justify condition scope. The broad
+eligible-evidence view is not a lot valuation or current-price view.
+
+The October 4 catalog capture has sampled sale dates only through October 2;
+257 sample records exceed one year in age. Up to 20 sales per product is not full
+velocity. Price unit-versus-line-total and net components remain unverified.
+Current dealer quotes, popularity observations and recommendations are not yet
+populated. No interface or selling workflow changes were made.
+
+## Starting-data audit — historical pre-ingestion checkpoint
 
 Read `starting-data-audit.md` and `data-readiness.json` before using data for new
 recommendations. Read-only audit: 32 database checks passed, all 16 original ZIP
