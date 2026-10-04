@@ -1,0 +1,42 @@
+{
+  "name": "cardselling",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24 <25" },
+  "scripts": {
+    "dev": "node scripts/database.mjs start && next dev --hostname 127.0.0.1 --port 3010",
+    "build": "next build",
+    "start": "node scripts/database.mjs start && next start --hostname 127.0.0.1 --port 3010",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test scripts/*.test.mjs",
+    "check": "npm run test && npm run build && npm run typecheck",
+    "db:setup": "node scripts/database.mjs setup",
+    "db:start": "node scripts/database.mjs start",
+    "db:status": "node scripts/database.mjs status",
+    "db:stop": "node scripts/database.mjs stop",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:generate": "drizzle-kit generate",
+    "db:backup": "node scripts/database.mjs backup",
+    "db:verify-backup": "node scripts/database.mjs verify-backup",
+    "db:check": "node scripts/database.mjs check"
+  },
+  "dependencies": {
+    "next": "16.3.8",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "drizzle-orm": "0.45.2",
+    "pg": "8.23.0",
+    "dotenv": "17.2.3",
+    "server-only": "0.0.1"
+  },
+  "overrides": { "@esbuild-kit/core-utils": { "esbuild": "0.25.12" } },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "24.10.0",
+    "@types/pg": "8.15.6",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "drizzle-kit": "0.31.10"
+  }
+}
