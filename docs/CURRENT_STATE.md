@@ -2,6 +2,22 @@
 
 As of: 2026-10-04
 
+## Starting-data audit — current readiness boundary
+
+Read `starting-data-audit.md` and `data-readiness.json` before using data for new
+recommendations. Read-only audit: 32 database checks passed, all 16 original ZIP
+members hash-identical, 27,017 source rows and 118,406 catalog objects compared,
+37,515 workbook cells reconciled, all 723 lots / 817 copies conserved field-by-field.
+No import loss or unexplained inventory changes found. Six provider mappings and
+three marketplace-grade mappings remain incomplete; no owner rescan is required.
+
+Important gap: canonical market captures/observations/quotes are empty. Newer Mana
+Pool files and 12:43 TCGSentry export are staged outside the database registry.
+Useful context remains in raw artifacts; per-lot locations are absent. Old summary
+arithmetic reconciles but hides missing values and has known semantic defects.
+Inventory is ready; monetary recommendations and sale execution are not. Complete
+controlled evidence registration/normalization before new model or UI work.
+
 ## Canonical cutover — supersedes earlier snapshot-driven workflow
 
 The operational source of truth is now the canonical PostgreSQL store. See

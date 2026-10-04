@@ -5,6 +5,10 @@ local PostgreSQL. Desktop first, with a responsive mobile layout.
 
 ## Status
 
+Starting-data audit: `docs/starting-data-audit.md` and `docs/data-readiness.json`.
+Original data and canonical inventory reconcile; active market evidence is still
+empty. Preserve this distinction before producing recommendations.
+
 The canonical database is adopted and verified locally: 723 inventory lots and
 817 copies. Prior exports/workbooks are historical evidence, not operational
 inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`. Fresh evidence
