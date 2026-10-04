@@ -5,14 +5,17 @@ local PostgreSQL. Desktop first, with a responsive mobile layout.
 
 ## Status
 
-Starting-data audit: `docs/starting-data-audit.md` and `docs/data-readiness.json`.
-Original data and canonical inventory reconcile. First controlled market ingestion
-is complete: see `docs/market-ingestion.md` for coverage, source findings and limits.
+Current readiness: `docs/CURRENT_STATE.md` and `docs/data-readiness.json`.
+The original starting-data audit is a historical checkpoint. Controlled Mana Pool,
+MTGJSON and EDHREC evidence is ingested: see `docs/market-ingestion.md` for source
+scope and limits.
 
 The canonical database is adopted and verified locally: 723 inventory lots and
-817 copies. Prior exports/workbooks are historical evidence, not operational
-inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`. Fresh evidence
-collectors, recommendation services and product workflows remain to be built.
+817 copies. Owner corrections are persisted: 720 lots are NM, three LP; five
+SOA Japanese-only printings have accepted language and Scryfall mappings, with
+distinct lots preserved. Prior exports/workbooks are historical evidence, not
+operational inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`.
+Refresh collectors, recommendation services and product workflows remain to be built.
 
 ## Local development
 
@@ -43,6 +46,11 @@ The server-only `/api/health` endpoint reports readiness without connection deta
 | `npm run db:canonical-status` | Read canonical stock and evidence counts |
 | `npm run db:ingest-market` | Trial retained-capture ingestion; add `-- --apply` to persist |
 | `npm run db:verify-market` | Verify exact provider mappings, evidence semantics and coverage |
+| `npm run db:ingest-mtgjson` | Trial retained MTGJSON ingestion; add `-- --apply` to persist |
+| `npm run db:ingest-edhrec` | Trial EDHREC rank extraction from retained MTGJSON identifiers |
+| `npm run db:verify-mtgjson` | Verify dated price and rank evidence against exact source and variant identities |
+| `npm run market:insights` | Produce a read-only research queue; no sell recommendations |
+| `npm run db:apply-owner-clarifications` | Replay the accepted, idempotent owner corrections |
 | `npm run db:verify-canonical` | Verify canonical invariants with rolled-back test writes |
 | `npm run db:adopt-canonical` | One-time accepted baseline adoption; repeat is a no-op |
 | `npm run db:ingest` / `db:verify-ingestion` | Historical bootstrap only; blocked after canonical adoption |
@@ -101,8 +109,9 @@ conflicts. Repeated normalized dealer evidence links to its original observation
 Unknown remains distinct from zero; dealer capacity is separate from price.
 
 Prior recommendations and manual judgments are review-required checkpoints.
-Modeled Mana Pool proceeds remain source estimates; costs and formulas have not
-been independently reproduced. PDF, screenshots, and the final workbook are
+Modeled Mana Pool proceeds remain source estimates. The separate order-economics
+calculator requires actual cost inputs before estimating net. PDF, screenshots,
+and the final workbook are
 registered source artifacts; their contents are not separately parsed into market
 facts. The final CSV carries the corresponding interpretation checkpoint.
 
@@ -131,7 +140,8 @@ run after cutover. Prior files/results remain historical evidence only.
 Market research: `docs/market-source-survey.md` summarizes the October 4 survey,
 `docs/market-source-registry.json` records source semantics and access, and
 `docs/synthesis-design.md` proposes the evidence and recommendation workflow.
-These are research/design artifacts; collectors and product views are not implemented.
+These are research/design artifacts. Controlled one-time evidence ingesters exist;
+automated refresh collectors and product views are not implemented.
 
 Clone the repository:
 

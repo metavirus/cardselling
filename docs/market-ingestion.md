@@ -1,104 +1,77 @@
-# Market ingestion and research — 2026-10-04
+# Market evidence — October 4, 2026
 
-The canonical store now contains the first normalized market capture. Inventory
-remains exactly **723 lots / 817 copies**. No physical fields, owner choices or
-stock events changed. No UI, listings, vendor messages or sales were created.
+The canonical inventory is unchanged at **723 lots / 817 copies**. Owner
+clarifications and external evidence are separate, durable records. This is
+research evidence, not an executable disposition engine.
 
-## What was imported
+## Retained Mana Pool catalog
 
-- Retained Mana Pool catalog: 106,515 parent objects in the original hashed gzip;
-  667 full parent objects relevant to inventory are additionally registered as
-  queryable source records. All original variants remain in those raw records.
-- **718/723** canonical printing/finish/language combinations match. Across five
-  provider grades: **3,590 product mappings**, **22,089 sale-sample records**,
-  **1,894 asking-price observations**, and **3,590 offered-quantity observations**.
-- Six newly registered artifacts include the catalog, API schema, Japanese
-  Scryfall response, two sourced-research files, and later TCGSentry export.
-  All 718 rows of that export are retained and explicitly retired from current use.
-- Ten sourced findings are stored as provider facts, separate from owner choices.
-  Earlier probe files remain superseded diagnostic artifacts, not live inputs.
+The hashed public catalog is retained privately. Exact printing, finish and
+printed-language reconciliation covers all 723 lots. Five condition scenarios
+produce 3,615 provider-grade mappings, 27,649 typed observations, 22,151
+bounded sale-sample records and 1,898 asks. Three separate SOA physical lots
+share products already mapped by other lots, so observations are not multiplied
+by lot count. Use `canonical_lot_market_evidence` to select the owner-normalized
+grade and provider product. The other grades are comparison evidence, not extra
+stock or interchangeable valuations.
 
-| Provider grade | Products with sale samples | Sample records | At the 20-record cap | Products with asks |
-|---|---:|---:|---:|---:|
-| NM | 710 | 11,336 | 442 | 716 |
-| LP | 694 | 9,177 | 283 | 707 |
-| MP | 365 | 1,321 | 19 | 382 |
-| HP | 63 | 135 | 0 | 46 |
-| DMG | 90 | 120 | 0 | 43 |
+The owner grades 720 lots NM and three LP. [Mana Pool's ManaBox CSV grade
+translation](https://support.manapool.com/hc/en-us/articles/26131255560855-CSV-Inventory-Export-ManaBox-Format)
+is an import convention; it is not a physical grading decision. Original
+condition strings are preserved. [Grading guidelines](https://support.manapool.com/hc/en-us/articles/37104256330391-Card-Grading-Guidelines).
 
-Each grade has 718 mapped products. These are comparison scenarios, **not five
-versions of owned inventory**. They must not be added together as portfolio value.
+Sale samples have an up-to-20-record cap per product, unknown completeness and
+no stable transaction identity. Some overlap between captures may be invisible.
+The reported sale-price unit basis and seller net are unverified. The original
+catalog's latest sampled sale was October 2 and some records predate October
+2025. Count samples as bounded evidence, never complete market velocity.
 
-## Findings that change our assumptions
+## Dated MTGJSON evidence
 
-**Grade translation is a real integration hazard.** Mana Pool documents its
-ManaBox import translation as mint→NM, near_mint→LP, excellent/good→MP,
-light_played/played→HP, poor→DMG. This supersedes the initial research impression
-that no mapping existed. The three good/excellent rows now have an evidenced MP
-import scenario, but this does not establish their physical grade. Likewise, the
-720 near_mint inventory rows must not silently become LP holdings. Keep original
-condition, provider import convention and eventual listing grade separate.
-[Official conversion](https://support.manapool.com/hc/en-us/articles/26131255560855-CSV-Inventory-Export-ManaBox-Format),
-[grading guidelines](https://support.manapool.com/hc/en-us/articles/37104256330391-Card-Grading-Guidelines).
+The official October 4 [AllPrices](https://www.mtgjson.net/downloads/all-files/)
+and [AllIdentifiers](https://www.mtgjson.net/data-models/identifiers/) files are
+retained as hashed private source artifacts. Exact Scryfall/set/collector/
+finish/language mapping accepts 699 identity-matched inventory variants;
+Japanese Gigantosaurus is deliberately excluded where MTGJSON defaults to an
+English product. The resulting 115,943 dated observations comprise 52,184
+indicative Card Kingdom NM buylist points and 63,759 TCGplayer retail price
+references. These are rolling historical price points, neither dealer quotes
+with wanted quantities nor transaction prices. CK base NM points are mapped
+only where the language scope is English. TCGplayer price scope has no condition
+guarantee. [Price-list semantics](https://www.mtgjson.net/data-models/price/price-list/),
+[price-point semantics](https://www.mtgjson.net/data-models/price/price-points/).
 
-**ManaBox prices are broad references.** Its documentation says language,
-condition and location are not incorporated into its displayed prices. Physical
-inventory authority does not make those prices exact-card valuation evidence.
-[ManaBox pricing](https://www.manabox.app/guides/general/prices-in-the-app/).
+The same identity file transmits EDHREC rank for 662 unique ranks / 717 exact
+variant mappings. Rank measures functional-card gameplay interest, not buyer
+count, exact-printing popularity or completed-sale velocity.
+[MTGJSON card-set model](https://www.mtgjson.com/data-models/card/card-set/),
+[EDHREC FAQ](https://edhrec.com/faq).
 
-**Identity progress:** Japanese Gigantosaurus M19 #185 now maps to Scryfall
-`c7f7445d-0412-4aeb-b4a7-376b430e075b`, superseding the earlier English enrichment
-candidate. Its Japanese Mana Pool NM product has an ask but no sale sample.
-All eight Phyrexian variants match explicit PH catalog products.
-[Scryfall response](https://api.scryfall.com/cards/m19/185/ja).
+## Questions that still matter
 
-**Five SOA conflicts remain:** English-labelled Daze #80, Crop Rotation #116,
-Prismatic Ending #72, Triumph of the Hordes #124 and Bring to Light #126 have
-Japanese-only corresponding catalog variants. Wizards confirms those Japanese
-treatments appear in Collector Boosters of all languages. Preserve the accepted
-rows and withhold incompatible matches; this is not a renewed rescan request.
-[Wizards product guide](https://magic.wizards.com/en/news/feature/collecting-secrets-of-strixhaven).
+- A public buylist amount is an indicative base-grade signal. A dealer's current
+  wanted quantity, exact product eligibility, accepted grade and checkout terms
+  must be captured separately before calling it an actionable quote. Card
+  Kingdom's ordinary submissions are generally English-language and bulk
+  purchasing is currently paused; other languages may require buyer approval.
+  [How to sell](https://www.cardkingdom.com/purchasing/how_to_sell),
+  [CSV import](https://www.cardkingdom.com/static/csvImport).
+- Marketplace proceeds require actual order composition, postage, materials,
+  fee settlement and any return/loss costs. `scripts/order-economics.mjs` keeps
+  those inputs explicit and can leave net unknown. It does not establish a
+  card-level take-home amount or a probability of sale.
+- Price gaps and EDHREC rank can prioritize research. They do not alone justify
+  “Just Sell,” MagicCon, retail or hold. MagicCon quotes need vendor, event,
+  condition, quantity and expiry recorded; no such quote exists yet.
 
-**Download freshness is not observation freshness.** Download completion was
-October 4 at 20:07:55 UTC; latest sampled sale is October 2 at 11:10:23 UTC.
-There are 257 sample records older than one year, reaching back to August 2024.
-Those dates do not prove the absence of more recent market activity. Provider
-publication time is unknown. Each sample is at most 20 records, with no stable
-sale identifier or completeness guarantee. Repeated captures cannot be summed
-as unique sales; the adapter stores reported cents and quantity separately,
-without assuming sale price means a unit price or settled seller proceeds.
-[Mana Pool API](https://manapool.com/api/docs/v1).
+## Reproduction
 
-**Dealer eligibility and desirability need their own evidence.** Card Kingdom's
-general policy restricts ordinary buylist submissions to English cards; non-English
-items use a buyer-approved channel. Special Phyrexian treatments need exact
-product evidence or an explicit exception, rather than a blanket assumption.
-[Card Kingdom policy](https://cardkingdom.freshdesk.com/support/solutions/articles/3000037537-do-you-buy-non-english-language-cards-complete-sets-sealed-products-magic-memorabilia-or-any-othe).
-EDHREC measures deck inclusion with eligibility/filter-dependent denominators,
-not purchases of premium printings. Treat it as a distinct gameplay-interest
-signal, not sales velocity. [EDHREC FAQ](https://edhrec.com/faq).
-
-## Remaining boundaries
-
-The store supports source-backed research and grade comparisons. It does not yet
-support confident channel recommendations: current executable dealer quotes,
-grade acceptance, order-level net costs, broader history and popularity captures
-remain to be integrated. The eligible-evidence view deliberately includes all
-comparison grades and retained captures; it is not a current lot-price view.
-Future consumers must select a specific capture and justified provider grade.
-No historical dealer export has been promoted into a fresh bid.
-
-## Reproduction and verification
-
-`prepare-market-evidence.mjs` reads canonical inventory and preserves the retained
-source files; `extract-manapool-evidence.py` streams the catalog and records
-source/scope/extract hashes. `ingest-market-evidence.mjs` defaults to a rolled-back
-trial; `--apply` persists atomically. Run `verify-market-evidence.mjs` afterwards.
-The script is a controlled first-capture adapter, not a scheduled refresh service.
-
-Replay verifies supplied immutable fields and full database content fingerprints.
-The successful replay made no database changes. Thirteen adapter/unit and existing
-unit tests, 13 market database checks, 20 canonical invariant checks and TypeScript
-validation passed. The pre-ingestion backup was restored and compared in isolation.
-The final database backup and source recovery bundle are verified separately; see
-the accompanying recovery receipt. Private source bytes stay out of Git.
+`prepare-market-evidence.mjs` and `extract-manapool-evidence.py` prepare the
+retained catalog; `ingest-market-evidence.mjs` defaults to a rolled-back trial
+and `--apply` persists it atomically. `extract-mtgjson-evidence.py` streams the
+official gzip files; `ingest-mtgjson-evidence.mjs` and
+`ingest-edhrec-rank.mjs` likewise support trial and `--apply`. All source bytes
+and structured extracts stay in ignored `data/private/`.
+`verify-market-evidence.mjs` and `verify-canonical.mjs` check lot, mapping and
+stock invariants. Replays were checked for no duplicate observations. Older
+capture counts in historical audit files are not current coverage figures.

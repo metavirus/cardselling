@@ -24,7 +24,9 @@ try {
   assert.equal(replay.alreadyAdopted,true); assert.deepEqual(await canonicalSummary(c),before); checks++;
   const differences=(await c.query(`SELECT count(*)::int AS n FROM canonical_inventory i JOIN inventory_holdings h ON h.id=i.origin_record_id
     WHERE i.owned_quantity<>h.quantity OR i.finish<>h.finish OR i.collector_number<>h.collector_number
-    OR i.set_code<>lower(h.set_code) OR (i.printed_language<>h.language AND NOT(i.set_code='one' AND i.printed_language='ph'))`)).rows[0].n;
+    OR i.set_code<>lower(h.set_code) OR (i.printed_language<>h.language AND NOT(i.set_code='one' AND i.printed_language='ph')
+      AND NOT EXISTS(SELECT 1 FROM canonical_assertions a WHERE a.lot_id=i.lot_id AND a.field_name='printed_language'
+        AND a.authority='owner' AND a.value=to_jsonb(i.printed_language)))`)).rows[0].n;
   assert.equal(differences,0); checks++;
   assert.equal((await c.query("SELECT count(*)::int n FROM canonical_inventory WHERE printed_language='ph'")).rows[0].n,8); checks++;
   const frog=(await c.query("SELECT * FROM canonical_inventory WHERE set_code='mh3' AND collector_number='433'")).rows[0];

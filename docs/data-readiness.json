@@ -1,239 +1,58 @@
 {
   "as_of": "2026-10-04",
-  "status": "inventory_verified_first_market_capture_ingested_recommendations_not_ready",
-  "authority": "Canonical inventory preserved; starting audit retained as history; first controlled market capture applied and verified.",
-  "findings": [
-    {
-      "id": "DR01",
-      "priority": "before_recommendations",
-      "type": "unfinished_integration",
-      "finding": "Canonical captures, observations and quotes are empty. Recent Mana Pool catalog/probe and 12:43 TCGSentry export are local files not registered in the database.",
-      "next_action": "Register retained captures with exact provenance, then normalize vetted evidence without reviving old exports as authority. No need to retain TCGSentry as an operational dependency.",
-      "original_finding_status": "Historical pre-ingestion finding; see resolution",
-      "resolution": "Resolved for first capture: six sources registered, 27,573 observations ingested. Current dealer quotes remain absent."
-    },
-    {
-      "id": "DR02",
-      "priority": "before_affected_comparisons",
-      "type": "provider_mapping",
-      "finding": "Six Scryfall mappings are candidates: five English-labelled SOA holdings and confirmed Japanese Gigantosaurus. Canonical physical facts remain accepted.",
-      "next_action": "Resolve provider product/language mapping against accepted inventory. Do not ask the owner to reconfirm facts merely because a provider differs.",
-      "original_finding_status": "Historical pre-ingestion finding; see resolution",
-      "resolution": "Japanese Gigantosaurus Scryfall mapping resolved. Five English-labelled SOA provider conflicts remain withheld."
-    },
-    {
-      "id": "DR03",
-      "priority": "before_affected_comparisons",
-      "type": "condition_mapping",
-      "finding": "Words of Wind and Words of Wilding are good; Pride Sovereign is excellent. Those raw conditions are retained but normalized marketplace grades remain null.",
-      "next_action": "Use provider-specific grade vocabulary mapping with explicit uncertainty; do not transfer NM prices or silently reinterpret physical condition.",
-      "original_finding_status": "Historical pre-ingestion finding; see resolution",
-      "resolution": "Official Mana Pool CSV translation found: excellent/good=MP and near_mint=LP. Provider grade scenarios ingested; physical inventory unchanged. Do not equate import convention with physical grade acceptance."
-    },
-    {
-      "id": "DR04",
-      "priority": "before_recommendations",
-      "type": "sample_semantics",
-      "finding": "Mana Pool probe is based on original export language and has not been rebuilt against canonical Phyrexian normalization. Its 699 sale-covered rows and 436 capped rows describe the original probe only.",
-      "next_action": "Reconcile retained catalog against canonical variants; preserve up-to-20 sample semantics, cents, quantity, overlap and unknown completeness. Never sum repeated snapshots into full velocity.",
-      "original_finding_status": "Historical pre-ingestion finding; see resolution",
-      "resolution": "Rebuilt against canonical inventory including eight PH variants. All five provider grades retained separately; 22,089 bounded sale-sample records, no complete velocity inferred."
-    },
-    {
-      "id": "DR05",
-      "priority": "before_recommendations",
-      "type": "retired_derived_logic",
-      "finding": "Historical summaries reconcile arithmetically but include unavailable bids, incomplete modeled net and mixed valuation measures. Seven rows lack dealer values and 22 lack modeled net; aggregate sums conceal the missingness as zero contribution.",
-      "next_action": "Keep old summaries/recommendations historical. New outputs must expose coverage and use order-level net, actual bid capacity and comparable exact products."
-    },
-    {
-      "id": "DR06",
-      "priority": "before_fulfillment",
-      "type": "missing_source_detail",
-      "finding": "No per-lot locations are populated. General binder/drawer/sleeve conventions and fulfillment preferences survive in the handoff memo, not structured operational records.",
-      "next_action": "Carry useful contextual statements with handoff provenance; obtain lot-specific locations only when needed, never infer them from current price."
-    },
-    {
-      "id": "DR07",
-      "priority": "nonblocking",
-      "type": "missing_reference",
-      "finding": "Domri Rade Emblem TRVR #20 foil has no scan reference price. Its inventory identity and copy remain present.",
-      "next_action": "Keep missing reference null. Hydrate a suitable market observation if it matters; never invent purchase cost."
-    },
-    {
-      "id": "DR08",
-      "priority": "before_operational_use",
-      "type": "provenance_and_recovery",
-      "finding": "Original assets are retained and hash-verified; newer research files are outside the database registry. Database backups alone do not include filesystem-only source bytes.",
-      "next_action": "Include source files/capture manifests in the recovery plan. Registration is distinct from accepting a capture as current evidence.",
-      "original_finding_status": "Historical pre-ingestion finding; see resolution",
-      "resolution": "New source registry and retained raw catalog incorporated into private recovery bundle; accompanying recovery receipt verifies bytes."
-    },
-    {
-      "id": "DR09",
-      "priority": "nonblocking",
-      "type": "historical_issue_queue",
-      "finding": "Legacy flags and manual interpretations retain old labels, including foreign-language/finish review. They are not a current physical-uncertainty queue.",
-      "next_action": "Use current assertions and provider-mapping status; do not present retired audit flags as renewed owner questions."
-    }
+  "authority": "Canonical PostgreSQL inventory and owner assertions; external captures are sourced observations, not inventory authority",
+  "status": "inventory_reconciled_market_evidence_ingested_decisions_not_ready",
+  "inventory": {
+    "lots": 723,
+    "copies": 817,
+    "owner_near_mint_lots": 720,
+    "owner_lightly_played_lots": 3,
+    "active_scryfall_mapping_candidates": 0,
+    "unmatched_manapool_lots": 0,
+    "owner_rescan_required": false
+  },
+  "manapool_capture": {
+    "catalog_parents": 667,
+    "printing_finish_language_matched_lots": 723,
+    "distinct_provider_products_per_grade": 720,
+    "provider_grade_mappings": 3615,
+    "observations": 27649,
+    "bounded_sale_sample_records": 22151,
+    "asking_price_observations": 1898,
+    "sale_sample_completeness": "unknown; up to 20 per product",
+    "distinct_lots_sharing_provider_product": 3
+  },
+  "mtgjson_capture": {
+    "ck_indicative_nm_buylist_points": 52184,
+    "tcgplayer_retail_reference_points": 63759,
+    "dated_price_observations": 115943,
+    "current_executable_dealer_quotes": 0,
+    "dealer_wanted_quantities": "not established by MTGJSON"
+  },
+  "edhrec_rank": {
+    "unique_rank_signals": 662,
+    "exact_variant_mappings": 717,
+    "meaning": "functional-card gameplay interest, not printing-level sales"
+  },
+  "readiness": {
+    "stock_and_identity": "ready",
+    "controlled_market_research": "ready_with_source_limits",
+    "monetary_recommendations": "not_ready",
+    "sale_execution": "not_ready"
+  },
+  "outstanding": [
+    "Actionable exact-product dealer cash bids and wanted quantities",
+    "Physical grade acceptance and transaction terms",
+    "Actual order shipping, materials, processing settlement and loss costs",
+    "Completed-sale identity, sample completeness and overlap",
+    "Explainable recommendation and capacity-allocation service"
   ],
-  "go_no_go": {
-    "inventory_browsing_and_reconciliation": "ready",
-    "controlled_evidence_ingestion": "first_capture_complete",
-    "monetary_recommendations_or_sale_execution": "not_ready",
-    "owner_rescan_required_by_this_audit": false
-  },
-  "starting_audit_verified": {
+  "historical_audit": {
     "original_archive_members_identical": 16,
-    "database_checks_passed": 32,
-    "canonical_lots": 723,
-    "physical_copies": 817,
-    "structured_source_rows": 27017,
-    "catalog_objects_compared": 118406,
-    "workbook_cells_compared": 37515,
-    "workbook_summary_groups_reconciled": 14,
-    "archived_research_rows_accounted_for": 3718,
-    "archived_interpretations": 784,
-    "canonical_eligible_observations": 0
-  },
-  "current_ingestion": {
-    "verified_at": "2026-10-04T21:43:19.587Z",
-    "checks_passed": 13,
-    "counts": {
-      "lots": 723,
-      "copies": 817,
-      "catalog_parents": 667,
-      "matched_printing_finish_language": 718,
-      "provider_grade_mappings": 3590,
-      "observations": 27573,
-      "sale_sample_records": 22089,
-      "asking_prices": 1894,
-      "source_files": 6,
-      "retired_dealer_rows": 718
-    },
-    "grade_coverage": {
-      "NM": {
-        "products": 718,
-        "with_sales": 710,
-        "at_cap": 442,
-        "sample_records": 11336,
-        "with_asking_price": 716
-      },
-      "LP": {
-        "products": 718,
-        "with_sales": 694,
-        "at_cap": 283,
-        "sample_records": 9177,
-        "with_asking_price": 707
-      },
-      "MP": {
-        "products": 718,
-        "with_sales": 365,
-        "at_cap": 19,
-        "sample_records": 1321,
-        "with_asking_price": 382
-      },
-      "HP": {
-        "products": 718,
-        "with_sales": 63,
-        "at_cap": 0,
-        "sample_records": 135,
-        "with_asking_price": 46
-      },
-      "DMG": {
-        "products": 718,
-        "with_sales": 90,
-        "at_cap": 0,
-        "sample_records": 120,
-        "with_asking_price": 43
-      }
-    },
-    "sale_date_coverage": [
-      {
-        "condition_scope": "damaged",
-        "sample_records": 120,
-        "oldest_sale": "2025-12-01T21:17:33.255Z",
-        "newest_sale": "2026-10-01T22:19:07.712Z",
-        "records_older_than_year": 0
-      },
-      {
-        "condition_scope": "heavily_played",
-        "sample_records": 135,
-        "oldest_sale": "2025-03-28T00:41:42.081Z",
-        "newest_sale": "2026-10-02T06:51:33.947Z",
-        "records_older_than_year": 3
-      },
-      {
-        "condition_scope": "lightly_played",
-        "sample_records": 9177,
-        "oldest_sale": "2024-11-05T02:39:51.337Z",
-        "newest_sale": "2026-10-02T11:10:23.245Z",
-        "records_older_than_year": 171
-      },
-      {
-        "condition_scope": "moderately_played",
-        "sample_records": 1321,
-        "oldest_sale": "2025-02-22T11:12:20.816Z",
-        "newest_sale": "2026-10-02T08:44:59.273Z",
-        "records_older_than_year": 13
-      },
-      {
-        "condition_scope": "near_mint",
-        "sample_records": 11336,
-        "oldest_sale": "2024-08-21T20:53:00.248Z",
-        "newest_sale": "2026-10-02T11:09:07.831Z",
-        "records_older_than_year": 70
-      }
-    ],
-    "unmatched": [
-      {
-        "name": "Daze",
-        "set": "soa",
-        "number": "80",
-        "finish": "normal",
-        "language": "en",
-        "inventory_condition": "near_mint"
-      },
-      {
-        "name": "Crop Rotation",
-        "set": "soa",
-        "number": "116",
-        "finish": "normal",
-        "language": "en",
-        "inventory_condition": "near_mint"
-      },
-      {
-        "name": "Prismatic Ending",
-        "set": "soa",
-        "number": "72",
-        "finish": "normal",
-        "language": "en",
-        "inventory_condition": "near_mint"
-      },
-      {
-        "name": "Triumph of the Hordes",
-        "set": "soa",
-        "number": "124",
-        "finish": "normal",
-        "language": "en",
-        "inventory_condition": "near_mint"
-      },
-      {
-        "name": "Bring to Light",
-        "set": "soa",
-        "number": "126",
-        "finish": "normal",
-        "language": "en",
-        "inventory_condition": "near_mint"
-      }
-    ],
-    "inventory_unchanged": true,
-    "replay_unchanged": true,
-    "limits": {
-      "physical_grade_acceptance": "Provider-grade scenarios are not physical regrading. ManaBox import convention differs from same-name NM.",
-      "price_basis": "Reported cents; not verified net or per-copy sale basis",
-      "sample_completeness": "Unknown, at most 20 per variant; not full velocity",
-      "no_current_dealer_quotes": true
-    }
+    "starting_database_checks_passed": 32,
+    "starting_structured_source_rows": 27017,
+    "starting_catalog_objects_compared": 118406,
+    "starting_workbook_cells_compared": 37515,
+    "note": "These are pre-correction checkpoints, not unresolved current flags"
   }
 }

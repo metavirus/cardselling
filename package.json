@@ -28,7 +28,12 @@
     "db:canonical-status": "node scripts/canonical-status.mjs",
     "db:verify-canonical": "node scripts/verify-canonical.mjs",
     "db:ingest-market": "node scripts/ingest-market-evidence.mjs",
-    "db:verify-market": "node scripts/verify-market-evidence.mjs"
+    "db:verify-market": "node scripts/verify-market-evidence.mjs",
+    "db:apply-owner-clarifications": "node scripts/apply-owner-clarifications.mjs",
+    "db:ingest-mtgjson": "node scripts/ingest-mtgjson-evidence.mjs",
+    "db:ingest-edhrec": "node scripts/ingest-edhrec-rank.mjs",
+    "db:verify-mtgjson": "node scripts/verify-mtgjson-evidence.mjs",
+    "market:insights": "node scripts/market-insights.mjs"
   },
   "dependencies": {
     "csv-parse": "7.0.3",

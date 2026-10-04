@@ -20,7 +20,9 @@ the database. No spreadsheet or enrichment export continuously overrides it.
 | Actual sales/cash | `canonical_transactions`, `canonical_transaction_lines`, `canonical_cash_entries` | Allocated copies, settlement and costs; payouts are not extra revenue |
 | Historical artifacts | Existing `source_files`, `source_records` and legacy snapshot/evidence tables | Retained original bytes, hashes and interpretations, with retirement records |
 
-Authoritative SQL is `migrations/0002_canonical_store.sql`. The earlier
+Authoritative SQL is `migrations/0002_canonical_store.sql` plus forward migration
+`migrations/0003_owner-lot-evidence.sql`, which adds the exact lot-to-market view.
+The earlier
 `data-model.json` is a superseded logical exploration, not a second live schema.
 These custom SQL objects are intentionally outside the legacy Drizzle table
 snapshot. Future canonical changes use reviewed custom forward SQL migrations;
@@ -40,8 +42,10 @@ Repeating adoption returns the recorded receipt without reseeding or resetting.
 Eight known ONE Phyrexian-script rows get `printed_language=ph` with an explicit
 normalization assertion; raw English export values remain preserved. Japanese
 SOA rows and Gigantosaurus retain Japanese. Psychic Frog MH3 #433 stays nonfoil.
-English-labelled SOA rows remain distinct as recorded; source product mapping
-must not silently merge copies or change their language.
+Five formerly English-labelled SOA rows now carry accepted Japanese printed
+language and Scryfall mappings through owner-backed assertions. Raw ManaBox rows,
+separate physical lots and quantities remain intact. The other SOA rows retain
+their own recorded languages. See `identity-clarifications.md`.
 
 Every existing source artifact is marked historical-only at adoption. The original
 files stay in ignored private storage; no destructive deletion or relocation is
@@ -72,11 +76,12 @@ in the ordinary eligible-evidence view revives retired artifacts automatically.
 - An accepted enrichment mapping still must agree with finish and printed language
   to enter `canonical_eligible_evidence`. Condition scope must be checked for each
   lot by the future comparison service. Eligible does not mean fresh or executable.
-- Mana Pool mappings now include each provider grade as separate comparison
-  evidence. Never sum or blend those grades into lot values. Its published ManaBox
-  CSV grade conversion differs from same-name matching; preserve the convention
-  and physical grade separately. Scope the capture, variant and justified provider
-  condition explicitly before price analysis.
+- Mana Pool mappings include each provider grade as separate comparison
+  evidence. Never sum or blend grades into lot values. Owner-normalized condition
+  is 720 NM / 3 LP; its published ManaBox CSV grade conversion is only a file
+  import convention. `canonical_lot_market_evidence` scopes exact product and
+  owner grade for lot research. Three separate SOA lots share provider products;
+  do not duplicate their market observations or merge the physical lots.
 - Preserve source sample caps/completeness. Repeated last-20 sale samples are not
   independent sales and must not be summed into fabricated volume.
 - A quote's unknown capacity is null; zero is zero. Cash and store credit differ.
@@ -89,9 +94,11 @@ in the ordinary eligible-evidence view revives retired artifacts automatically.
 
 ## Scope of this implementation
 
-Implemented: schema, one-time inventory adoption, stored baseline policies,
-provenance, artifact retirement, current-stock view, eligible-evidence view,
-append-only fact constraints, nonnegative stock checks and retirement guards.
+Implemented: schema, one-time inventory adoption, owner corrections, stored
+baseline policies, provenance, artifact retirement, current-stock and exact
+lot-market views, eligible-evidence view, append-only fact constraints,
+nonnegative stock checks and retirement guards. Controlled Mana Pool and MTGJSON
+historical evidence ingestion and EDHREC-rank hydration have also run.
 
 The quote, recommendation and transaction tables establish the replacement schema;
 they do not constitute working sales workflows. No UI, collector or sale action

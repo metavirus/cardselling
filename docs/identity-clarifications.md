@@ -1,55 +1,34 @@
-# Identity clarifications — October 4, 2026
+# Accepted identity and condition clarifications — October 4, 2026
 
-These later clarifications supersede the physical-language uncertainty wording
-in the earlier reanalysis and source survey. Historical probe counts describe
-literal export matching, not current counts of unidentified cards.
+These owner corrections are persisted in canonical assertions and normalized
+variant/lot fields. Original ManaBox rows remain unchanged as provenance. Old
+reanalysis flags are historical and must not become new owner questions.
 
-## Phyrexian treatments
+## Printing and language
 
-ONE 283, 326, 365–369 and 429 identify the Phyrexian-script printings discussed
-with the owner. Eight inventory rows were overflagged because their export says
-English while the catalog says Phyrexian. Treat these as printing-specific
-language normalization, not a request to inspect the physical cards merely
-because those fields differ. Preserve raw export values and exact treatments.
+- Eight ONE Phyrexian-script rows are `printed_language=ph` despite the raw
+  export's English label. Their exact treatments and separate holdings remain.
+- Gigantosaurus M19 #185 is Japanese, as explicitly confirmed by the owner.
+- Five SOA treatments—Daze #80, Crop Rotation #116, Prismatic Ending #72,
+  Triumph of the Hordes #124, and Bring to Light #126—are Japanese-language
+  printings, although their original ManaBox rows say English. They came in
+  English packs. The accepted Japanese Scryfall mappings supersede the earlier
+  English-labelled candidate mappings. Preserve all five separate physical lots,
+  quantities and raw source rows. Do not generalize this correction to other SOA
+  rows. [Wizards product guide](https://magic.wizards.com/en/news/feature/collecting-secrets-of-strixhaven).
+- Psychic Frog MH3 #433 is nonfoil. A TCGSentry foil match is incompatible
+  enrichment, not a reason to reopen the physical fact.
 
-## Owner confirmation: Japanese cards
+## Condition
 
-The owner explains that the SOA Japanese cards came in English Secrets of
-Strixhaven packs and were scanned as Japanese. Pack language is not printed-card
-language. The existing Japanese SOA rows are intentional; their language alone
-does not require another owner confirmation.
+The owner grades 720 lots Near Mint and three Lightly Played: Words of Wind
+ONS #122, Words of Wilding ONS #305, and Pride Sovereign HOU #126. The original
+ManaBox condition strings remain in source evidence. Mana Pool's published CSV
+import translation is a file-format convention, not authority to regrade the
+owner's cards. Match market evidence to the normalized owner grade explicitly.
 
-The owner explicitly confirms Gigantosaurus M19 #185 is Japanese. The English
-default catalog reference does not override that physical-language confirmation.
-
-This statement does not authorize merging English and Japanese SOA holdings or
-changing their quantities. Preserve separate rows. Resolve catalog/product IDs
-using printed language and treatment; English-labelled rows linked to Japanese
-catalog records still need source mapping reconciliation. Do not infer that
-every SOA copy is Japanese from an explanation about the Japanese copies.
-
-## Canonical inventory versus enrichment — owner correction
-
-ManaBox Sell.csv is canonical physical inventory. TCGSentry is data hydration
-only; its fields do not compete with or override ManaBox's finish, language,
-printing identity or quantities. A conflicting enrichment row is an enrichment
-mapping failure, not evidence that the owner must reverify the inventory.
-
-The owner explicitly confirms Psychic Frog MH3 #433 is nonfoil, as recorded in
-ManaBox. Reject the TCGSentry foil row as an exact enrichment match for that
-holding. Obtain nonfoil pricing separately. No inventory correction is needed.
-
-Likewise, TCGSentry's merged English-labelled SOA rows and English-labelled
-Gigantosaurus cannot rewrite the canonical holdings. Missing Azusa/Harmonize
-rows mean missing enrichment, not missing or uncertain inventory. Only genuine
-conflicts within canonical evidence or an owner correction should reopen the
-physical facts; third-party hydration differences alone should not.
-
-## Implementation status (clarifications)
-
-Recorded as accepted owner context, not yet applied as a database correction.
-The frozen baseline script `scripts/reanalyze.mjs` still uses literal language
-comparison and flags all non-English holdings for acceptance. Its historical
-flags must not be presented as current unresolved physical questions. A future
-normalization pass must consume these clarifications and distinguish source-ID
-mapping from physical identity and dealer acceptance.
+ManaBox Sell.csv supplied the accepted opening physical inventory. The canonical
+database now owns stock and corrections. TCGSentry exports only hydrate market
+evidence; they cannot change printing, finish, language, condition or quantity.
+Provider mismatches remain mapping failures unless canonical evidence or a new
+owner correction genuinely changes the physical facts.
