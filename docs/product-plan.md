@@ -1,5 +1,11 @@
 # Card selling product and decision baseline
 
+The October 4 market-source survey extends this baseline: see
+`market-source-survey.md`, `market-source-registry.json` and `synthesis-design.md`
+for source access, independent demand signals, capped transaction samples and the
+Atlanta November 13–15, 2026 quote workflow. These remain proposed implementation
+requirements; research did not apply a migration or change inventory decisions.
+
 Reanalysis dated 2026-10-04. This replaces the old workbook's rules as the proposed
 implementation specification. Owner preferences below are confirmed; proposed
 policy defaults and schemas remain reviewable. This document is not an applied

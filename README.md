@@ -117,6 +117,11 @@ retained fresh export and writes private analysis under `.local/reanalysis/`.
 
 ## Development
 
+Market research: `docs/market-source-survey.md` summarizes the October 4 survey,
+`docs/market-source-registry.json` records source semantics and access, and
+`docs/synthesis-design.md` proposes the evidence and recommendation workflow.
+These are research/design artifacts; collectors and product views are not implemented.
+
 Clone the repository:
 
 ```sh

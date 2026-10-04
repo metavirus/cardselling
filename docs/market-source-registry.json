@@ -1,0 +1,1133 @@
+{
+  "version": "2026-10-04.1",
+  "scope": "Broad discovery survey of MTG market, demand, popularity and event sources; not a claim to enumerate every website or validate every advertised data feed.",
+  "checked_on": "2026-10-04",
+  "verification_legend": {
+    "tested": "Public structured data downloaded and inspected locally",
+    "documented": "First-party documentation or feature page inspected; integration not tested",
+    "observed": "First-party page or indexed first-party content inspected",
+    "claimed": "Provider advertises capability; coverage, accuracy or rights not independently validated",
+    "limited": "Page unavailable or only partial verification; not an integration dependency"
+  },
+  "access_rule": "A documented endpoint is not proof of an open data license. Prefer published downloads and supported APIs; record terms, rates, cost and retention before implementing. No subscriptions, accounts, credentials or vendor submissions were created.",
+  "sources": [
+    {
+      "id": "MS01",
+      "name": "Mana Pool",
+      "category": "Transactions and supply",
+      "signals": [
+        "recent variant sales",
+        "asking price",
+        "available quantity",
+        "own settlement"
+      ],
+      "access": "Daily public gzip catalog; documented API; private seller endpoints require token",
+      "upstream": "Mana Pool marketplace",
+      "verification": "tested",
+      "priority": "core",
+      "use": "Exact variant sale evidence and supply; later actual order calibration",
+      "limits": "Recent sales capped at 20 per variant; no sale ID or complete time window documented. Not total market volume. Zero low price can mean no stock.",
+      "urls": [
+        "https://manapool.com/api/docs/v1",
+        "https://manapool.com/api/docs/v1/openapi.json",
+        "https://storage.googleapis.com/manapool-prod-catalog/singles.json.gz",
+        "https://blog.manapool.com/"
+      ]
+    },
+    {
+      "id": "MS02",
+      "name": "TCGplayer",
+      "category": "Transactions and supply",
+      "signals": [
+        "market aggregate",
+        "recent sales",
+        "listings"
+      ],
+      "access": "Website research; official API is closed to new applicants",
+      "upstream": "TCGplayer marketplace",
+      "verification": "documented",
+      "priority": "core_manual",
+      "use": "US transaction comparator and exact-SKU spot checks",
+      "limits": "Market Price is an aggregate, not a firm bid or complete volume series. Do not assume documented recent-sales endpoint is accessible.",
+      "urls": [
+        "https://help.tcgplayer.com/hc/en-us/articles/213588017-TCGplayer-Market-Price",
+        "https://docs.tcgplayer.com/docs/getting-started",
+        "https://api.tcgplayer.com/help//index"
+      ]
+    },
+    {
+      "id": "MS03",
+      "name": "Cardmarket",
+      "category": "Transactions and supply",
+      "signals": [
+        "EUR price guide",
+        "price averages",
+        "listings",
+        "supply"
+      ],
+      "access": "Published daily price-guide/catalog downloads; website; current help says no new API applications",
+      "upstream": "Cardmarket marketplace",
+      "verification": "documented",
+      "priority": "core_secondary_region",
+      "use": "Independent European pricing and supply context; buyer geography",
+      "limits": "Do not treat EUR prices as US cash offers or average-price windows as volume. Official help is stricter than older professional-seller API documentation.",
+      "urls": [
+        "https://news.cardmarket.com/en/StarWarsUnlimited/were-making-the-price-guide-and-product-catalogue-available-for-download",
+        "https://news.cardmarket.com/en/Magic/adding-non-singles-and-accessories-to-the-price-guide",
+        "https://help.cardmarket.com/en/cardmarket-api"
+      ]
+    },
+    {
+      "id": "MS04",
+      "name": "eBay Product Research",
+      "category": "Transactions and supply",
+      "signals": [
+        "sold prices",
+        "sold quantities",
+        "sell-through",
+        "shipping",
+        "date windows"
+      ],
+      "access": "Seller Hub research; account eligibility applies; Marketplace Insights API closed to new users",
+      "upstream": "eBay marketplace",
+      "verification": "documented",
+      "priority": "core_manual",
+      "use": "Premium, unusual treatment and collector comps",
+      "limits": "Query/title contamination, lots, condition, accepted offers and shipping require review. Research offers up to three years; reported sell-through only for eligible recent windows. No automatic market-wide API assumed.",
+      "urls": [
+        "https://www.ebay.com/help/selling/selling-tools/research?id=4853",
+        "https://developer.ebay.com/api-docs/buy/ref-marketplace-supported.html"
+      ]
+    },
+    {
+      "id": "MS05",
+      "name": "CardTrader",
+      "category": "Transactions and supply",
+      "signals": [
+        "marketplace listings",
+        "quantity",
+        "price",
+        "variant properties"
+      ],
+      "access": "Documented account-token API",
+      "upstream": "CardTrader marketplace",
+      "verification": "documented",
+      "priority": "secondary",
+      "use": "Independent supply/asking-price comparison, international buyer context",
+      "limits": "API listings are not completed market sales; direct and Zero fulfillment economics differ; preserve currency and seller region.",
+      "urls": [
+        "https://www.cardtrader.com/en/docs/api/full/reference"
+      ]
+    },
+    {
+      "id": "MS06",
+      "name": "Cardsphere",
+      "category": "Transactions and supply",
+      "signals": [
+        "funded wants/offers",
+        "index prices",
+        "peer demand"
+      ],
+      "access": "Website/account workflow; no bulk market API verified",
+      "upstream": "Cardsphere offers; index combines other providers",
+      "verification": "documented",
+      "priority": "secondary",
+      "use": "Bid-side demand and an alternative channel where batch economics work",
+      "limits": "Offers are not completed sales; fees, shipping and cash withdrawal reduce realizable cash. Index starts with NM English and models other conditions/languages.",
+      "urls": [
+        "https://www.cardsphere.com/tutorials",
+        "https://blog.cardsphere.com/how-to-create-and-manage-a-buylist-on-cardsphere/"
+      ]
+    },
+    {
+      "id": "MS07",
+      "name": "Card Kingdom",
+      "category": "Dealers and events",
+      "signals": [
+        "cash bid",
+        "wanted quantity",
+        "grade policy"
+      ],
+      "access": "Direct buylist and CSV cart import; retained TCGSentry export",
+      "upstream": "Card Kingdom",
+      "verification": "documented",
+      "priority": "core",
+      "use": "Practical dealer baseline; buying depth",
+      "limits": "NM quote and quantity are conditional; English acceptance and thresholds matter. Do not assume undocumented endpoints are supported integration contracts.",
+      "urls": [
+        "https://www.cardkingdom.com/purchasing/how_to_sell",
+        "https://www.cardkingdom.com/static/csvImport"
+      ]
+    },
+    {
+      "id": "MS08",
+      "name": "Star City Games",
+      "category": "Dealers and events",
+      "signals": [
+        "cash bid",
+        "sell-list approval",
+        "grading",
+        "event buying"
+      ],
+      "access": "Direct sell list, CSV workflow, existing TCGSentry export",
+      "upstream": "Star City Games",
+      "verification": "documented",
+      "priority": "core",
+      "use": "Second dealer comparator and event candidate after attendance verification",
+      "limits": "Capacity unknown in current export; approval and grade are separate. An old event article does not verify the next event.",
+      "urls": [
+        "https://help.starcitygames.com/en-US/articles/sell-to-us-229858",
+        "https://help.starcitygames.com/en-US/approval-shipping-instructions-1056762",
+        "https://articles.starcitygames.com/magic-the-gathering/star-city-games-is-headed-to-magiccon-atlanta/",
+        "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html"
+      ]
+    },
+    {
+      "id": "MS09",
+      "name": "ABU Games",
+      "category": "Dealers and events",
+      "signals": [
+        "cash bids",
+        "trade bids",
+        "condition prices",
+        "wanted quantities"
+      ],
+      "access": "Public buylist UI",
+      "upstream": "ABU Games",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Additional bid competition and played-card options",
+      "limits": "Cash and trade prices differ materially; do not rank store credit as cash. Integration not tested.",
+      "urls": [
+        "https://abugames.com/buylist?language=%5B%22English%22%5D&magic_edition=%5B%22Alpha%22%5D"
+      ]
+    },
+    {
+      "id": "MS10",
+      "name": "CoolStuffInc",
+      "category": "Dealers and events",
+      "signals": [
+        "sell-list bids",
+        "bulk rules",
+        "approval"
+      ],
+      "access": "Public sell list and approval workflow",
+      "upstream": "CoolStuffInc",
+      "verification": "documented",
+      "priority": "secondary",
+      "use": "Additional dealer offers when incremental postage is justified",
+      "limits": "Cash versus credit distinct; bulk language/condition restrictions; final approval needed.",
+      "urls": [
+        "https://www.coolstuffinc.com/main_selllist.php",
+        "https://www.coolstuffinc.com/page/5485"
+      ]
+    },
+    {
+      "id": "MS11",
+      "name": "Strike Zone",
+      "category": "Dealers and events",
+      "signals": [
+        "dealer bid"
+      ],
+      "access": "Listed by current comparison providers; direct current workflow not verified in this survey",
+      "upstream": "Strike Zone",
+      "verification": "limited",
+      "priority": "candidate",
+      "use": "Additional bid candidate if direct verification finds worthwhile coverage",
+      "limits": "Do not rely on old buylisting articles or aggregator quantities without checking the dealer.",
+      "urls": [
+        "https://yestcg.com/sell-your-cards/magic",
+        "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html"
+      ]
+    },
+    {
+      "id": "MS12",
+      "name": "Card Conduit",
+      "category": "Dealers and events",
+      "signals": [
+        "optimized buylist estimate",
+        "service costs"
+      ],
+      "access": "Public estimate/service information; collection upload not performed",
+      "upstream": "Partner buylists and Card Conduit model",
+      "verification": "documented",
+      "priority": "core_manual",
+      "use": "Low-effort service baseline against doing our own splitting",
+      "limits": "Estimated prices are not locked until processing. Service fees and preparation differ. Marketing average uplift is not a forecast for this collection.",
+      "urls": [
+        "https://cardconduit.com/estimates/create",
+        "https://cardconduit.com/faq/how-card-value-determined",
+        "https://cardconduit.com/buylisting"
+      ]
+    },
+    {
+      "id": "MS13",
+      "name": "Three for One Trading",
+      "category": "Dealers and events",
+      "signals": [
+        "event buying",
+        "hotlists",
+        "pre-event estimates",
+        "buyer inventory preferences"
+      ],
+      "access": "Event pages and optional quote/appointment workflow; no contact made",
+      "upstream": "Three for One Trading",
+      "verification": "observed",
+      "priority": "event_core",
+      "use": "Event-specific desirability and quote workflow",
+      "limits": "Atlanta November 13–15, 2026 buying page and organizer listing verified. Estimates remain conditional on identity, grade, capacity and final quote; specialist interest is not a guaranteed premium.",
+      "urls": [
+        "https://www.threeforonetrading.com/en/sell-your-cards-atlanta-11-2026",
+        "https://www.threeforonetrading.com/en/sell-your-cards-las-vegas-05-2026"
+      ]
+    },
+    {
+      "id": "MS14",
+      "name": "Face to Face Games",
+      "category": "Dealers and events",
+      "signals": [
+        "buylist",
+        "MagicCon hotlist",
+        "cash/credit"
+      ],
+      "access": "Public event hotlist and sell-card pages",
+      "upstream": "Face to Face Games",
+      "verification": "observed",
+      "priority": "event_core",
+      "use": "Specific buyer demand and event shortlist",
+      "limits": "Hotlist cards are partly images; confirm identity, currency, event and update date. Prices may change without notice. Atlanta directory lists Jeux Face a Face; generic hotlist is not yet validated as Atlanta-specific.",
+      "urls": [
+        "https://facetofacegames.com/pages/magiccon-hotlist",
+        "https://support.facetofacegames.com/en-US/articles/how-to-sell-cards-344162"
+      ]
+    },
+    {
+      "id": "MS15",
+      "name": "Hareruya",
+      "category": "Dealers and events",
+      "signals": [
+        "Japanese buylist",
+        "retail inventory",
+        "regional demand"
+      ],
+      "access": "Public Japanese purchase pages linked by official site",
+      "upstream": "Hareruya",
+      "verification": "observed",
+      "priority": "specialist",
+      "use": "Japanese/collector-printing context and specialist comparisons",
+      "limits": "JPY and regional terms; not automatically a US sell channel or confirmed event buyer. Expired campaigns are not current bonuses.",
+      "urls": [
+        "https://www.hareruyamtg.com/ja/purchase/",
+        "https://www.hareruyamtg.com/en/user_data/16th_anniversary_campaign"
+      ]
+    },
+    {
+      "id": "MS16",
+      "name": "Grey Ogre Games",
+      "category": "Dealers and events",
+      "signals": [
+        "hotlists",
+        "buying status",
+        "CK-derived bids"
+      ],
+      "access": "Public store buying page",
+      "upstream": "Grey Ogre; some pricing explicitly based on CK",
+      "verification": "observed",
+      "priority": "specialist",
+      "use": "Regional demand example and buyer-specific constraints",
+      "limits": "Not an independent CK price corroboration. Store buying status is not event attendance or global demand.",
+      "urls": [
+        "https://www.greyogregames.com/pages/sell-us-your-cards-cash"
+      ]
+    },
+    {
+      "id": "MS17",
+      "name": "MagicCon official event sites",
+      "category": "Dealers and events",
+      "signals": [
+        "exhibitor roster",
+        "dates",
+        "event format",
+        "floor plan"
+      ],
+      "access": "Public event-specific pages",
+      "upstream": "Event organizer",
+      "verification": "observed",
+      "priority": "event_core",
+      "use": "Establish actual vendor universe before optimizing a route",
+      "limits": "Exhibitor does not necessarily buy. Current directory contains a ManaTrust heading with Pro-Play copy and shared booth numbers; verify dealer identity and final routing.",
+      "urls": [
+        "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html",
+        "https://mcatlanta.mtgfestivals.com/en-us/industry/exhibitor-manual.html"
+      ]
+    },
+    {
+      "id": "MS18",
+      "name": "Tales of Adventure / TOAMagic",
+      "category": "Dealers and events",
+      "signals": [
+        "potential event quotes"
+      ],
+      "access": "Listed as TOAMagic in current Atlanta organizer directory; direct site fetch unavailable",
+      "upstream": "Dealer",
+      "verification": "observed",
+      "priority": "candidate",
+      "use": "Potential Atlanta quote comparison",
+      "limits": "Attendance listing observed; current buying policy and usable structured price feed not validated.",
+      "urls": [
+        "https://toamagic.com/",
+        "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html"
+      ]
+    },
+    {
+      "id": "MS19",
+      "name": "Ninety Five / 95MTG",
+      "category": "Dealers and events",
+      "signals": [
+        "potential event quotes"
+      ],
+      "access": "Direct site fetch unavailable in this survey",
+      "upstream": "Dealer",
+      "verification": "limited",
+      "priority": "candidate",
+      "use": "Check only if confirmed on target event roster",
+      "limits": "No current price feed, buying policy or attendance validated; old community mentions are insufficient.",
+      "urls": [
+        "https://www.95mtg.com/"
+      ]
+    },
+    {
+      "id": "MS20",
+      "name": "Scryfall",
+      "category": "Catalog and delivery",
+      "signals": [
+        "printing identity",
+        "oracle identity",
+        "legalities",
+        "reference prices",
+        "EDHREC rank"
+      ],
+      "access": "Documented API and bulk files; existing bulk retained",
+      "upstream": "Scryfall catalog; prices/ranks supplied by named external providers",
+      "verification": "documented",
+      "priority": "core",
+      "use": "Identity and crosswalk backbone",
+      "limits": "Reference prices and popularity ranks are not new independent observations; default-language scope and stale bulk prices matter.",
+      "urls": [
+        "https://scryfall.com/docs/api/bulk-data",
+        "https://scryfall.com/docs/api/cards"
+      ]
+    },
+    {
+      "id": "MS21",
+      "name": "MTGJSON",
+      "category": "Catalog and delivery",
+      "signals": [
+        "identifier crosswalks",
+        "daily retail/buylist history"
+      ],
+      "access": "Public compressed bulk; AllPrices covers past 90 days, AllPricesToday current day",
+      "upstream": "Multiple catalog and price providers, retained separately",
+      "verification": "documented",
+      "priority": "core",
+      "use": "Reproducible daily price history and provider-ID joins",
+      "limits": "Price history is not transaction history or complete volume. Keep paper/MTGO separate; optional providers can be absent.",
+      "urls": [
+        "https://mtgjson.com/downloads/all-files/",
+        "https://mtgjson.com/data-models/price/price-list/",
+        "https://mtgjson.com/data-models/price/price-formats/",
+        "https://www.mtgjson.com/license/"
+      ]
+    },
+    {
+      "id": "MS22",
+      "name": "TCGCSV",
+      "category": "Catalog and delivery",
+      "signals": [
+        "TCGplayer catalog",
+        "daily market/low price snapshots"
+      ],
+      "access": "Public JSON/CSV; once daily, custom user agent, documented throttling",
+      "upstream": "TCGplayer API cache",
+      "verification": "documented",
+      "priority": "secondary",
+      "use": "Alternative delivery of TCGplayer reference pricing",
+      "limits": "Same underlying marketplace as TCGplayer; not a sales-volume API. Avoid redundant full refreshes.",
+      "urls": [
+        "https://tcgcsv.com/",
+        "https://tcgcsv.com/docs"
+      ]
+    },
+    {
+      "id": "MS23",
+      "name": "TCGSentry",
+      "category": "Aggregators and research",
+      "signals": [
+        "CK/SCG bids",
+        "CK wanted quantity",
+        "modeled retail net",
+        "sell/hold claims"
+      ],
+      "access": "Existing authenticated collection and CSV export",
+      "upstream": "CK, SCG, Mana Pool and source-specific model",
+      "verification": "observed",
+      "priority": "core",
+      "use": "Convenient repeatable dealer capture; source model is a comparison hypothesis",
+      "limits": "Not physical inventory truth; no independent sales sample. Modeled net omits order costs and old-high logic does not establish recovery.",
+      "urls": [
+        "https://tcgsentry.com/",
+        "https://tcgsentry.com/collection"
+      ]
+    },
+    {
+      "id": "MS24",
+      "name": "MTGStocks",
+      "category": "Aggregators and research",
+      "signals": [
+        "price movers",
+        "price history",
+        "regular/foil/market distinctions"
+      ],
+      "access": "Public browser pages; premium features; bulk integration not verified",
+      "upstream": "TCGplayer and other named price providers",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Detect anomalies and investigate treatment-specific trends",
+      "limits": "Interests means price movement, not wishlist counts or popularity. Listing tabs and market tabs must not be mixed.",
+      "urls": [
+        "https://www.mtgstocks.com/docs/interests",
+        "https://www.mtgstocks.com/interests"
+      ]
+    },
+    {
+      "id": "MS25",
+      "name": "MTGGoldfish",
+      "category": "Aggregators and research",
+      "signals": [
+        "prices/history",
+        "format staples",
+        "metagame",
+        "average copies"
+      ],
+      "access": "Public pages; premium per-card price-history CSV advertised",
+      "upstream": "Named price vendors and tournament/deck sources",
+      "verification": "documented",
+      "priority": "core_manual",
+      "use": "Format demand context plus convenient historical reference",
+      "limits": "Tournament sample is not population census; price-history CSV is not sales history. Paid export not purchased.",
+      "urls": [
+        "https://www.mtggoldfish.com/format-staples/modern",
+        "https://www.mtggoldfish.com/premium"
+      ]
+    },
+    {
+      "id": "MS26",
+      "name": "Quiet Speculation Trader Tools",
+      "category": "Aggregators and research",
+      "signals": [
+        "buylist comparison",
+        "retail history",
+        "spread"
+      ],
+      "access": "Public limited views; merchant/quantity values hidden in inspected page",
+      "upstream": "Dealer and retail feeds",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Comparator for dealer coverage; possible paid convenience",
+      "limits": "Do not rely on decade-old articles for current automation or merchant coverage. Underlying bids must be rechecked.",
+      "urls": [
+        "https://tradertools.quietspeculation.com/prices/sets/Fate%20Reforged/Palace%20Siege/foil?variant=367945dd-871a-46c9-b047-c701e664d2afa"
+      ]
+    },
+    {
+      "id": "MS27",
+      "name": "MTGBAN",
+      "category": "Aggregators and research",
+      "signals": [
+        "multi-store bids",
+        "retail comparisons",
+        "quantity",
+        "net modeling"
+      ],
+      "access": "Public limited pages; login/paid export prompts observed",
+      "upstream": "Dealer and marketplace feeds",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Broader buylist discovery and outlier checking",
+      "limits": "Source-specific scopes and access tiers must be checked; aggregate estimates are not guaranteed execution.",
+      "urls": [
+        "https://mtgban.com/sealed?q=container%3A%22Sunken+Hollow%22",
+        "https://mtgban.com/"
+      ]
+    },
+    {
+      "id": "MS28",
+      "name": "MTGPrice",
+      "category": "Aggregators and research",
+      "signals": [
+        "price index",
+        "buylist",
+        "stock history claims",
+        "commentary"
+      ],
+      "access": "Public and paid ProTrader features advertised",
+      "upstream": "Retail/dealer sources",
+      "verification": "claimed",
+      "priority": "secondary",
+      "use": "Historical inventory-context lead and hypotheses",
+      "limits": "Freshness and actual per-card coverage require testing; marketing arbitrage claims are not evidence of realizable profit.",
+      "urls": [
+        "https://www.mtgprice.com/signup.jsp",
+        "https://www.mtgprice.com/try-protrader.htm"
+      ]
+    },
+    {
+      "id": "MS29",
+      "name": "EchoMTG",
+      "category": "Aggregators and research",
+      "signals": [
+        "price tracking",
+        "collection analytics",
+        "documented API"
+      ],
+      "access": "Account API and subscription tiers; current terms restrict external reuse",
+      "upstream": "Pricing/catalog partners and Echo records",
+      "verification": "documented",
+      "priority": "defer",
+      "use": "Potential reference UI, not a default engine backend",
+      "limits": "API existence does not grant unrestricted repurposing; endpoint and permitted personal-app use need clarification before integration.",
+      "urls": [
+        "https://www.echomtg.com/api/",
+        "https://www.echomtg.com/legal/terms-and-conditions/"
+      ]
+    },
+    {
+      "id": "MS30",
+      "name": "PriceCharting",
+      "category": "Collector comps",
+      "signals": [
+        "sold listing references",
+        "modeled values",
+        "annual sales-volume field"
+      ],
+      "access": "Public card pages; paid API/CSV",
+      "upstream": "Marketplace sales including eBay",
+      "verification": "documented",
+      "priority": "secondary_manual",
+      "use": "Collector comps with exact-title review",
+      "limits": "API explicitly excludes historical prices and historical sales; treatment contamination already found. Annual volume is not current velocity.",
+      "urls": [
+        "https://www.pricecharting.com/api-documentation",
+        "https://www.pricecharting.com/game/magic-duskmourn-house-of-horror/tyvar-the-pummeler-borderless-foil-353"
+      ]
+    },
+    {
+      "id": "MS31",
+      "name": "130 Point",
+      "category": "Collector comps",
+      "signals": [
+        "sold comps",
+        "active listings",
+        "marketplace/date filters"
+      ],
+      "access": "Free research UI; no supported bulk API verified",
+      "upstream": "eBay, Heritage, Goldin and other marketplaces",
+      "verification": "documented",
+      "priority": "secondary_manual",
+      "use": "Premium-printing and unusual-card spot checks",
+      "limits": "Duplicates underlying marketplace events; title and lot filtering required.",
+      "urls": [
+        "https://130point.com/about",
+        "https://130point.com/search"
+      ]
+    },
+    {
+      "id": "MS32",
+      "name": "Card Ladder",
+      "category": "Collector comps",
+      "signals": [
+        "historical sales",
+        "verified comps",
+        "indexes"
+      ],
+      "access": "Free limited tools; sales history in paid Pro",
+      "upstream": "eBay and auction houses",
+      "verification": "documented",
+      "priority": "defer_paid",
+      "use": "Escalation for valuable collector pieces if free evidence fails",
+      "limits": "Magic exact-printing coverage not tested; graded market differs from raw play copies; no subscription purchased.",
+      "urls": [
+        "https://www.cardladder.com/",
+        "https://cardladder.com/pricing"
+      ]
+    },
+    {
+      "id": "MS33",
+      "name": "Heritage Auctions",
+      "category": "Collector comps",
+      "signals": [
+        "archived auction results",
+        "lot descriptions"
+      ],
+      "access": "Public sold archive; detail access may vary",
+      "upstream": "Heritage auctions",
+      "verification": "observed",
+      "priority": "specialist",
+      "use": "Rare, graded, artist-proof and exceptional items",
+      "limits": "Match grade/provenance and distinguish buyer premium from seller proceeds. Ordinary singles need different comparators.",
+      "urls": [
+        "https://www.ha.com/c/search/results.zx?archive_state=5327&layout=gallery&mode=archive&sb=1&si=1&sold_status=1526&term=Magic+The+Gathering"
+      ]
+    },
+    {
+      "id": "MS34",
+      "name": "PSA Auction Prices / Population",
+      "category": "Collector comps",
+      "signals": [
+        "graded sales",
+        "population"
+      ],
+      "access": "Public product/grade pages",
+      "upstream": "Auction marketplaces and PSA grading",
+      "verification": "observed",
+      "priority": "specialist",
+      "use": "Graded comparators only when relevant",
+      "limits": "Graded population is neither print run nor actively available stock. Raw NM cannot be valued as a numerical grade.",
+      "urls": [
+        "https://www.psacard.com/auctionprices/tcg-cards/2023-magic-gathering-tales-middle-earth/tom-bombadil/8962774"
+      ]
+    },
+    {
+      "id": "MS35",
+      "name": "EDHREC",
+      "category": "Popularity and play",
+      "signals": [
+        "deck inclusion",
+        "eligible-deck denominator",
+        "rank",
+        "weekly popularity"
+      ],
+      "access": "Public pages; supported bulk/API route not verified",
+      "upstream": "Archidekt, Moxfield, Scryfall deck data per FAQ",
+      "verification": "documented",
+      "priority": "core_manual",
+      "use": "Commander demand at card/oracle level",
+      "limits": "Deck inclusion is not purchases or exact-printing demand. Updated deck populations and eligibility affect denominators; avoid double-counting source sites.",
+      "urls": [
+        "https://edhrec.com/faq",
+        "https://edhrec.com/top/week"
+      ]
+    },
+    {
+      "id": "MS36",
+      "name": "MTGTop8",
+      "category": "Popularity and play",
+      "signals": [
+        "event decks",
+        "card inclusion",
+        "format/date filters"
+      ],
+      "access": "Public search and event pages",
+      "upstream": "Reported tournament results",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Competitive staple demand and event context",
+      "limits": "Selected/reported results bias sample; event overlap with other aggregators; no market transactions.",
+      "urls": [
+        "https://www.mtgtop8.com/search?player=Derrick",
+        "https://www.mtgtop8.com/search.php?cards=Misdirection&format=LE"
+      ]
+    },
+    {
+      "id": "MS37",
+      "name": "MTGDecks",
+      "category": "Popularity and play",
+      "signals": [
+        "metagame",
+        "most-played cards",
+        "format trends",
+        "event filters"
+      ],
+      "access": "Public pages; no supported bulk route verified",
+      "upstream": "Tournament and deck submissions",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Cross-check competitive adoption by format",
+      "limits": "Deduplicate events against Goldfish/Top8; web sample is not paper ownership or sales.",
+      "urls": [
+        "https://mtgdecks.net/Modern/metagame%3Arecent-major-events",
+        "https://mtgdecks.net/prices/edition/ISD/Standard"
+      ]
+    },
+    {
+      "id": "MS38",
+      "name": "EDHTop16",
+      "category": "Popularity and play",
+      "signals": [
+        "cEDH entries",
+        "meta share",
+        "top-cut conversion",
+        "decklists"
+      ],
+      "access": "Public filtered pages",
+      "upstream": "Reported cEDH tournaments",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Competitive Commander demand and buyer fit",
+      "limits": "Conversion is tournament success, not sales conversion. Minimum entries, time window and event size are necessary context.",
+      "urls": [
+        "https://edhtop16.com/?minEntries=120&sortBy=CONVERSION&timePeriod=POST_BAN"
+      ]
+    },
+    {
+      "id": "MS39",
+      "name": "TopDeck.gg",
+      "category": "Popularity and play",
+      "signals": [
+        "tournaments",
+        "standings",
+        "public decklists"
+      ],
+      "access": "Documented free API key; attribution and rate limits required",
+      "upstream": "TopDeck-hosted tournament records",
+      "verification": "documented",
+      "priority": "secondary_api",
+      "use": "Structured tournament input if it adds independent coverage",
+      "limits": "Public visibility rules apply; no private player contact fields needed. Tournament usage does not identify preferred printing.",
+      "urls": [
+        "https://topdeck.gg/docs/tournaments-v2"
+      ]
+    },
+    {
+      "id": "MS40",
+      "name": "Melee",
+      "category": "Popularity and play",
+      "signals": [
+        "event records",
+        "standings/decklists where published"
+      ],
+      "access": "Event-specific public pages; general data API not verified",
+      "upstream": "Melee-hosted tournaments",
+      "verification": "limited",
+      "priority": "secondary_manual",
+      "use": "Primary event cross-check when a relevant tournament publishes records",
+      "limits": "Coverage and visibility vary; no unrestricted bulk capability established.",
+      "urls": [
+        "https://melee.gg/",
+        "https://help.melee.gg/docs/game-changing-entry-fee-and-payment-policies-update-more-freedom-more-flexibility/"
+      ]
+    },
+    {
+      "id": "MS41",
+      "name": "Magic Online decklists",
+      "category": "Popularity and play",
+      "signals": [
+        "dated event lists",
+        "format usage"
+      ],
+      "access": "Official public decklist downloads",
+      "upstream": "Magic Online events",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Primary competitive adoption signal",
+      "limits": "Digital play sample; never import ticket prices as paper USD or assume every listed deck represents a new purchase.",
+      "urls": [
+        "https://www.mtgo.com/decklists/"
+      ]
+    },
+    {
+      "id": "MS42",
+      "name": "Magic.gg / official coverage",
+      "category": "Popularity and play",
+      "signals": [
+        "paper metagame",
+        "event decklists",
+        "field share",
+        "win rates"
+      ],
+      "access": "Public coverage articles and event pages",
+      "upstream": "Official tournament coverage",
+      "verification": "observed",
+      "priority": "core_manual",
+      "use": "Explain tournament-driven demand with known denominators",
+      "limits": "Published events are not all play. Separate mirror/byes/draw handling and event date; no automatic sales effect.",
+      "urls": [
+        "https://magic.gg/news/metagame-mentor-modern-across-the-worlds-regional-championships"
+      ]
+    },
+    {
+      "id": "MS43",
+      "name": "Deckbox",
+      "category": "Popularity and play",
+      "signals": [
+        "wishlists",
+        "tradelists",
+        "deck counts",
+        "reference prices"
+      ],
+      "access": "Public card pages",
+      "upstream": "Deckbox users plus named external prices",
+      "verification": "observed",
+      "priority": "secondary",
+      "use": "Distinct expressed-interest proxy and supply of trade copies",
+      "limits": "Stale/nonfunded wishes are not bids; counts can have different printing/card scopes; no time window means no velocity.",
+      "urls": [
+        "https://deckbox.org/mtg/Tin%20Street%20Market?printing=20880",
+        "https://deckbox.org/mtg/High%20Market?printing=78182"
+      ]
+    },
+    {
+      "id": "MS44",
+      "name": "Moxfield and Archidekt",
+      "category": "Popularity and play",
+      "signals": [
+        "public decklists",
+        "deck construction interest"
+      ],
+      "access": "Public deck pages and user exports; general approved aggregation API not established here",
+      "upstream": "User-created decks; also feed EDHREC",
+      "verification": "documented",
+      "priority": "defer_duplicate",
+      "use": "Explain specific deck context when needed",
+      "limits": "Do not count alongside EDHREC as independent popularity; deck versions, proxies and aspirational lists differ from purchases.",
+      "urls": [
+        "https://edhrec.com/faq",
+        "https://sorcery.moxfield.com/help/terms"
+      ]
+    },
+    {
+      "id": "MS45",
+      "name": "17Lands",
+      "category": "Popularity and play",
+      "signals": [
+        "Limited draft/game performance"
+      ],
+      "access": "Public anonymized datasets under stated attribution license",
+      "upstream": "Contributing Arena users",
+      "verification": "documented",
+      "priority": "low",
+      "use": "Narrow new-set research context",
+      "limits": "Limited performance is not constructed demand, premium appeal or paper-card velocity; not a core feature for this tranche.",
+      "urls": [
+        "https://www.17lands.com/public_datasets"
+      ]
+    },
+    {
+      "id": "MS46",
+      "name": "Wizards announcements",
+      "category": "Catalysts",
+      "signals": [
+        "bans",
+        "legalities",
+        "reprints",
+        "release calendar"
+      ],
+      "access": "Official articles and product announcements",
+      "upstream": "Publisher",
+      "verification": "observed",
+      "priority": "core_manual",
+      "use": "Dated catalyst and downside evidence",
+      "limits": "Announcement is factual; price impact remains a hypothesis. Always check the latest effective announcement rather than a cached prior one.",
+      "urls": [
+        "https://magic.wizards.com/en/news/archive?author=3FBvNHrcf8dKhvZGWTxm9J",
+        "https://magic.wizards.com/en/news/announcements/banned-and-restricted-may-18-2026"
+      ]
+    },
+    {
+      "id": "MS47",
+      "name": "SpellBook Finance",
+      "category": "New data services",
+      "signals": [
+        "derived movers",
+        "ATH breaks",
+        "cross-source comparisons",
+        "EV"
+      ],
+      "access": "Advertised free keyless signals API and RSS",
+      "upstream": "Provider market-history snapshots and named marketplaces",
+      "verification": "documented",
+      "priority": "experimental",
+      "use": "Low-cost alert/research trigger if sample quality passes",
+      "limits": "Signals are derived, not independent transactions. Broad sold-price claims need exact variant/lineage testing; ATH alone is not a hold reason.",
+      "urls": [
+        "https://spellbook-finance.com/developers",
+        "https://spellbook-finance.com/mtgstocks-alternative"
+      ]
+    },
+    {
+      "id": "MS48",
+      "name": "ValueMyCard",
+      "category": "New data services",
+      "signals": [
+        "price history",
+        "completed-sales claims"
+      ],
+      "access": "Free history UI; comparison page places completed sales in Pro",
+      "upstream": "TCGAPIs and underlying marketplaces",
+      "verification": "claimed",
+      "priority": "experimental_manual",
+      "use": "Possible convenient long-history reference",
+      "limits": "Do not interpret broad free-data wording as free completed-sales access. API, quality and exact treatment coverage untested.",
+      "urls": [
+        "https://www.valuemycard.com/about"
+      ]
+    },
+    {
+      "id": "MS49",
+      "name": "TCGAPIs",
+      "category": "New data services",
+      "signals": [
+        "recent sales feed",
+        "bucketed sales archive",
+        "SKU/listing data"
+      ],
+      "access": "Documented commercial tiers; sales endpoints Business+",
+      "upstream": "TCGplayer and other named marketplaces; third-party provider",
+      "verification": "claimed",
+      "priority": "defer_paid",
+      "use": "Potential solution if documented full-window volume remains unavailable",
+      "limits": "Advertised recent feed is capped; historic archive uses buckets. Verify completeness, units, shipping and reuse rights using samples before any purchase.",
+      "urls": [
+        "https://tcgapis.com/tcgplayer-api",
+        "https://tcgapis.com/v2-api"
+      ]
+    },
+    {
+      "id": "MS50",
+      "name": "TCGGraph",
+      "category": "New data services",
+      "signals": [
+        "dealer bid history",
+        "retail price history"
+      ],
+      "access": "Commercial REST/GraphQL service advertised",
+      "upstream": "CK, TCGplayer, Cardmarket, Mana Pool and other named feeds",
+      "verification": "claimed",
+      "priority": "defer_paid",
+      "use": "Possible convenience delivery layer",
+      "limits": "Not independent market evidence; quote capacity and exact identity still need validation. No need to pay just to duplicate free feed history.",
+      "urls": [
+        "https://tcggraph.com/buylist"
+      ]
+    },
+    {
+      "id": "MS51",
+      "name": "Mythic Index",
+      "category": "New data services",
+      "signals": [
+        "daily price history",
+        "buylist/retail",
+        "sealed EV"
+      ],
+      "access": "Advertised account-key API and up to 365-day history",
+      "upstream": "TCGplayer, CK, Cardmarket, Cardsphere, Cardhoarder",
+      "verification": "claimed",
+      "priority": "experimental",
+      "use": "Potential price-history delivery alternative",
+      "limits": "No authentication or response testing performed; actual rights/availability need verification. Cardhoarder digital prices must remain separate.",
+      "urls": [
+        "https://api.mythic-index.com/mtg-api"
+      ]
+    },
+    {
+      "id": "MS52",
+      "name": "YesTCG",
+      "category": "New data services",
+      "signals": [
+        "five-dealer bids",
+        "shipping-aware buylist split"
+      ],
+      "access": "Public explanation; optimizer advertised in paid Pro",
+      "upstream": "CK, SCG, ABU, CSI, Strike Zone",
+      "verification": "claimed",
+      "priority": "secondary",
+      "use": "Compare proposed batch optimizer against an existing tool",
+      "limits": "NM assumptions and sample postage are not this owner's costs. Reported sample uplift is not a universal result; no collection upload performed.",
+      "urls": [
+        "https://yestcg.com/sell-your-cards/magic"
+      ]
+    },
+    {
+      "id": "MS53",
+      "name": "ManaRite",
+      "category": "New data services",
+      "signals": [
+        "multi-dealer comparison claims"
+      ],
+      "access": "Indexed provider description; live fetch failed",
+      "upstream": "Claims CK, ABU, CSI and TCGplayer",
+      "verification": "limited",
+      "priority": "candidate",
+      "use": "Track as an alternate buylist-comparison lead",
+      "limits": "Do not make it a dependency until availability, freshness and access are verified.",
+      "urls": [
+        "https://manarite.com/"
+      ]
+    },
+    {
+      "id": "MS54",
+      "name": "OtterDex",
+      "category": "New data services",
+      "signals": [
+        "historical price claim from handoff"
+      ],
+      "access": "Earlier same-day browser check returned paused deployment",
+      "upstream": "Unverified",
+      "verification": "limited",
+      "priority": "defer",
+      "use": "Preserve old assertion only",
+      "limits": "Unavailable source; cannot currently refresh or substantiate the prior rising-price claim.",
+      "urls": [
+        "https://otterdex.com/cards/mtg/slp/32"
+      ]
+    },
+    {
+      "id": "MS55",
+      "name": "Third-party Cardmarket-branded API services",
+      "category": "New data services",
+      "signals": [
+        "marketplace data delivery claims"
+      ],
+      "access": "API-key commercial services; separate from Cardmarket",
+      "upstream": "Claim Cardmarket data",
+      "verification": "claimed",
+      "priority": "defer",
+      "use": "Fallback candidates only if official downloads are insufficient",
+      "limits": "Domain names do not establish official affiliation or data rights; validate actual provenance and coverage before relying on them.",
+      "urls": [
+        "https://cardmarketapi.com/docs",
+        "https://www.tcg-cardmarket-api.com/docs/cards"
+      ]
+    },
+    {
+      "id": "MS56",
+      "name": "Additional Atlanta exhibitors / dealer discovery",
+      "category": "Dealers and events",
+      "signals": [
+        "event presence",
+        "potential vendor specialization",
+        "future quotes"
+      ],
+      "access": "Current public organizer directory",
+      "upstream": "Event organizer and exhibitor descriptions",
+      "verification": "observed",
+      "priority": "event_candidate",
+      "use": "Pro-Play Games, Propaganda, Collector Legion, Hotsauce Games, Good Games, Journey’s End Games, Nerd Gear Gaming, Pink Bunny Games, The Mana Vault MKE and others form a wider quote-discovery pool.",
+      "limits": "Not each dealer’s direct data feed or buying policy tested. Directory presence does not establish a cash bid. ManaTrust/Pro-Play description conflict retained.",
+      "urls": [
+        "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html"
+      ]
+    }
+  ],
+  "event_context": {
+    "city": "Atlanta",
+    "dates": [
+      "2026-11-13",
+      "2026-11-15"
+    ],
+    "owner_statement": "atlanta in november",
+    "date_source": "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html",
+    "status": "owner city/month; year/date resolved from current organizer page",
+    "directory_caution": "ManaTrust entry contains Pro-Play description; some booth numbers shared. Confirm details before routing."
+  }
+}

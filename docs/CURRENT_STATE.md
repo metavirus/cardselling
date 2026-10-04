@@ -2,6 +2,19 @@
 
 As of: 2026-10-04
 
+## Market-source research checkpoint
+
+- Owner targets MagicCon Atlanta in November; organizer dates November 13–15, 2026.
+- Broad 56-entry source registry and survey: `market-source-registry.json` and
+  `market-source-survey.md`. Verification levels distinguish tested data from claims.
+- Proposed demand dimensions, lineage, sample limits and event quote workflow:
+  `synthesis-design.md`. No implementation or migration.
+- Read-only Mana Pool catalog probe: 723 ID candidates, 707 variant candidates,
+  699 with sale records, 436 at a 20-record sample cap. Candidate identity is not
+  accepted physical reconciliation. Private raw catalog and probe retained under
+  `.local/source-survey/`; no private inventory or source bulk added to Git.
+- No product UI, subscriptions, vendor contact, appointments or sales added.
+
 ## Accepted direction
 
 - Personal card-selling workspace, desktop first and mobile capable.
