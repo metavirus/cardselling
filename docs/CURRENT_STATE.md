@@ -2,6 +2,15 @@
 
 As of: 2026-10-04
 
+## Later identity clarifications
+
+See `identity-clarifications.md`: owner confirms Japanese SOA rows are intentional
+Japanese cards from English packs, and Gigantosaurus M19 #185 is Japanese.
+The eight Phyrexian-treatment rows were overflagged as physical uncertainty.
+Preserve raw scan values and separate holdings; remaining product mapping is
+distinct from physical-language confirmation. Earlier literal-match counts and
+baseline script flags have not been recomputed or applied as database corrections.
+
 ## Market-source research checkpoint
 
 - Owner targets MagicCon Atlanta in November; organizer dates November 13–15, 2026.
