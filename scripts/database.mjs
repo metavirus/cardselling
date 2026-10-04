@@ -5,6 +5,8 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import dotenv from 'dotenv';
+import { isDeepStrictEqual } from 'node:util';
+import { contentFingerprint } from './content-fingerprint.mjs';
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, '.local', 'database.json');
@@ -113,7 +115,7 @@ export async function backup() {
   mkdirSync(dir, { recursive: true });
   const path = join(dir, `cardselling-${new Date().toISOString().replaceAll(':', '-')}-${randomBytes(3).toString('hex')}.dump`);
   const options = adminOptions(value);
-  runPg('pg_dump', ['-h', options.host, '-p', String(port), '-U', options.user, '-d', databaseName, '-Fc', '--no-owner', '--no-acl', '-f', path], { env: { ...process.env, PGPASSWORD: options.password } });
+  runPg('pg_dump', ['-h', options.host, '-p', String(port), '-U', options.user, '-d', databaseName, '-Fc', '--no-owner', '--no-acl', '-f', path], { timeout: 180000, env: { ...process.env, PGPASSWORD: options.password } });
   console.log(`Backup saved: ${path}`);
   return path;
 }
@@ -124,11 +126,16 @@ async function verifyBackup(path) {
   const scratch = `cardselling_restore_${randomBytes(6).toString('hex')}`;
   const admin = new pg.Client(options);
   await admin.connect();
+  const live = new pg.Client(adminOptions(value));
+  await live.connect();
+  let liveFingerprint;
+  try { liveFingerprint = await contentFingerprint(live); }
+  finally { await live.end(); }
   let created = false;
   try {
     await admin.query(`CREATE DATABASE "${scratch}" OWNER cardselling_app`);
     created = true;
-    runPg('pg_restore', ['-h', options.host, '-p', String(port), '-U', options.user, '-d', scratch, '--no-owner', '--no-acl', '--exit-on-error', '--single-transaction', resolve(path)], { env: { ...process.env, PGPASSWORD: options.password } });
+    runPg('pg_restore', ['-h', options.host, '-p', String(port), '-U', options.user, '-d', scratch, '--no-owner', '--no-acl', '--exit-on-error', '--single-transaction', resolve(path)], { timeout: 180000, env: { ...process.env, PGPASSWORD: options.password } });
     const restored = new pg.Client(adminOptions(value, scratch));
     await restored.connect();
     try {
@@ -136,7 +143,9 @@ async function verifyBackup(path) {
       if (result.rows.length !== 1 || result.rows[0].application !== databaseName) throw new Error('Restored application identity is incorrect.');
       const ledger = await restored.query('select count(*)::int as count from app_migrations');
       if (ledger.rows[0].count < 1) throw new Error('Restored migration ledger is empty.');
-      console.log('Backup successfully restored into an isolated temporary database; application identity and migration ledger verified.');
+      const restoredFingerprint = await contentFingerprint(restored);
+      if (!isDeepStrictEqual(liveFingerprint, restoredFingerprint)) throw new Error('Restored table contents differ from the current live database. Verify a fresh backup while writes are paused.');
+      console.log('Backup restored into an isolated temporary database; every public table row count and full content fingerprint matches the live database.');
     } finally { await restored.end(); }
   } finally {
     if (created) await admin.query(`DROP DATABASE "${scratch}"`);

@@ -5,8 +5,9 @@ local PostgreSQL. Desktop first, with a responsive mobile layout.
 
 ## Status
 
-The app foundation is verified locally. No inventory or recommendation model has
-been imported or accepted yet. Read docs/CURRENT_STATE.md for current scope.
+The foundation and first source import are verified locally. Inventory, market
+evidence, and historical interpretations are stored separately. Recommendation
+rules and product workflows still need review. Read docs/CURRENT_STATE.md.
 
 ## Local development
 
@@ -34,6 +35,8 @@ The server-only `/api/health` endpoint reports readiness without connection deta
 | `npm run check` | Migration safety tests, production build, TypeScript |
 | `npm run db:status` | Verify pinned cluster and live database identity |
 | `npm run db:check` | Verify app identity, rollback, and app-role privileges |
+| `npm run db:ingest` | Verify and import the private handoff atomically; repeat is a no-op |
+| `npm run db:verify-ingestion` | Compare all table contents before/after reimport and verify printing identities |
 | `npm run db:generate` | Generate forward SQL from the Drizzle schema |
 | `npm run db:migrate` | Apply reviewed SQL atomically with a checksum ledger |
 | `npm run db:backup` | Save a custom-format PostgreSQL backup |
@@ -62,9 +65,9 @@ Arrange an independent backup before relying on irreplaceable data. Do not copy
 or synchronize a running PostgreSQL directory as a backup.
 
 Backup verification creates a fresh cardselling_restore_* database, restores the
-dump, verifies the application marker and migration ledger, then removes only
-that temporary database. It does not overwrite canonical data. Expand content
-reconciliation when inventory exists. For actual recovery, stop app activity,
+dump, verifies the application marker, migration ledger, and full contents of
+every public table against the live database, then removes only that temporary
+database. Use a fresh backup with writes paused for this comparison. For actual recovery, stop app activity,
 preserve existing data, restore the chosen backup to a separate target, reconcile
 contents/history, and explicitly update the pinned configuration. Never blindly
 restore over the canonical database or use setup as a recovery command.
@@ -73,10 +76,34 @@ No Docker, hosting, public access, auth service, scraping pipeline, or offline
 write system is needed for this foundation. Phone access needs a deliberate next
 step; the app currently listens on loopback only.
 
+## Source ingestion
+
+The default intake is `data/private/intake/2026-10-04/handoff`. An alternate
+handoff directory may be passed to `db:ingest` after `--`; it must remain inside
+ignored `data/private/`. File digests and declared totals are checked before
+writes. The historical workbook reader uses bundled Python/openpyxl; set
+`CARDSELLING_PYTHON` to another compatible interpreter if needed.
+
+Sell.csv defines the current sale tranche. Scryfall identifies printing; finish,
+language, and condition distinguish holdings. Scan reference price is not cost
+basis. Historical ManaBox rows remain background evidence, not additional stock.
+TCGSentry and research observations retain raw rows, provenance, dates, and
+conflicts. Repeated normalized dealer evidence links to its original observation.
+Unknown remains distinct from zero; dealer capacity is separate from price.
+
+Prior recommendations and manual judgments are review-required checkpoints.
+Modeled Mana Pool proceeds remain source estimates; costs and formulas have not
+been independently reproduced. PDF, screenshots, and the final workbook are
+registered source artifacts; their contents are not separately parsed into market
+facts. The final CSV carries the corresponding interpretation checkpoint.
+
+Private verification receipts are in `.local/import/`. Original sources, receipts,
+credentials, and database backups stay out of Git. No recommendation recalculation,
+scraping, or sale execution is performed by ingestion.
+
 ## Planning the first version
 
-Bring the original source exports and factual handoff into this repository's
-ignored private intake area. Use them to determine:
+Use the imported evidence and retained handoff to determine:
 
 - Exact card/holding identity, quantities, and reconciliation boundaries.
 - The first useful inventory and selling workflow.

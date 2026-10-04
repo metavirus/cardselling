@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24 <25" },
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "dev": "node scripts/database.mjs start && next dev --hostname 127.0.0.1 --port 3010",
     "build": "next build",
@@ -19,24 +21,31 @@
     "db:generate": "drizzle-kit generate",
     "db:backup": "node scripts/database.mjs backup",
     "db:verify-backup": "node scripts/database.mjs verify-backup",
-    "db:check": "node scripts/database.mjs check"
+    "db:check": "node scripts/database.mjs check",
+    "db:ingest": "node scripts/ingest-handoff.mjs",
+    "db:verify-ingestion": "node scripts/verify-ingestion.mjs"
   },
   "dependencies": {
+    "csv-parse": "7.0.3",
+    "dotenv": "17.2.3",
+    "drizzle-orm": "0.45.2",
     "next": "16.3.8",
+    "pg": "8.23.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "drizzle-orm": "0.45.2",
-    "pg": "8.23.0",
-    "dotenv": "17.2.3",
     "server-only": "0.0.1"
   },
-  "overrides": { "@esbuild-kit/core-utils": { "esbuild": "0.25.12" } },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
+  },
   "devDependencies": {
-    "typescript": "5.9.3",
     "@types/node": "24.10.0",
     "@types/pg": "8.15.6",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
-    "drizzle-kit": "0.31.10"
+    "drizzle-kit": "0.31.10",
+    "typescript": "5.9.3"
   }
 }
