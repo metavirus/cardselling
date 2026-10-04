@@ -2,6 +2,8 @@
 
 Personal card-selling app: desktop first, mobile capable. Correctness takes
 precedence over speed. Keep safeguards and process proportional to real risks.
+Environment setup authorizes infrastructure and a plain development status page,
+not product interface design, branding, navigation, or speculative layouts.
 
 - Carry accepted context and corrections forward. Ask only for material missing
   facts or choices. Do not ask the owner to repeat authorized routine work.
