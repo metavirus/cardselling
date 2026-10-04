@@ -2,6 +2,9 @@
 
 Personal card-selling app: desktop first, mobile capable. Correctness takes
 precedence over speed. Keep safeguards and process proportional to real risks.
+The owner has no immediate cash deadline and supports evidence-based waiting.
+Six to ten hours/week is an effort ceiling, not a target. Prefer worthwhile net
+proceeds with low effort; do not chase pennies or assume historical highs recover.
 Environment setup authorizes infrastructure and a plain development status page,
 not product interface design, branding, navigation, or speculative layouts.
 
@@ -23,6 +26,8 @@ not product interface design, branding, navigation, or speculative layouts.
 ## Development and data
 
 - Run commands from this repo. Read README.md and docs/CURRENT_STATE.md.
+- Read docs/product-plan.md and its assumptions/schema contracts before changing
+  selling logic. Proposed defaults are not confirmed owner settings.
 - Use npm and the lockfile; Node 24 is the selected runtime.
 - The pinned cardselling cluster is separate from every other app. Never use
   another app's credentials, database, startup scripts, or PostgreSQL service.

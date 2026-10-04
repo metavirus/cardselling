@@ -1,0 +1,33 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Card selling decision proposal",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schema_version","decision_id","run_id","scope","as_of","input_refs","assumption_ids","channel","timing","readiness","alternatives","recommendation","counterargument","missing_facts","next_action","hold_thesis","review_trigger","execution_authorized"],
+  "properties":{
+    "schema_version":{"const":"1.0"},
+    "decision_id":{"type":"string","minLength":1},
+    "run_id":{"type":"string","minLength":1},
+    "scope":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["lot_id","quantity"],"properties":{"lot_id":{"type":"string","minLength":1},"quantity":{"type":"integer","minimum":1}}}},
+    "as_of":{"type":"string","format":"date-time"},
+    "input_refs":{"type":"array","minItems":1,"items":{"type":"string","minLength":1}},
+    "assumption_ids":{"type":"array","items":{"type":"string","pattern":"^A[0-9]+$"}},
+    "channel":{"enum":["buylist","retail","event_vendor","batch_comparison","undecided"]},
+    "timing":{"enum":["prepare_now","patient_listing","hold","await_evidence"]},
+    "readiness":{"enum":["blocked_identity","blocked_availability","needs_quote","needs_economics","needs_thesis","reviewable"]},
+    "alternatives":{"type":"array","minItems":2,"items":{"$ref":"#/$defs/alternative"}},
+    "recommendation":{"type":"string","minLength":1},
+    "counterargument":{"type":"string","minLength":1},
+    "missing_facts":{"type":"array","items":{"type":"string","minLength":1}},
+    "next_action":{"type":"string","minLength":1},
+    "hold_thesis":{"oneOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["claim","evidence_refs","falsifier","sale_trigger","horizon_days","downside"],"properties":{"claim":{"type":"string","minLength":1},"evidence_refs":{"type":"array","minItems":1,"items":{"type":"string"}},"falsifier":{"type":"string","minLength":1},"sale_trigger":{"type":"string","minLength":1},"horizon_days":{"type":"integer","minimum":1},"downside":{"type":"string","minLength":1}}}]},
+    "review_trigger":{"type":"string","minLength":1},
+    "execution_authorized":{"const":false}
+  },
+  "allOf":[{"if":{"properties":{"timing":{"const":"hold"}}},"then":{"properties":{"hold_thesis":{"type":"object"}}}}],
+  "$defs":{
+    "interval":{"oneOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["low","high","basis"],"properties":{"low":{"type":"number"},"high":{"type":"number"},"basis":{"enum":["observed","assumed_scenario","modeled"]}}}]},
+    "alternative":{"type":"object","additionalProperties":false,"required":["name","quantity","cash_net_usd","incremental_cash_vs_baseline_usd","active_minutes","elapsed_days","evidence_refs","limits"],"properties":{"name":{"type":"string","minLength":1},"quantity":{"type":"integer","minimum":0},"cash_net_usd":{"$ref":"#/$defs/interval"},"incremental_cash_vs_baseline_usd":{"$ref":"#/$defs/interval"},"active_minutes":{"$ref":"#/$defs/interval"},"elapsed_days":{"$ref":"#/$defs/interval"},"evidence_refs":{"type":"array","items":{"type":"string"}},"limits":{"type":"array","minItems":1,"items":{"type":"string","minLength":1}}}}
+  },
+  "$comment":"Application checks must ensure interval low<=high, nonnegative time, reference existence, scope availability, shared offer capacity, disjoint selected allocations, exact identity gates, comparable assumptions and no invented numeric intervals. This schema validates structure only. Execution remains a separate owner transaction workflow."
+}

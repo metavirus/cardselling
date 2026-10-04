@@ -110,7 +110,10 @@ Use the imported evidence and retained handoff to determine:
 - Verified selling economics, assumptions, and recommendation rules.
 - Desktop and mobile tasks, and any required integrations.
 
-Record agreed requirements in `docs/product-plan.md` when they are available.
+Read `docs/product-plan.md` for the reanalysis baseline and linked assumption/data
+contracts. Confirmed preferences and proposed policy choices are labeled separately.
+`node scripts/reanalyze.mjs` performs a read-only comparison against the separately
+retained fresh export and writes private analysis under `.local/reanalysis/`.
 
 ## Development
 

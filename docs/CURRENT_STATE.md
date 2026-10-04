@@ -84,5 +84,24 @@ were inferred from them during ingestion.
 
 ## Next step
 
-Review reconciliation issues and selling assumptions, agree the first useful
-workflow, and define explainable recommendation rules before product views.
+The adversarial reanalysis is captured in docs/product-plan.md, assumptions.json,
+sources.json, data-model.json and decision.schema.json. These are a proposed
+normalized contract, not an applied migration. The current owner confirms patient
+timing and an effort ceiling, with worthwhile net cash preferred to penny chasing.
+
+A fresh full TCGSentry export is retained under data/private/reanalysis/2026-10-04.
+The read-only scripts/reanalyze.mjs compares every canonical holding against it
+and emits private analytical tasks and sensitivity results in .local/reanalysis.
+Fresh export data has not been added to canonical tables or adopted as stock.
+Prior recommendations are preserved; no new sale instruction has been accepted.
+
+Live source review clarified the percentage-only marketplace estimate and omitted
+order costs, documented quote/grading distinctions, and challenged historical
+holding claims. The initial identity check validated catalog set/number/finish,
+not physical language. Language/treatment, order economics and shared capacity
+are explicit gates in the proposed contract.
+
+Next implement the reviewed lot/provenance/reconciliation contract, then order
+economics and structured judgment, and measure a small real-world pilot before
+expanding fulfillment or designing product views. Detailed private findings and
+the user-facing report remain outside Git.
