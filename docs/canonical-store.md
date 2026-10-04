@@ -59,8 +59,9 @@ truncate, after cutover. Source files/rows may receive new captures but existing
 rows cannot be updated or deleted. Refreshes belong in the new evidence tables.
 
 At cutover, eligible market evidence and new recommendation counts were zero.
-The first controlled ingestion is documented in `market-ingestion.md`; market
-evidence is now populated and recommendations remain empty. A future decision
+Controlled ingestion is documented in `market-ingestion.md`; market evidence is
+now populated. A reviewed first-tranche run has 20 `JUST_SELL_TO_BUYLIST`
+proposals for 29 copies, with no owner choices or stock actions. A future decision
 can cite historical evidence explicitly with its age and limitations, but nothing
 in the ordinary eligible-evidence view revives retired artifacts automatically.
 
@@ -98,10 +99,16 @@ Implemented: schema, one-time inventory adoption, owner corrections, stored
 baseline policies, provenance, artifact retirement, current-stock and exact
 lot-market views, eligible-evidence view, append-only fact constraints,
 nonnegative stock checks and retirement guards. Controlled Mana Pool and MTGJSON
-historical evidence ingestion and EDHREC-rank hydration have also run.
+historical evidence ingestion, EDHREC-rank hydration and a 24-lot public Card
+Kingdom buylist capture have also run. The first 20-lot reviewed decision run is
+stored with pinned input manifest and proposed policy; it is not a sale.
+Fresh TCGSentry dealer hydration adds 2,095 typed observations under exact
+identity and grade gates, with rejected rows retained and stock untouched.
+The broader buyer comparison is a research output; it does not automatically
+promote additional candidates to canonical recommendations.
 
-The quote, recommendation and transaction tables establish the replacement schema;
-they do not constitute working sales workflows. No UI, collector or sale action
+The quote and transaction tables establish the replacement schema; stored
+recommendation proposals do not constitute a working sales workflow. No UI, scheduled collector or sale action
 is enabled. Future services must implement full decision-schema validation,
 accepted correction/reconciliation workflows, policy/evidence manifest validation,
 cross-lot dealer-capacity allocation, quote expiry, condition compatibility,

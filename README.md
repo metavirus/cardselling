@@ -15,7 +15,11 @@ The canonical database is adopted and verified locally: 723 inventory lots and
 SOA Japanese-only printings have accepted language and Scryfall mappings, with
 distinct lots preserved. Prior exports/workbooks are historical evidence, not
 operational inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`.
-Refresh collectors, recommendation services and product workflows remain to be built.
+The first analyst-reviewed buylist proposal covers 20 exact lots / 29 copies at
+$181 gross indicative cash from direct public Card Kingdom checks. It is pending
+checkout, actual batch costs and owner execution; no stock or sale changed. See
+`docs/buylist-first-pass.md`. Refresh collectors and product workflows remain to
+be built.
 
 ## Local development
 
@@ -50,6 +54,12 @@ The server-only `/api/health` endpoint reports readiness without connection deta
 | `npm run db:ingest-edhrec` | Trial EDHREC rank extraction from retained MTGJSON identifiers |
 | `npm run db:verify-mtgjson` | Verify dated price and rank evidence against exact source and variant identities |
 | `npm run market:insights` | Produce a read-only research queue; no sell recommendations |
+| `npm run db:ingest-ck-checks` | Trial targeted public CK page capture; `-- --apply` persists sourced observations |
+| `npm run market:buylist-screen` | Regenerate read-only first-pass screen; output is not the pinned reviewed snapshot |
+| `npm run market:export-buylist-review` | Export the stored analyst-reviewed decision run |
+| `npm run db:verify-buylist-review` | Verify the pinned review and unchanged inventory |
+| `npm run db:ingest-tcgsentry-current` | Trial fresh export hydration; source cannot change physical inventory |
+| `npm run market:compare-buyers` | Read-only exact-lot CK/SCG basket comparison against the pinned reviewed screen |
 | `npm run db:apply-owner-clarifications` | Replay the accepted, idempotent owner corrections |
 | `npm run db:verify-canonical` | Verify canonical invariants with rolled-back test writes |
 | `npm run db:adopt-canonical` | One-time accepted baseline adoption; repeat is a no-op |

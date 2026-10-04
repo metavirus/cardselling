@@ -35,19 +35,50 @@ are hydration/history only. `canonical_inventory` is the current-stock view.
 - `canonical_lot_market_evidence` joins lot, owner grade and exact Mana Pool
   product. `scripts/market-insights.mjs` produces a read-only research queue,
   not sell/hold recommendations. See `market-ingestion.md`.
+- A targeted public Card Kingdom check covers 24 exact lots: 22 listed products
+  with indicative cash and displayed wanted quantities, and two not listed.
+  It contributes 46 typed observations. This is a capture of a public page,
+  not an accepted checkout quote or guaranteed capacity.
+- A fresh 16:25 local TCGSentry collection export contributes 2,095 eligible
+  dealer observations: 700 CK bids, 700 CK wanted quantities and 695 SCG bids.
+  The source has 718 rows; incompatible hydration stays excluded. Dealer
+  refresh time and SCG capacity remain unknown. These observations never change
+  inventory. CK quantities of zero exclude 124 displayed prices from available
+  bid comparisons. See `market-ingestion.md`.
+
+## First reviewed tranche
+
+All 723 lots were screened using proposed, transparent comparison thresholds.
+The read-only screen found 98 lots / 114 copies for buylist research; 78 of
+those still rest on historical bid indications only. The 20 live-checked lots
+cover 29 copies and $181 in gross indicative cash. An analyst-reviewed
+`JUST_SELL_TO_BUYLIST` proposal for those 20 lots is stored in run
+`8ee01bb3-77a9-53c6-a36c-f9b739f34193`. It is a **proposal pending owner
+execution**, not an owner choice, approved dealer quote, reservation or sale.
+The gross amount excludes dealer shipping, possible grading changes and other
+batch costs. A fresh TCGSentry buyer comparison preserves canonical identity:
+703 lots match exact printing/finish/language, three of these disagree with the
+owner's LP grade and are excluded from price use. For the reviewed 20 lots,
+SCG's aggregator indications total $115.82 versus $181 direct CK; only one
+SCG line exceeds CK, by $0.50. Reapplying the proposed screen with fresh CK
+indications surfaces 73 more research candidates, bringing the screen to 93
+lots / 109 copies / $365.05 gross indications. These additional lots are not
+stored decisions or approved quotes. See `buylist-first-pass.md`.
+The additional candidates cover 80 copies and $184.05 in gross indications;
+the screen is not an exhaustive classification of what should be sold.
 
 ## Still needed for decisions
 
-Current actionable dealer bids and wanted quantities, physical grade acceptance,
-order-level shipping/material costs, fee settlement, comparable completed sales
-coverage and evidence-based disposition logic are incomplete. Mana Pool samples
+Accepted checkout quotes and confirmed capacity, physical grade acceptance,
+dealer-batch shipping/material costs, fee settlement, comparable completed sales
+coverage and wider disposition logic are incomplete. Mana Pool samples
 are capped and of unknown completeness; MTGJSON TCG prices are reference prices.
 Do not infer market-wide velocity, realized proceeds or profit from them. The
 order-economics module can calculate scenarios with explicit inputs; it does not
 supply unknown postage, labor or sell-through probability. MagicCon Atlanta in
 November is a planned workflow; no vendor quote or transaction is recorded.
 
-No product interface, collector service, automatic recommendation, sale workflow,
+No product interface, scheduled collector service, sale workflow,
 vendor communication or hosting is complete. The visible app is a local
 development status page. Desktop-first and mobile-capable remain the direction.
 

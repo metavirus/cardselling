@@ -47,11 +47,46 @@ count, exact-printing popularity or completed-sale velocity.
 [MTGJSON card-set model](https://www.mtgjson.com/data-models/card/card-set/),
 [EDHREC FAQ](https://edhrec.com/faq).
 
-## Questions that still matter
+## Targeted Card Kingdom public capture
 
-- A public buylist amount is an indicative base-grade signal. A dealer's current
-  wanted quantity, exact product eligibility, accepted grade and checkout terms
-  must be captured separately before calling it an actionable quote. Card
+A read-only October 4 public buylist check covers 24 selected exact lots.
+Twenty-two were listed with cash indications and displayed maximum wanted
+quantities; two exact products were not listed. The retained, hashed private
+capture generated 46 observations. A missing listing is not a zero-dollar bid
+or proof of zero demand. These page readings are more recent than MTGJSON's
+historical CK series, but prices and capacities may change before checkout.
+Neither the page nor the resulting records constitute an approved dealer order.
+The historical CK observations remain available alongside, rather than being
+overwritten. See `buylist-first-pass.md` for how this capture was used.
+
+## Fresh TCGSentry dealer hydration
+
+The October 4 16:25 local collection export is retained as a new source, separate
+from retired exports. Source SHA-256 is
+`61cd4b4ab90e6a4958183b45b7a28422ee5d446282aaa3a4faa97b03987ede1e`;
+capture ID is `8377a4df-188a-50c4-ac57-58641ab340d1`.
+The 718 original rows are preserved. Exact accepted identity and grade gates
+permit 700 CK bid/quantity pairs and 695 SCG bid indications (2,095 observations).
+Eighteen incompatible or unsupported rows retain rejected mappings. This does
+not reopen owner inventory assertions. Raw modeled net, source cost and sell
+signal fields remain source context, not accepted prices, cost basis or decisions.
+
+Vendor refresh times are unknown: observed-at and market-window fields are null.
+Captured-at records the download; filename time is retained with its local basis.
+SCG capacity is unknown. CK has 124 positive-price rows with zero wanted quantity;
+the comparison excludes those bids from available alternatives. Native dealer
+SKUs are not independently established by an exact aggregator row match.
+
+`ingest-tcgsentry-current.mjs` is a scoped trial/apply importer with immutable
+replay checks. It cannot change stock, accept a quote or execute a sale.
+`compare-tcgsentry-buyers.mjs` compares the retained export against canonical
+stock and the pinned first-pass economics without overwriting that prior report.
+
+## Remaining decision inputs
+
+- A public buylist amount and displayed wanted quantity are indicative signals.
+  Exact checkout capacity, eligibility, accepted grade and terms must be
+  confirmed before calling it an actionable quote. Card
   Kingdom's ordinary submissions are generally English-language and bulk
   purchasing is currently paused; other languages may require buyer approval.
   [How to sell](https://www.cardkingdom.com/purchasing/how_to_sell),
@@ -75,3 +110,6 @@ and structured extracts stay in ignored `data/private/`.
 `verify-market-evidence.mjs` and `verify-canonical.mjs` check lot, mapping and
 stock invariants. Replays were checked for no duplicate observations. Older
 capture counts in historical audit files are not current coverage figures.
+`ingest-ck-checks.mjs` ingests the private exact-product page checks with trial
+and `--apply` modes; it does not change stock. No broad Card Kingdom collector
+or automated checkout has been implemented.

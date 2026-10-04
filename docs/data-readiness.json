@@ -1,7 +1,7 @@
 {
   "as_of": "2026-10-04",
   "authority": "Canonical PostgreSQL inventory and owner assertions; external captures are sourced observations, not inventory authority",
-  "status": "inventory_reconciled_market_evidence_ingested_decisions_not_ready",
+  "status": "inventory_reconciled_first_tranche_proposed_execution_pending",
   "inventory": {
     "lots": 723,
     "copies": 817,
@@ -34,18 +34,57 @@
     "exact_variant_mappings": 717,
     "meaning": "functional-card gameplay interest, not printing-level sales"
   },
+  "card_kingdom_public_capture": {
+    "exact_lots_checked": 24,
+    "listed": 22,
+    "not_listed": 2,
+    "typed_observations": 46,
+    "status": "public_indicative_not_approved_checkout"
+  },
+  "buylist_first_pass": {
+    "all_lots_screened": 723,
+    "screen_pass_lots": 98,
+    "screen_pass_copies": 114,
+    "historical_only_candidates": 78,
+    "live_checked_reviewed_lots": 20,
+    "live_checked_reviewed_copies": 29,
+    "gross_indicative_cash_cents": 18100,
+    "decision_run_id": "8ee01bb3-77a9-53c6-a36c-f9b739f34193",
+    "disposition": "JUST_SELL_TO_BUYLIST",
+    "status": "analyst_proposal_pending_owner_execution",
+    "owner_choices": 0,
+    "stock_events": 0,
+    "transactions": 0
+  },
+  "fresh_tcgsentry_comparison": {
+    "source_rows": 718,
+    "exact_identity_matched_lots": 703,
+    "owner_grade_compatible_lots": 700,
+    "owner_grade_mismatch_holdouts": 3,
+    "unmatched_export_rows": 15,
+    "ck_positive_price_zero_capacity_lots": 124,
+    "reviewed_direct_ck_gross_cents": 18100,
+    "same_reviewed_lots_scg_aggregator_gross_cents": 11582,
+    "expanded_ck_research_lots": 93,
+    "expanded_ck_research_copies": 109,
+    "expanded_ck_research_gross_cents": 36505,
+    "new_aggregator_only_lots": 73,
+    "new_aggregator_only_copies": 80,
+    "status": "hydration_and_research_only_not_new_canonical_decisions",
+    "new_aggregator_only_gross_cents": 18405
+  },
   "readiness": {
     "stock_and_identity": "ready",
     "controlled_market_research": "ready_with_source_limits",
-    "monetary_recommendations": "not_ready",
+    "monetary_recommendations": "first_20_lot_buylist_proposal_only",
     "sale_execution": "not_ready"
   },
   "outstanding": [
-    "Actionable exact-product dealer cash bids and wanted quantities",
+    "Accepted checkout bids, confirmed quantities and grade outcomes",
     "Physical grade acceptance and transaction terms",
     "Actual order shipping, materials, processing settlement and loss costs",
     "Completed-sale identity, sample completeness and overlap",
-    "Explainable recommendation and capacity-allocation service"
+    "Broader explainable recommendation and shared-capacity allocation service"
   ],
   "historical_audit": {
     "original_archive_members_identical": 16,
@@ -54,5 +93,18 @@
     "starting_catalog_objects_compared": 118406,
     "starting_workbook_cells_compared": 37515,
     "note": "These are pre-correction checkpoints, not unresolved current flags"
+  },
+  "tcgsentry_current_capture": {
+    "capture_id": "8377a4df-188a-50c4-ac57-58641ab340d1",
+    "source_rows": 718,
+    "accepted_rows": 700,
+    "retained_rejected_rows": 18,
+    "ck_bids": 700,
+    "ck_wanted_quantities": 700,
+    "scg_bids": 695,
+    "observations": 2095,
+    "vendor_refresh_time": "unknown",
+    "scg_capacity": "unknown",
+    "inventory_changed": false
   }
 }

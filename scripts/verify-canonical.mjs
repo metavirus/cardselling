@@ -32,7 +32,11 @@ try {
   const frog=(await c.query("SELECT * FROM canonical_inventory WHERE set_code='mh3' AND collector_number='433'")).rows[0];
   assert.equal(frog.finish,'normal'); assert.equal(frog.owned_quantity,1); checks++;
   assert.equal((await c.query("SELECT printed_language FROM canonical_inventory WHERE name='Gigantosaurus'")).rows[0].printed_language,'ja'); checks++;
-  assert.ok(before.eligible_observations>=0); assert.equal(before.new_decisions,0); checks++;
+  assert.ok(before.eligible_observations>=0);
+  // Preparation starts empty; live adoption replay must preserve later proposals.
+  // Their evidence and arithmetic are checked by the decision-specific verifier.
+  if(process.argv.includes('--prepare')) assert.equal(before.new_decisions,0);
+  checks++;
   await rejected('UPDATE inventory_holdings SET quantity=quantity+1 WHERE id=$1',[frog.origin_record_id],/historical after canonical cutover/);
   await rejected('UPDATE source_records SET raw=raw WHERE id=$1',[frog.origin_record_id],/append-only/);
   await rejected(`INSERT INTO canonical_stock_movements(lot_id,quantity,from_state,to_state,reason,idempotency_key)

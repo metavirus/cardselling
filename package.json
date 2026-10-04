@@ -33,7 +33,13 @@
     "db:ingest-mtgjson": "node scripts/ingest-mtgjson-evidence.mjs",
     "db:ingest-edhrec": "node scripts/ingest-edhrec-rank.mjs",
     "db:verify-mtgjson": "node scripts/verify-mtgjson-evidence.mjs",
-    "market:insights": "node scripts/market-insights.mjs"
+    "market:insights": "node scripts/market-insights.mjs",
+    "db:ingest-ck-checks": "node scripts/ingest-ck-checks.mjs",
+    "market:buylist-screen": "node scripts/buylist-first-pass.mjs",
+    "market:export-buylist-review": "node scripts/export-buylist-review.mjs",
+    "db:verify-buylist-review": "node scripts/verify-buylist-review.mjs",
+    "db:ingest-tcgsentry-current": "node scripts/ingest-tcgsentry-current.mjs",
+    "market:compare-buyers": "node scripts/compare-tcgsentry-buyers.mjs"
   },
   "dependencies": {
     "csv-parse": "7.0.3",
