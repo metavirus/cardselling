@@ -15,6 +15,13 @@
       "when": 1791140706551,
       "tag": "0001_flawless_sabra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791146640867,
+      "tag": "0002_canonical_store",
+      "breakpoints": true
     }
   ]
 }

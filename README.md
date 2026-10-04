@@ -5,9 +5,10 @@ local PostgreSQL. Desktop first, with a responsive mobile layout.
 
 ## Status
 
-The foundation and first source import are verified locally. Inventory, market
-evidence, and historical interpretations are stored separately. Recommendation
-rules and product workflows still need review. Read docs/CURRENT_STATE.md.
+The canonical database is adopted and verified locally: 723 inventory lots and
+817 copies. Prior exports/workbooks are historical evidence, not operational
+inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`. Fresh evidence
+collectors, recommendation services and product workflows remain to be built.
 
 ## Local development
 
@@ -35,9 +36,11 @@ The server-only `/api/health` endpoint reports readiness without connection deta
 | `npm run check` | Migration safety tests, production build, TypeScript |
 | `npm run db:status` | Verify pinned cluster and live database identity |
 | `npm run db:check` | Verify app identity, rollback, and app-role privileges |
-| `npm run db:ingest` | Verify and import the private handoff atomically; repeat is a no-op |
-| `npm run db:verify-ingestion` | Compare all table contents before/after reimport and verify printing identities |
-| `npm run db:generate` | Generate forward SQL from the Drizzle schema |
+| `npm run db:canonical-status` | Read canonical stock and evidence counts |
+| `npm run db:verify-canonical` | Verify canonical invariants with rolled-back test writes |
+| `npm run db:adopt-canonical` | One-time accepted baseline adoption; repeat is a no-op |
+| `npm run db:ingest` / `db:verify-ingestion` | Historical bootstrap only; blocked after canonical adoption |
+| `npm run db:generate` | Generate legacy Drizzle changes; canonical tables use reviewed custom SQL |
 | `npm run db:migrate` | Apply reviewed SQL atomically with a checksum ledger |
 | `npm run db:backup` | Save a custom-format PostgreSQL backup |
 | `npm run db:verify-backup -- <path>` | Restore into an isolated temporary database |
@@ -112,8 +115,10 @@ Use the imported evidence and retained handoff to determine:
 
 Read `docs/product-plan.md` for the reanalysis baseline and linked assumption/data
 contracts. Confirmed preferences and proposed policy choices are labeled separately.
-`node scripts/reanalyze.mjs` performs a read-only comparison against the separately
-retained fresh export and writes private analysis under `.local/reanalysis/`.
+The canonical database now replaces snapshot-driven operations. Read
+`docs/canonical-store.md`; use `npm run db:canonical-status` and
+`npm run db:verify-canonical`. The old reanalysis and handoff importer refuse to
+run after cutover. Prior files/results remain historical evidence only.
 
 ## Development
 

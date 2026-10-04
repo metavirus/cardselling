@@ -1,6 +1,6 @@
 {
   "version":"2026-10-04.1",
-  "status":"Proposed relational contract; not an applied migration",
+  "status":"Superseded logical exploration; canonical-store.md and migrations/0002_canonical_store.sql define the implemented canonical store. Unimplemented workflow invariants remain future service requirements.",
   "conventions":{
     "money":"PostgreSQL numeric with explicit ISO currency; preserve source precision, settle/round at the documented charge boundary",
     "time":"timestamptz for known instants; retain source text, timezone and precision; do not invent unknown times",

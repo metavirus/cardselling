@@ -2,6 +2,23 @@
 
 As of: 2026-10-04
 
+## Canonical cutover — supersedes earlier snapshot-driven workflow
+
+The operational source of truth is now the canonical PostgreSQL store. See
+`canonical-store.md` and `migrations/0002_canonical_store.sql`. The accepted ManaBox
+baseline is adopted once: 723 lots, 817 copies, with source provenance preserved.
+Eight known Phyrexian treatments are normalized explicitly; Japanese holdings
+and nonfoil Psychic Frog #433 are preserved. Separate scan rows remain separate.
+
+All pre-cutover source artifacts are historical-only. Legacy snapshots, quotes
+and interpretations remain for audit, not current analysis. Old ingestion and
+reanalysis commands are blocked after adoption, with database write guards as
+well. New eligible market evidence/recommendations start empty pending refresh.
+Schema is applied; quote/decision/transaction tables are foundations, not enabled
+selling workflows or UI. Earlier statements below describe historical checkpoints.
+
+Current commands: `npm run db:canonical-status`, `npm run db:verify-canonical`.
+
 ## Later identity clarifications
 
 Owner reiterates ManaBox Sell.csv is canonical inventory; TCGSentry is hydration

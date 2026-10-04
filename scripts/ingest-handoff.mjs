@@ -7,6 +7,8 @@ import { createHash } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import { appClient, backup, root, start } from './database.mjs';
 import { csv, decimal, integer, identity, variantKey, match, hash, ckExecutableQuantity, bulkIdentityMatches } from './import-domain.mjs';
+import { requireLegacyMode } from './legacy-guard.mjs';
+await requireLegacyMode();
 
 const intake = resolve(root, process.argv[2] || 'data/private/intake/2026-10-04/handoff');
 if (!intake.startsWith(resolve(root, 'data/private') + '\\') && !intake.startsWith(resolve(root, 'data/private') + '/')) throw new Error('Intake must be inside ignored data/private.');

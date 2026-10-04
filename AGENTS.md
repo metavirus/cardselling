@@ -25,6 +25,15 @@ not product interface design, branding, navigation, or speculative layouts.
 
 ## Development and data
 
+- Canonical cutover: read docs/canonical-store.md. Canonical SQL is authoritative;
+  its custom migrations are not represented by the legacy Drizzle table snapshot.
+- Read current stock from canonical_inventory, never legacy snapshot totals.
+  ManaBox seeded the accepted baseline; the database owns subsequent stock events.
+- Legacy TCGSentry exports/workbooks are historical hydration evidence only.
+  Do not revive old importer/reanalysis paths or promote archived quotes by default.
+- Conflicting enrichment cannot alter inventory or create a physical verification
+  demand. Preserve owner corrections and reject incompatible product mappings.
+
 - Run commands from this repo. Read README.md and docs/CURRENT_STATE.md.
 - Read docs/product-plan.md and its assumptions/schema contracts before changing
   selling logic. Proposed defaults are not confirmed owner settings.

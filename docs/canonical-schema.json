@@ -1,0 +1,2630 @@
+{
+  "status": "Applied canonical schema; workflow service limitations documented in canonical-store.md",
+  "generated_at": "2026-10-04T20:54:31.890Z",
+  "authority": "Reviewed custom SQL migrations, not this documentation export",
+  "columns": [
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "lot_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "variant_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "field_name",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "value",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "authority",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "basis",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "source_record_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_assertions",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "provider",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "upstream_provider",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "source_file_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "source_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "content_hash",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "captured_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "source_observed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "source_time_text",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "use_state",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "sample_kind",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "sample_limit",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "completeness",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "window_start",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "window_end",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_captures",
+      "column_name": "metadata",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": "'{}'::jsonb"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "transaction_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "kind",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "amount",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "currency",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "basis",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "source_record_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "event_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "reverses_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "column_name": "external_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "column_name": "source_file_id",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "column_name": "lot_count",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "column_name": "copy_count",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "column_name": "adopted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "column_name": "details",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "column_name": "input_manifest",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "column_name": "code_version",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "column_name": "model_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "column_name": "prompt_version",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "run_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "lot_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "quantity",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "proposal",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_decisions",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "capture_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "mapping_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "source_locator",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "provider_subject",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "metric",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "evidence_kind",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "numeric_value",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "text_value",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "currency",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "unit",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "price_basis",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "observed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "window_start",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "window_end",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "quantity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "sample_count",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "limitations",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "raw",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "variant_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "provider",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "upstream_provider",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "captured_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "sample_kind",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "sample_limit",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_eligible_evidence",
+      "column_name": "completeness",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "lot_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "origin_record_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "variant_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "set_code",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "collector_number",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "finish",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "treatment",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "printed_language",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "condition_raw",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "condition_normalized",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "location",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "available_quantity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_inventory",
+      "column_name": "owned_quantity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "variant_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "origin_record_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "condition_raw",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "condition_normalized",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "location",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "notes",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_lots",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "capture_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "mapping_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "source_locator",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "provider_subject",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "metric",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "evidence_kind",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "numeric_value",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "text_value",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "currency",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "unit",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "price_basis",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": "'unknown'::text"
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "observed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "window_start",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "window_end",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "quantity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "sample_count",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "limitations",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "raw",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_observations",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "decision_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "lot_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "choice",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "reason",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "kind",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "version",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "rules",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "source_refs",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_policies",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "variant_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "provider",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "product_id",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "condition_scope",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "finish_scope",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "language_scope",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "basis",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "source_record_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "capture_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "quote_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "mapping_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "price_scope",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "capacity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "grade_basis",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "column_name": "bundle_scope",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "capture_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "provider",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "channel",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "event_name",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "event_start",
+      "data_type": "date",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "event_end",
+      "data_type": "date",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "state",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "payment_kind",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "currency",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "valid_until",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "conditions",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "supersedes_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_quotes",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "column_name": "source_file_id",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "column_name": "reason",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "column_name": "retired_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "lot_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "quantity",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "from_state",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "to_state",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "reason",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "idempotency_key",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "source_record_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "transaction_line_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "event_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "column_name": "recorded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "transaction_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "lot_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "quote_line_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "quantity",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "unit_price",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "accepted_quantity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "column_name": "returned_quantity",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "provider",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "external_order_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "channel",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "currency",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "state",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "active_minutes",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_transactions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "set_code",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "collector_number",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "finish",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "treatment",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "printed_language",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "identity_basis",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "canonical_variants",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    }
+  ],
+  "constraints": [
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_authority_check",
+      "definition": "CHECK ((authority = ANY (ARRAY['accepted_inventory'::text, 'owner'::text, 'normalization'::text])))"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_authority_not_null",
+      "definition": "NOT NULL authority"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_basis_not_null",
+      "definition": "NOT NULL basis"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_field_name_not_null",
+      "definition": "NOT NULL field_name"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_lot_id_fkey",
+      "definition": "FOREIGN KEY (lot_id) REFERENCES canonical_lots(id)"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_source_record_id_fkey",
+      "definition": "FOREIGN KEY (source_record_id) REFERENCES source_records(id)"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_supersedes_id_fkey",
+      "definition": "FOREIGN KEY (supersedes_id) REFERENCES canonical_assertions(id)"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_supersedes_id_key",
+      "definition": "UNIQUE (supersedes_id)"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_value_not_null",
+      "definition": "NOT NULL value"
+    },
+    {
+      "table_name": "canonical_assertions",
+      "name": "canonical_assertions_variant_id_fkey",
+      "definition": "FOREIGN KEY (variant_id) REFERENCES canonical_variants(id)"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_captured_at_not_null",
+      "definition": "NOT NULL captured_at"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_check",
+      "definition": "CHECK (((window_end IS NULL) OR (window_start IS NULL) OR (window_end >= window_start)))"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_completeness_check",
+      "definition": "CHECK ((completeness = ANY (ARRAY['complete'::text, 'capped'::text, 'unknown'::text])))"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_completeness_not_null",
+      "definition": "NOT NULL completeness"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_content_hash_not_null",
+      "definition": "NOT NULL content_hash"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_metadata_not_null",
+      "definition": "NOT NULL metadata"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_provider_not_null",
+      "definition": "NOT NULL provider"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_sample_kind_not_null",
+      "definition": "NOT NULL sample_kind"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_sample_limit_check",
+      "definition": "CHECK ((sample_limit > 0))"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_source_file_id_fkey",
+      "definition": "FOREIGN KEY (source_file_id) REFERENCES source_files(id)"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_upstream_provider_not_null",
+      "definition": "NOT NULL upstream_provider"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_use_state_check",
+      "definition": "CHECK ((use_state = ANY (ARRAY['historical'::text, 'eligible'::text, 'rejected'::text])))"
+    },
+    {
+      "table_name": "canonical_captures",
+      "name": "canonical_captures_use_state_not_null",
+      "definition": "NOT NULL use_state"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_amount_not_null",
+      "definition": "NOT NULL amount"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_basis_check",
+      "definition": "CHECK ((basis = ANY (ARRAY['estimate'::text, 'actual'::text])))"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_basis_not_null",
+      "definition": "NOT NULL basis"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_currency_check",
+      "definition": "CHECK ((currency ~ '^[A-Z]{3}$'::text))"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_currency_not_null",
+      "definition": "NOT NULL currency"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_kind_check",
+      "definition": "CHECK ((kind = ANY (ARRAY['merchandise'::text, 'shipping_credit'::text, 'marketplace_fee'::text, 'processing_fee'::text, 'postage'::text, 'materials'::text, 'refund'::text, 'other'::text, 'payout'::text])))"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_kind_not_null",
+      "definition": "NOT NULL kind"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_reverses_id_fkey",
+      "definition": "FOREIGN KEY (reverses_id) REFERENCES canonical_cash_entries(id)"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_reverses_id_key",
+      "definition": "UNIQUE (reverses_id)"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_source_record_id_fkey",
+      "definition": "FOREIGN KEY (source_record_id) REFERENCES source_records(id)"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_transaction_id_external_id_key",
+      "definition": "UNIQUE (transaction_id, external_id)"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_transaction_id_fkey",
+      "definition": "FOREIGN KEY (transaction_id) REFERENCES canonical_transactions(id)"
+    },
+    {
+      "table_name": "canonical_cash_entries",
+      "name": "canonical_cash_entries_transaction_id_not_null",
+      "definition": "NOT NULL transaction_id"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_adopted_at_not_null",
+      "definition": "NOT NULL adopted_at"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_copy_count_not_null",
+      "definition": "NOT NULL copy_count"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_details_not_null",
+      "definition": "NOT NULL details"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_lot_count_not_null",
+      "definition": "NOT NULL lot_count"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_name_check",
+      "definition": "CHECK ((name = 'initial_manabox'::text))"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_name_not_null",
+      "definition": "NOT NULL name"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_pkey",
+      "definition": "PRIMARY KEY (name)"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_source_file_id_fkey",
+      "definition": "FOREIGN KEY (source_file_id) REFERENCES source_files(id)"
+    },
+    {
+      "table_name": "canonical_cutovers",
+      "name": "canonical_cutovers_source_file_id_not_null",
+      "definition": "NOT NULL source_file_id"
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "name": "canonical_decision_runs_code_version_not_null",
+      "definition": "NOT NULL code_version"
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "name": "canonical_decision_runs_created_at_not_null",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "name": "canonical_decision_runs_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "name": "canonical_decision_runs_input_manifest_not_null",
+      "definition": "NOT NULL input_manifest"
+    },
+    {
+      "table_name": "canonical_decision_runs",
+      "name": "canonical_decision_runs_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_lot_id_fkey",
+      "definition": "FOREIGN KEY (lot_id) REFERENCES canonical_lots(id)"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_lot_id_not_null",
+      "definition": "NOT NULL lot_id"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_proposal_check",
+      "definition": "CHECK ((jsonb_typeof(proposal) = 'object'::text))"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_proposal_not_null",
+      "definition": "NOT NULL proposal"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_quantity_check",
+      "definition": "CHECK ((quantity > 0))"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_quantity_not_null",
+      "definition": "NOT NULL quantity"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_run_id_fkey",
+      "definition": "FOREIGN KEY (run_id) REFERENCES canonical_decision_runs(id)"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_run_id_not_null",
+      "definition": "NOT NULL run_id"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_supersedes_id_fkey",
+      "definition": "FOREIGN KEY (supersedes_id) REFERENCES canonical_decisions(id)"
+    },
+    {
+      "table_name": "canonical_decisions",
+      "name": "canonical_decisions_supersedes_id_key",
+      "definition": "UNIQUE (supersedes_id)"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_condition_raw_not_null",
+      "definition": "NOT NULL condition_raw"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_created_at_not_null",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_origin_record_id_fkey",
+      "definition": "FOREIGN KEY (origin_record_id) REFERENCES source_records(id)"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_origin_record_id_key",
+      "definition": "UNIQUE (origin_record_id)"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_variant_id_fkey",
+      "definition": "FOREIGN KEY (variant_id) REFERENCES canonical_variants(id)"
+    },
+    {
+      "table_name": "canonical_lots",
+      "name": "canonical_lots_variant_id_not_null",
+      "definition": "NOT NULL variant_id"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_capture_id_fkey",
+      "definition": "FOREIGN KEY (capture_id) REFERENCES canonical_captures(id)"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_capture_id_not_null",
+      "definition": "NOT NULL capture_id"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_capture_id_source_locator_metric_key",
+      "definition": "UNIQUE (capture_id, source_locator, metric)"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_check",
+      "definition": "CHECK (((numeric_value IS NOT NULL) OR (text_value IS NOT NULL)))"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_check1",
+      "definition": "CHECK (((window_end IS NULL) OR (window_start IS NULL) OR (window_end >= window_start)))"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_currency_check",
+      "definition": "CHECK ((currency ~ '^[A-Z]{3}$'::text))"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_evidence_kind_check",
+      "definition": "CHECK ((evidence_kind = ANY (ARRAY['asking_price'::text, 'completed_sale'::text, 'sale_aggregate'::text, 'bid'::text, 'demand'::text, 'modeled_proceeds'::text, 'listing_count'::text, 'source_signal'::text, 'qualitative'::text, 'policy'::text, 'deck_adoption'::text])))"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_evidence_kind_not_null",
+      "definition": "NOT NULL evidence_kind"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_limitations_not_null",
+      "definition": "NOT NULL limitations"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_mapping_id_fkey",
+      "definition": "FOREIGN KEY (mapping_id) REFERENCES canonical_product_mappings(id)"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_metric_not_null",
+      "definition": "NOT NULL metric"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_price_basis_not_null",
+      "definition": "NOT NULL price_basis"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_provider_subject_not_null",
+      "definition": "NOT NULL provider_subject"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_quantity_check",
+      "definition": "CHECK ((quantity >= 0))"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_raw_not_null",
+      "definition": "NOT NULL raw"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_sample_count_check",
+      "definition": "CHECK ((sample_count >= 0))"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_source_locator_not_null",
+      "definition": "NOT NULL source_locator"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_supersedes_id_fkey",
+      "definition": "FOREIGN KEY (supersedes_id) REFERENCES canonical_observations(id)"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_supersedes_id_key",
+      "definition": "UNIQUE (supersedes_id)"
+    },
+    {
+      "table_name": "canonical_observations",
+      "name": "canonical_observations_unit_not_null",
+      "definition": "NOT NULL unit"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_choice_not_null",
+      "definition": "NOT NULL choice"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_decision_id_fkey",
+      "definition": "FOREIGN KEY (decision_id) REFERENCES canonical_decisions(id)"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_lot_id_fkey",
+      "definition": "FOREIGN KEY (lot_id) REFERENCES canonical_lots(id)"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_lot_id_not_null",
+      "definition": "NOT NULL lot_id"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_reason_not_null",
+      "definition": "NOT NULL reason"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_supersedes_id_fkey",
+      "definition": "FOREIGN KEY (supersedes_id) REFERENCES canonical_owner_choices(id)"
+    },
+    {
+      "table_name": "canonical_owner_choices",
+      "name": "canonical_owner_choices_supersedes_id_key",
+      "definition": "UNIQUE (supersedes_id)"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_created_at_not_null",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_kind_not_null",
+      "definition": "NOT NULL kind"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_kind_version_key",
+      "definition": "UNIQUE (kind, version)"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_rules_not_null",
+      "definition": "NOT NULL rules"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_source_refs_not_null",
+      "definition": "NOT NULL source_refs"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_status_check",
+      "definition": "CHECK ((status = ANY (ARRAY['proposed'::text, 'accepted'::text, 'superseded'::text])))"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_status_not_null",
+      "definition": "NOT NULL status"
+    },
+    {
+      "table_name": "canonical_policies",
+      "name": "canonical_policies_version_not_null",
+      "definition": "NOT NULL version"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_basis_not_null",
+      "definition": "NOT NULL basis"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_capture_id_fkey",
+      "definition": "FOREIGN KEY (capture_id) REFERENCES canonical_captures(id)"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_condition_scope_not_null",
+      "definition": "NOT NULL condition_scope"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_finish_scope_not_null",
+      "definition": "NOT NULL finish_scope"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_language_scope_not_null",
+      "definition": "NOT NULL language_scope"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_product_id_not_null",
+      "definition": "NOT NULL product_id"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_provider_not_null",
+      "definition": "NOT NULL provider"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_source_record_id_fkey",
+      "definition": "FOREIGN KEY (source_record_id) REFERENCES source_records(id)"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_status_check",
+      "definition": "CHECK ((status = ANY (ARRAY['candidate'::text, 'accepted'::text, 'rejected'::text])))"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_status_not_null",
+      "definition": "NOT NULL status"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_supersedes_id_fkey",
+      "definition": "FOREIGN KEY (supersedes_id) REFERENCES canonical_product_mappings(id)"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_supersedes_id_key",
+      "definition": "UNIQUE (supersedes_id)"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_variant_id_fkey",
+      "definition": "FOREIGN KEY (variant_id) REFERENCES canonical_variants(id)"
+    },
+    {
+      "table_name": "canonical_product_mappings",
+      "name": "canonical_product_mappings_variant_id_not_null",
+      "definition": "NOT NULL variant_id"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_capacity_check",
+      "definition": "CHECK ((capacity >= 0))"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_check",
+      "definition": "CHECK (((price_scope <> 'bundle_total'::text) OR (bundle_scope IS NOT NULL)))"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_grade_basis_not_null",
+      "definition": "NOT NULL grade_basis"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_mapping_id_fkey",
+      "definition": "FOREIGN KEY (mapping_id) REFERENCES canonical_product_mappings(id)"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_mapping_id_not_null",
+      "definition": "NOT NULL mapping_id"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_price_check",
+      "definition": "CHECK ((price >= (0)::numeric))"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_price_not_null",
+      "definition": "NOT NULL price"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_price_scope_check",
+      "definition": "CHECK ((price_scope = ANY (ARRAY['per_copy'::text, 'bundle_total'::text])))"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_price_scope_not_null",
+      "definition": "NOT NULL price_scope"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_quote_id_fkey",
+      "definition": "FOREIGN KEY (quote_id) REFERENCES canonical_quotes(id)"
+    },
+    {
+      "table_name": "canonical_quote_lines",
+      "name": "canonical_quote_lines_quote_id_not_null",
+      "definition": "NOT NULL quote_id"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_capture_id_fkey",
+      "definition": "FOREIGN KEY (capture_id) REFERENCES canonical_captures(id)"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_capture_id_not_null",
+      "definition": "NOT NULL capture_id"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_channel_check",
+      "definition": "CHECK ((channel = ANY (ARRAY['mailed_buylist'::text, 'event_vendor'::text, 'local_buyer'::text])))"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_channel_not_null",
+      "definition": "NOT NULL channel"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_conditions_not_null",
+      "definition": "NOT NULL conditions"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_currency_check",
+      "definition": "CHECK ((currency ~ '^[A-Z]{3}$'::text))"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_currency_not_null",
+      "definition": "NOT NULL currency"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_payment_kind_check",
+      "definition": "CHECK ((payment_kind = ANY (ARRAY['cash'::text, 'store_credit'::text, 'other'::text])))"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_payment_kind_not_null",
+      "definition": "NOT NULL payment_kind"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_provider_not_null",
+      "definition": "NOT NULL provider"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_state_check",
+      "definition": "CHECK ((state = ANY (ARRAY['indicative'::text, 'requested'::text, 'approved'::text, 'expired'::text, 'declined'::text, 'finalized'::text])))"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_state_not_null",
+      "definition": "NOT NULL state"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_supersedes_id_fkey",
+      "definition": "FOREIGN KEY (supersedes_id) REFERENCES canonical_quotes(id)"
+    },
+    {
+      "table_name": "canonical_quotes",
+      "name": "canonical_quotes_supersedes_id_key",
+      "definition": "UNIQUE (supersedes_id)"
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "name": "canonical_source_retirements_pkey",
+      "definition": "PRIMARY KEY (source_file_id)"
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "name": "canonical_source_retirements_reason_not_null",
+      "definition": "NOT NULL reason"
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "name": "canonical_source_retirements_retired_at_not_null",
+      "definition": "NOT NULL retired_at"
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "name": "canonical_source_retirements_source_file_id_fkey",
+      "definition": "FOREIGN KEY (source_file_id) REFERENCES source_files(id)"
+    },
+    {
+      "table_name": "canonical_source_retirements",
+      "name": "canonical_source_retirements_source_file_id_not_null",
+      "definition": "NOT NULL source_file_id"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_check",
+      "definition": "CHECK ((from_state <> to_state))"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_from_state_check",
+      "definition": "CHECK ((from_state = ANY (ARRAY['external'::text, 'available'::text, 'reserved'::text, 'outbound'::text, 'quarantine'::text, 'sold'::text, 'removed'::text])))"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_from_state_not_null",
+      "definition": "NOT NULL from_state"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_idempotency_key_key",
+      "definition": "UNIQUE (idempotency_key)"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_idempotency_key_not_null",
+      "definition": "NOT NULL idempotency_key"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_lot_id_fkey",
+      "definition": "FOREIGN KEY (lot_id) REFERENCES canonical_lots(id)"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_lot_id_not_null",
+      "definition": "NOT NULL lot_id"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_quantity_check",
+      "definition": "CHECK ((quantity > 0))"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_quantity_not_null",
+      "definition": "NOT NULL quantity"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_reason_not_null",
+      "definition": "NOT NULL reason"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_recorded_at_not_null",
+      "definition": "NOT NULL recorded_at"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_source_record_id_fkey",
+      "definition": "FOREIGN KEY (source_record_id) REFERENCES source_records(id)"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_to_state_check",
+      "definition": "CHECK ((to_state = ANY (ARRAY['available'::text, 'reserved'::text, 'outbound'::text, 'quarantine'::text, 'sold'::text, 'removed'::text])))"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_to_state_not_null",
+      "definition": "NOT NULL to_state"
+    },
+    {
+      "table_name": "canonical_stock_movements",
+      "name": "canonical_stock_movements_transaction_line_id_fkey",
+      "definition": "FOREIGN KEY (transaction_line_id) REFERENCES canonical_transaction_lines(id)"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_accepted_quantity_check",
+      "definition": "CHECK ((accepted_quantity >= 0))"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_check",
+      "definition": "CHECK (((COALESCE(accepted_quantity, 0) + COALESCE(returned_quantity, 0)) <= quantity))"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_lot_id_fkey",
+      "definition": "FOREIGN KEY (lot_id) REFERENCES canonical_lots(id)"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_lot_id_not_null",
+      "definition": "NOT NULL lot_id"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_quantity_check",
+      "definition": "CHECK ((quantity > 0))"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_quantity_not_null",
+      "definition": "NOT NULL quantity"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_quote_line_id_fkey",
+      "definition": "FOREIGN KEY (quote_line_id) REFERENCES canonical_quote_lines(id)"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_returned_quantity_check",
+      "definition": "CHECK ((returned_quantity >= 0))"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_transaction_id_fkey",
+      "definition": "FOREIGN KEY (transaction_id) REFERENCES canonical_transactions(id)"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_transaction_id_not_null",
+      "definition": "NOT NULL transaction_id"
+    },
+    {
+      "table_name": "canonical_transaction_lines",
+      "name": "canonical_transaction_lines_unit_price_check",
+      "definition": "CHECK ((unit_price >= (0)::numeric))"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_active_minutes_check",
+      "definition": "CHECK ((active_minutes >= (0)::numeric))"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_channel_not_null",
+      "definition": "NOT NULL channel"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_created_at_not_null",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_currency_check",
+      "definition": "CHECK ((currency ~ '^[A-Z]{3}$'::text))"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_currency_not_null",
+      "definition": "NOT NULL currency"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_provider_external_order_id_key",
+      "definition": "UNIQUE (provider, external_order_id)"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_provider_not_null",
+      "definition": "NOT NULL provider"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_state_check",
+      "definition": "CHECK ((state = ANY (ARRAY['proposed'::text, 'reserved'::text, 'shipped'::text, 'partially_finalized'::text, 'finalized'::text, 'cancelled'::text])))"
+    },
+    {
+      "table_name": "canonical_transactions",
+      "name": "canonical_transactions_state_not_null",
+      "definition": "NOT NULL state"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_collector_number_not_null",
+      "definition": "NOT NULL collector_number"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_created_at_not_null",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_finish_check",
+      "definition": "CHECK ((finish = ANY (ARRAY['normal'::text, 'foil'::text, 'etched'::text])))"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_finish_not_null",
+      "definition": "NOT NULL finish"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_id_not_null",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_identity_basis_not_null",
+      "definition": "NOT NULL identity_basis"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_name_not_null",
+      "definition": "NOT NULL name"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_printed_language_not_null",
+      "definition": "NOT NULL printed_language"
+    },
+    {
+      "table_name": "canonical_variants",
+      "name": "canonical_variants_set_code_not_null",
+      "definition": "NOT NULL set_code"
+    }
+  ],
+  "views": [
+    {
+      "viewname": "canonical_eligible_evidence",
+      "definition": " SELECT o.id,\n    o.capture_id,\n    o.mapping_id,\n    o.source_locator,\n    o.provider_subject,\n    o.metric,\n    o.evidence_kind,\n    o.numeric_value,\n    o.text_value,\n    o.currency,\n    o.unit,\n    o.price_basis,\n    o.observed_at,\n    o.window_start,\n    o.window_end,\n    o.quantity,\n    o.sample_count,\n    o.limitations,\n    o.raw,\n    o.supersedes_id,\n    m.variant_id,\n    c.provider,\n    c.upstream_provider,\n    c.captured_at,\n    c.sample_kind,\n    c.sample_limit,\n    c.completeness\n   FROM (((canonical_observations o\n     JOIN canonical_captures c ON ((c.id = o.capture_id)))\n     JOIN canonical_product_mappings m ON ((m.id = o.mapping_id)))\n     JOIN canonical_variants v ON ((v.id = m.variant_id)))\n  WHERE ((c.use_state = 'eligible'::text) AND (m.status = 'accepted'::text) AND (m.finish_scope = v.finish) AND (m.language_scope = v.printed_language) AND (NOT (EXISTS ( SELECT 1\n           FROM canonical_product_mappings next\n          WHERE (next.supersedes_id = m.id)))) AND (NOT (EXISTS ( SELECT 1\n           FROM canonical_observations next\n          WHERE (next.supersedes_id = o.id)))) AND (NOT (EXISTS ( SELECT 1\n           FROM canonical_source_retirements r\n          WHERE (r.source_file_id = c.source_file_id)))));"
+    },
+    {
+      "viewname": "canonical_inventory",
+      "definition": " SELECT l.id AS lot_id,\n    l.origin_record_id,\n    v.id AS variant_id,\n    v.name,\n    v.set_code,\n    v.collector_number,\n    v.finish,\n    v.treatment,\n    v.printed_language,\n    l.condition_raw,\n    l.condition_normalized,\n    l.location,\n    (COALESCE(sum((\n        CASE\n            WHEN (m.to_state = 'available'::text) THEN m.quantity\n            ELSE 0\n        END -\n        CASE\n            WHEN (m.from_state = 'available'::text) THEN m.quantity\n            ELSE 0\n        END)), (0)::bigint))::integer AS available_quantity,\n    (COALESCE(sum((\n        CASE\n            WHEN (m.to_state = ANY (ARRAY['available'::text, 'reserved'::text, 'outbound'::text, 'quarantine'::text])) THEN m.quantity\n            ELSE 0\n        END -\n        CASE\n            WHEN (m.from_state = ANY (ARRAY['available'::text, 'reserved'::text, 'outbound'::text, 'quarantine'::text])) THEN m.quantity\n            ELSE 0\n        END)), (0)::bigint))::integer AS owned_quantity\n   FROM ((canonical_lots l\n     JOIN canonical_variants v ON ((v.id = l.variant_id)))\n     LEFT JOIN canonical_stock_movements m ON ((m.lot_id = l.id)))\n  GROUP BY l.id, v.id;"
+    }
+  ]
+}

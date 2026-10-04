@@ -23,7 +23,10 @@
     "db:verify-backup": "node scripts/database.mjs verify-backup",
     "db:check": "node scripts/database.mjs check",
     "db:ingest": "node scripts/ingest-handoff.mjs",
-    "db:verify-ingestion": "node scripts/verify-ingestion.mjs"
+    "db:verify-ingestion": "node scripts/verify-ingestion.mjs",
+    "db:adopt-canonical": "node scripts/adopt-canonical.mjs",
+    "db:canonical-status": "node scripts/canonical-status.mjs",
+    "db:verify-canonical": "node scripts/verify-canonical.mjs"
   },
   "dependencies": {
     "csv-parse": "7.0.3",

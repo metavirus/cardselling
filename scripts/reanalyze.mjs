@@ -5,6 +5,8 @@ import { join, resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import { appClient, root } from './database.mjs';
 import { csv, identity, variantKey, match, hash } from './import-domain.mjs';
+import { requireLegacyMode } from './legacy-guard.mjs';
+await requireLegacyMode();
 
 const freshPath = resolve(root, process.argv[2] || 'data/private/reanalysis/2026-10-04/tcgsentry-collection-2026-10-04-1243.csv');
 assert(freshPath.startsWith(resolve(root, 'data/private') + '\\'), 'Use private source directory');

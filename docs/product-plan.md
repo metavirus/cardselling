@@ -1,5 +1,11 @@
 # Card selling product and decision baseline
 
+**Canonical cutover:** `canonical-store.md` and the applied custom SQL migration
+`0002_canonical_store.sql` supersede the proposed schema and export-driven workflow
+described below. The database owns accepted inventory and future events; ManaBox
+supplied the accepted opening baseline. Prior exports/workbooks are historical
+evidence only. Remaining workflow capabilities are listed in the canonical guide.
+
 Owner clarification: ManaBox Sell.csv is canonical inventory; TCGSentry is data
 hydration only. Conflicting hydration must be rejected or mapped correctly, not
 treated as competing physical inventory evidence. Psychic Frog MH3 #433 is
