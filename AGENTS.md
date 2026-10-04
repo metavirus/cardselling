@@ -50,6 +50,10 @@ not product interface design, branding, navigation, or speculative layouts.
   private exports. Database access stays on the server.
 - Keep sourced facts, corrections, observations, assumptions, and recommendations
   distinct. Unknown price is not zero. Preserve source conflicts.
+- Selling recommendations must show dealer bid, estimated self-sale price and
+  net proceeds, quantity, and whole-lot dollar difference in adjacent columns.
+  Expose sources, dates, fees and fulfillment assumptions. An optimistic screen
+  is not an expected selling price; unknown costs and sale timing stay explicit.
 - Printing identity alone does not distinguish finish, language, condition, or
   physical holdings. Determine import identity from source evidence.
 - Repeat imports must not duplicate stock or erase owner decisions. Reconcile

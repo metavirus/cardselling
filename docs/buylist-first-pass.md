@@ -43,6 +43,19 @@ their marginal contribution and handling within an existing dealer shipment.
 
 ## Evidence and screen
 
+The owner requires a visible self-sale comparison alongside recommendations.
+The reviewed-batch export now includes each dealer bid, working self-sale price,
+estimated self-sale net, and whole-lot difference, plus a source table containing
+Mana Pool asks, sampled sale medians/counts and TCGplayer references. Working
+self-sale price uses the current exact-grade Mana Pool low ask; this is a
+conditional proceeds scenario, not a calibrated expectation or sale deadline.
+The explicit illustration uses $1.35 shipping credit, $1.35 postage and $0.25
+materials per separate one-copy order, published fee estimates, no labor charge
+and no loss reserve. These fulfillment allowances are proposed, not measured.
+At those assumptions the 29 copies yield $132.37 versus $181 dealer gross;
+actual dealer shipping is deducted once per batch. Stored v1 decisions and their
+original optimistic comparison remain unchanged and visible for comparison.
+
 The canonical 723 lots / 817 copies were screened. A hashed transcript of public Card Kingdom
 buylist checks covers 24 exact lots: 22 listed with displayed cash and wanted
 quantities, two absent. Historical MTGJSON Card Kingdom indications remain
