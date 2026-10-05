@@ -153,3 +153,5 @@ scenario requiring actual Pirate Ship quotes. UI now distinguishes buyer-paid
 tracked upgrade below$60 (649c receipt) from free tracked at$60+ (zero receipt).
 Default seller-funded tracked net declines20c; letter scenario unchanged.
 57 tests/build/typecheck pass. See tracked-shipping-audit.md.
+
+Shipping research consolidated in shipping-model.md as the maintained reference. Letter/tracked handoffs are retired inputs; audit receipts retain provenance. No raw handoff is required for continuing implementation.

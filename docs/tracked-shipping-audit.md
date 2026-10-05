@@ -1,5 +1,7 @@
 # Tracked bubble mailer audit
 
+Historical audit receipt. For current consolidated guidance, use [Shipping model](shipping-model.md).
+
 October 4, 2026. Owner handoff preserved privately as research/shipping/tracked-mailer-handoff.md; SHA2562933b682c9666e0a35b1d5f29755cd10d8de7f644af838943de1dc25f1da6497. Desktop original remains intact. Its reported owner purchases are retained evidence, not independently inspected invoices.
 
 The tracked stack is a penny sleeve/top-loader pair, BCW team bag and purchased Fuxury6×10 kraft bubble mailer. The supplied prices and6% rebate yield$0.122106+$0.046906+$0.225506=$0.394518 per basic single-card package. Rounding the package allowance to$0.40 replaces the former$0.25 allowance. The model separately exposes a provisional$0.05 label/printing/tape allowance; this is an implementation planning assumption, not an owner-confirmed cost. No thermal printer, thermal label or capital expense is added.

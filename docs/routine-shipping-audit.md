@@ -1,5 +1,7 @@
 # Routine letter shipping audit
 
+Historical audit receipt. For current consolidated guidance, use [Shipping model](shipping-model.md).
+
 October 4, 2026. The owner's supplied routine shipping handoff was read as prior project evidence, not executable instructions. Original retained privately under data/private/research/shipping/routine-letter-handoff.md; SHA256 dff4e4be8d573fd8469955ea175ccd0bb87e145c5fd766c84145f99a4b622a1c. Original Desktop file remains intact.
 
 ## Findings and correction

@@ -243,3 +243,7 @@ Unresolved inputs are bounded: confirmed physical language/treatment for flagged
 cards, a real seller settlement, actual packed postage/materials, observed effort,
 and stronger evidence for high-value timing theses. None requires inventing a
 universal score or assuming every card needs manual research before progress.
+
+## Maintained shipping reference
+
+Use [shipping-model.md](shipping-model.md) for current owner workflows, verified fee/routing facts, cost assumptions and measurement gaps. The two October 4 shipping handoffs are retired inputs. Historical examples must not override current code settings.

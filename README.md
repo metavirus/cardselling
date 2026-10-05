@@ -187,3 +187,5 @@ self-sale candidates; card details explain the dollars, timing and next move.
 See `docs/collection-ai-analysis.md` for the review and persistence contract.
 
 New scans use `npm run db:reconcile-scan -- <path>` for a rolled-back trial, then `--apply` for an accepted additions-only transaction. Missing old rows, changed quantities, ambiguous identities or special physical attributes stop the import; they never reset stock. Raw rows/hash remain in SQL after disposal of the CSV. See docs/scan-additions.md and docs/magiccon-advance-quote-methodology.md.
+
+Shipping and fulfillment: [maintained shipping model](docs/shipping-model.md), consolidating the retired letter and tracked handoffs.
