@@ -146,3 +146,10 @@ materials now separate; browser migration preserves owner plans/custom settings.
 Strict strong screen recalculates18→7; four new history candidates remain and
 Dust Bowl moves to convenience parity. Older immutable written reviews marked
 earlier cost assumptions.56 tests/build/typecheck pass. See routine-shipping-audit.md.
+
+Tracked handoff audit: purchased packaging rounds39.4518c to40c; separate editable
+5c label/print planning allowance added.550c postage remains a configurable
+scenario requiring actual Pirate Ship quotes. UI now distinguishes buyer-paid
+tracked upgrade below$60 (649c receipt) from free tracked at$60+ (zero receipt).
+Default seller-funded tracked net declines20c; letter scenario unchanged.
+57 tests/build/typecheck pass. See tracked-shipping-audit.md.
