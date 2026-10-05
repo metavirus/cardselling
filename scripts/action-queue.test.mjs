@@ -8,6 +8,13 @@ const asOf='2026-10-04T20:00:00Z',p=(date,cents)=>({date,cents});
 const base={lotId:'a',variantId:'v',grade:'near_mint',quantity:1,ckCents:200,ckCapacity:20,ckSourceDate:asOf,scgCents:null,scgSourceDate:null,askCents:150,medianCents:100,semantic:{traits:[],competingQuantity:10,saleSampleCapped:true,edhrecRank:null},marketHistory:{tcg:[p('2026-10-04',150)],ck:[p('2026-07-07',190),p('2026-10-04',200)],manaPoolRetail:[p('2026-10-04',100)]},recentSales:Array.from({length:5},(_,i)=>p(`2026-09-${20+i}`,100))};
 const read=c=>actionFor(c,analyzeCollection([c],S,asOf).get(c.lotId),S,asOf);
 test('covered compelling dealer case exposes dollars and dated high context',()=>{const a=read(base);assert.equal(a.kind,'ck');assert.ok(a.dollars>0);assert.ok(a.alerts.includes('CK near captured 90-day high'));});
+
+test('verified current CK cash resolves a daily-history mismatch for the action queue',()=>{
+ const card={...base,ckSource:'direct_public',marketHistory:{...base.marketHistory,ck:[p('2026-07-07',100),p('2026-10-04',190)]}};
+ assert.equal(read(card).kind,'ck');
+ assert.equal(read({...card,ckSource:'tcgsentry_export'}).label,'Confirm CK quote');
+ assert.equal(read({...card,ckCapacity:0}).label,'CK not currently buying');
+});
 test('history-only and unknown capacity never become shipment actions',()=>{for(const c of [{...base,ckCents:null,ckSourceDate:null,ckCapacity:null},{...base,ckCapacity:null},{...base,ckSourceDate:'2026-08-01'}])assert.equal(read(c).kind,'verify');});
 test('shared inventory capacity is respected by the queue',()=>{const cards=[{...base,quantity:2,ckCapacity:3},{...base,lotId:'b',quantity:2,ckCapacity:3}],insights=analyzeCollection(cards,S,asOf);for(const c of cards)assert.equal(actionFor(c,insights.get(c.lotId),S,asOf).kind,'verify');});
 test('short historical coverage cannot claim proximity to a ninety-day high',()=>{assert.ok(!read({...base,marketHistory:{...base.marketHistory,ck:[p('2026-10-03',200),p('2026-10-04',200)]}}).alerts.includes('CK near captured 90-day high'));});

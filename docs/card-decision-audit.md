@@ -1,5 +1,12 @@
 # Card decision UI audit — October 4, 2026
 
+October 5 quote resolution: a fresh, verified exact-product public CK check is
+the operational cash quote. A different same-day MTGJSON daily-history point no
+longer causes a "Confirm CK quote" alert after that direct check; it remains a
+dated chart observation. Unknown capacity, stale checks and unresolved aggregator
+quotes retain their applicable alerts. Newer compatible captures still supersede
+older quotes; direct checks are not pinned indefinitely.
+
 The owner rejected the previous card detail as bland, mostly descriptive, and
 cluttered by repeated source caveats. This is an accepted product preference,
 recorded in AGENTS.md. Useful distinctions belong in short labels; extended

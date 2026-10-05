@@ -5,7 +5,7 @@ export function summarizePriceTrend(points:HistoryPoint[]){
  return {points:sorted,first,latest,changePercent:first&&latest&&sorted.length>1?Math.round((latest.cents/first.cents-1)*100):null};
 }
 const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n/100);
-type TimingCard={ckCents:number|null;ckSourceDate:string|null;marketHistory:{ck:HistoryPoint[];tcg:HistoryPoint[];manaPoolRetail?:HistoryPoint[]}};
+type TimingCard={ckCents:number|null;ckSourceDate:string|null;ckSource?:"direct_public"|"tcgsentry_export"|null;marketHistory:{ck:HistoryPoint[];tcg:HistoryPoint[];manaPoolRetail?:HistoryPoint[]}};
 export function priceRegime(ckChange:number|null,tcgChange:number|null){
  if(ckChange===null||tcgChange===null)return "limited";
  if(ckChange<0&&tcgChange>0)return "diverging";
@@ -34,7 +34,11 @@ export function timingReadout(card:TimingCard,asOf:string,days=90){
  const latest=ckRaw.latest;
  const unequal=latest&&card.ckCents!==null&&latest.cents!==card.ckCents;
  const sameDay=latest&&utcDay(card.ckSourceDate)!==null&&utcDay(card.ckSourceDate)===utcDay(latest.date);
- const conflict=unequal&&sameDay?`Same-day CK sources differ: captured quote ${money(card.ckCents!)} · history ${money(latest!.cents)}. Verify the quote before acting.`:null;
+ // A fresh exact-product public check resolves the operational bid. Daily
+ // history is a separate snapshot, not a competing live quote to re-confirm.
+ const quoteAge=card.ckSourceDate===null?Infinity:(end-Date.parse(card.ckSourceDate))/86400000;
+ const verifiedCurrent=card.ckSource==="direct_public"&&quoteAge>=0&&quoteAge<=7;
+ const conflict=unequal&&sameDay&&!verifiedCurrent?`Same-day CK sources differ: captured quote ${money(card.ckCents!)} · history ${money(latest!.cents)}. Verify the quote before acting.`:null;
  const datedDifference=unequal&&!sameDay?`CK quote ${money(card.ckCents!)}${card.ckSourceDate?` (${dateLabel(card.ckSourceDate,"America/Los_Angeles")})`:""} · history ${money(latest!.cents)} (${dateLabel(latest!.date)}). Separate dated observations.`:null;
  const regime=spanDays<minimumSpan?"limited":priceRegime(ck.changePercent,tcg.changePercent);
  const period=spanLabel?`Across shared dates ${spanLabel}, `:"";

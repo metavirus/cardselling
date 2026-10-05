@@ -10,6 +10,18 @@ test('Carmen separates channel from timing and preserves quote conflict',()=>{
  const s=timingReadout({ckCents:500,ckSourceDate:'2026-10-04',marketHistory:{ck:[point('2026-07-10',500),point('2026-10-04',400)],tcg:[point('2026-07-10',550),point('2026-10-04',610)]}},'2026-10-04');
  assert.match(s.title,/different directions/);assert.match(s.conflict,/\$5.00.*\$4.00/);assert.match(s.reason,/does not establish/);
 });
+
+test('Fresh direct CK check resolves the cash quote without rewriting daily history',()=>{
+ const card={ckCents:500,ckSource:'direct_public',ckSourceDate:'2026-10-04T18:00:00Z',marketHistory:{ck:[point('2026-07-10',500),point('2026-10-04',400)],tcg:[point('2026-07-10',550),point('2026-10-04',610)]}};
+ const original=structuredClone(card);
+ const readout=timingReadout(card,'2026-10-04T20:00:00Z');
+ assert.equal(readout.conflict,null);
+ assert.equal(readout.regime,'diverging');
+ assert.deepEqual(card,original);
+ assert.match(timingReadout({...card,ckSource:'tcgsentry_export'},'2026-10-04T20:00:00Z').conflict,/\$5.00.*\$4.00/);
+ assert.match(timingReadout(card,'2026-10-12T20:00:00Z').conflict,/Verify/);
+ assert.match(timingReadout(card,'2026-10-04T17:00:00Z').conflict,/Verify/);
+});
 test('Stronger dealer against weaker reference supports checking a sale, not forecasting',()=>{
  const s=timingReadout({ckCents:700,ckSourceDate:'2026-10-04',marketHistory:{ck:[point('2026-07-10',300),point('2026-10-04',700)],tcg:[point('2026-07-10',800),point('2026-10-04',700)]}},'2026-10-04');
  assert.match(s.title,/strengthened/);assert.equal(s.conflict,null);
