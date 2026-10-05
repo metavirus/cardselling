@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-04.1",
+  "version": "2026-10-04.2",
   "scope": "Broad discovery survey of MTG market, demand, popularity and event sources; not a claim to enumerate every website or validate every advertised data feed.",
   "checked_on": "2026-10-04",
   "verification_legend": {
@@ -91,13 +91,16 @@
       "access": "Seller Hub research; account eligibility applies; Marketplace Insights API closed to new users",
       "upstream": "eBay marketplace",
       "verification": "documented",
-      "priority": "core_manual",
+      "priority": "potential_targeted",
       "use": "Premium, unusual treatment and collector comps",
-      "limits": "Query/title contamination, lots, condition, accepted offers and shipping require review. Research offers up to three years; reported sell-through only for eligible recent windows. No automatic market-wide API assumed.",
+      "limits": "Query/title contamination, lots, condition, accepted offers and shipping require review. Research offers up to three years; reported sell-through only for eligible recent windows. No automatic market-wide API assumed. Preserve search filters, date window and raw condition category. Do not map eBay Very Good to MTG grades automatically. Listing averages plus last-sold dates are not individual transactions. Empty search results are not evidence of no market activity.",
       "urls": [
-        "https://www.ebay.com/help/selling/selling-tools/research?id=4853",
-        "https://developer.ebay.com/api-docs/buy/ref-marketplace-supported.html"
-      ]
+        "https://www.ebay.com/help/selling/selling-tools/product-research?id=4853",
+        "https://www.developer.ebay.com/api-docs/buy/static/ref-buy-browse-filters.html",
+        "https://developer.ebay.com/api-docs/sell/analytics/static/overview.html"
+      ],
+      "integration_status": "Potential resource: Seller Hub browser pilot tested; scalable historical ingestion not established; no accepted canonical eBay market observations.",
+      "verification_detail": "Authenticated Product Research pilot inspected Daze SOA 80, Prismatic Ending SOA 72 and Island SLP 32. Raw captures retained privately. Search result rows may aggregate multiple sales."
     },
     {
       "id": "MS05",
@@ -1129,5 +1132,15 @@
     "date_source": "https://mcatlanta.mtgfestivals.com/en-us/experience/exhibitors.html",
     "status": "owner city/month; year/date resolved from current organizer page",
     "directory_caution": "ManaTrust entry contains Pro-Play description; some booth numbers shared. Confirm details before routing."
-  }
+  },
+  "synthesis_rules": [
+    "Count independent upstream evidence, not the number of websites repeating it.",
+    "Separate executable cash bids, completed sales, asking prices, derived reference indices and play-interest proxies.",
+    "Compare USD US-market evidence with exact printing, finish, language and grade scope; retain unmatched candidates outside accepted valuations.",
+    "Store observed date separately from capture date, plus source, original identity, units, shipping, time window, filters and sample completeness.",
+    "Preserve conflicts; explain their economic implications instead of averaging unlike measures.",
+    "Dealer capacity must cover the proposed quantity; shared product capacity must not be allocated twice.",
+    "Use repeated comparable sales and supply evidence to assess higher-price opportunities; compare worthwhile net dollars after costs.",
+    "Hold requires a positive forward case and a condition for reassessment; past highs alone do not justify it."
+  ]
 }

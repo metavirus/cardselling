@@ -2,21 +2,89 @@
   "researched_at": "2026-10-04",
   "objective": "Improve exact-printing hold/self-sale/buylist decisions through corroborated signals rather than more undifferentiated price columns",
   "priorities": [
-    {"rank":1,"signal":"Longitudinal exact-grade supply and sales","sources":["Mana Pool accepted catalog/recent sales","TCGSentry dealer hydration"],"implementation":"Append snapshots; retain seller count if exposed, offered quantities, delivered asks, sales dates and native transaction identifiers if available. Deduplicate overlapping recent-sale windows; inventory disappearance alone is not a sale.","interpretation":"Rising comparable sale prices plus thinning supply supports a patient test. Rising asks alone do not."},
-    {"rank":2,"signal":"Dealer urgency and relative bid strength","sources":["CK live quotes/wanted quantities","SCG quotes","TCGSentry exports"],"implementation":"Preserve dealer price, wanted quantity, observation date, refresh provenance and exact variant scope independently.","interpretation":"Bid above ordinary self-sale net with adequate capacity is a buylist opportunity. Rising bid and shrinking wanted quantity can flag a closing exit; not proof of sales."},
-    {"rank":3,"signal":"Collector premium supported by completed sales","sources":["eBay Product Research","exact Mana Pool sale distributions"],"implementation":"Target high-value/special treatments; actual accepted Best Offer prices, shipping, lot size, language, condition; separate auctions and fixed-price outcomes. eBay Seller Hub access required; bulk API/automation not established.","interpretation":"Repeated premium over ordinary printing with worthwhile net dollars supports self-sale or specialist quotes."},
-    {"rank":4,"signal":"Play-demand acceleration","sources":["EDHREC week/month/two-year inclusion","MTGTop8 recent tournament deck participation","MTGGoldfish metagame/movers"],"implementation":"Oracle-card context separate from printing identity; use inclusion share with denominators and comparable windows; no independent-vote double counting for sites sharing underlying price data.","interpretation":"Growing play interest can explain a durable demand shift when exact-product transactions and supply corroborate it."},
-    {"rank":5,"signal":"Supply/catalyst events","sources":["Wizards official announcements and card galleries","accepted Scryfall/MTGJSON printing records"],"implementation":"Timestamp confirmed reprints/releases/bans and identify functional substitute versus same collector treatment. Treat rumor as research lead, never confirmed event.","interpretation":"Hold needs positive forward evidence, not merely a past high. Reprint of ordinary copies may affect play demand pricing differently from special treatment premium."},
-    {"rank":6,"signal":"Alternative buyer offers","sources":["Cardsphere offers","event buyer quotes"],"implementation":"Exact scope/cash-equivalent proceeds after cashout/transaction/shipping charges; distinguish index from funded offer. Confirm quantity and buyer-specific event availability.","interpretation":"Adds competitive exit options, especially specialist demand, without assuming index value is obtainable cash."}
+    {
+      "rank": 1,
+      "signal": "Longitudinal exact-grade supply and sales",
+      "sources": [
+        "Mana Pool accepted catalog/recent sales",
+        "TCGSentry dealer hydration"
+      ],
+      "implementation": "Append snapshots; retain seller count if exposed, offered quantities, delivered asks, sales dates and native transaction identifiers if available. Deduplicate overlapping recent-sale windows; inventory disappearance alone is not a sale.",
+      "interpretation": "Rising comparable sale prices plus thinning supply supports a patient test. Rising asks alone do not."
+    },
+    {
+      "rank": 2,
+      "signal": "Dealer urgency and relative bid strength",
+      "sources": [
+        "CK live quotes/wanted quantities",
+        "SCG quotes",
+        "TCGSentry exports"
+      ],
+      "implementation": "Preserve dealer price, wanted quantity, observation date, refresh provenance and exact variant scope independently.",
+      "interpretation": "Bid above ordinary self-sale net with adequate capacity is a buylist opportunity. Rising bid and shrinking wanted quantity can flag a closing exit; not proof of sales."
+    },
+    {
+      "rank": 3,
+      "signal": "Collector premium supported by completed sales",
+      "sources": [
+        "eBay Product Research",
+        "exact Mana Pool sale distributions"
+      ],
+      "implementation": "Target high-value/special treatments; actual accepted Best Offer prices, shipping, lot size, language, condition; separate auctions and fixed-price outcomes. eBay Seller Hub access required; bulk API/automation not established.",
+      "interpretation": "Repeated premium over ordinary printing with worthwhile net dollars supports self-sale or specialist quotes."
+    },
+    {
+      "rank": 4,
+      "signal": "Play-demand acceleration",
+      "sources": [
+        "EDHREC week/month/two-year inclusion",
+        "MTGTop8 recent tournament deck participation",
+        "MTGGoldfish metagame/movers"
+      ],
+      "implementation": "Oracle-card context separate from printing identity; use inclusion share with denominators and comparable windows; no independent-vote double counting for sites sharing underlying price data.",
+      "interpretation": "Growing play interest can explain a durable demand shift when exact-product transactions and supply corroborate it."
+    },
+    {
+      "rank": 5,
+      "signal": "Supply/catalyst events",
+      "sources": [
+        "Wizards official announcements and card galleries",
+        "accepted Scryfall/MTGJSON printing records"
+      ],
+      "implementation": "Timestamp confirmed reprints/releases/bans and identify functional substitute versus same collector treatment. Treat rumor as research lead, never confirmed event.",
+      "interpretation": "Hold needs positive forward evidence, not merely a past high. Reprint of ordinary copies may affect play demand pricing differently from special treatment premium."
+    },
+    {
+      "rank": 6,
+      "signal": "Alternative buyer offers",
+      "sources": [
+        "Cardsphere offers",
+        "event buyer quotes"
+      ],
+      "implementation": "Exact scope/cash-equivalent proceeds after cashout/transaction/shipping charges; distinguish index from funded offer. Confirm quantity and buyer-specific event availability.",
+      "interpretation": "Adds competitive exit options, especially specialist demand, without assuming index value is obtainable cash."
+    }
   ],
   "sources": {
-    "ebay":"https://www.ebay.com/help/selling/selling-tools/product-research?id=4853",
-    "edhrec":"https://cloudflare.edhrec.com/guides/how-to-use-edhrec",
-    "mtgtop8":"https://www.mtgtop8.com/format?cp=5&f=pi&meta=193",
-    "goldfish":"https://www.mtggoldfish.com/movers/paper",
-    "cardsphere":"https://www.cardsphere.com/tutorials",
-    "manapool":"https://manapool.com/api/docs/v1",
-    "wizards":"https://www.magic.wizards.com/en/news/announcements/banned-and-restricted-august-10-2026"
+    "ebay": "https://www.ebay.com/help/selling/selling-tools/product-research?id=4853",
+    "edhrec": "https://cloudflare.edhrec.com/guides/how-to-use-edhrec",
+    "mtgtop8": "https://www.mtgtop8.com/format?cp=5&f=pi&meta=193",
+    "goldfish": "https://www.mtggoldfish.com/movers/paper",
+    "cardsphere": "https://www.cardsphere.com/tutorials",
+    "manapool": "https://manapool.com/api/docs/v1",
+    "wizards": "https://www.magic.wizards.com/en/news/announcements/banned-and-restricted-august-10-2026",
+    "ebay_api_access": "https://www.developer.ebay.com/api-docs/buy/static/ref-buy-browse-filters.html",
+    "mtgjson_history": "https://mtgjson.com/downloads/all-files/"
   },
-  "access_limits":"MTGStocks blocked research crawler; Mana Pool docs shell did not expose additional endpoints. No new market observations ingested and no recurring schedule created by this research. Existing accepted sources are the immediate snapshot baseline."
+  "access_limits": "eBay is a potential targeted resource: authenticated Seller Hub pilot captured privately; historical Marketplace Insights API closed to new users; bulk ingestion/export not established. Pilot listing aggregates and unresolved comparable scope are not accepted canonical sales. Cardsphere index starts from NM English and models other languages/conditions, so use exact offers rather than treating its index as an independent exact-language valuation. MTGJSON AllPrices supplies a rolling 90-day window; durable longer history requires retaining dated observations. MTGStocks blocked research crawler. No new accepted market observations or recurring schedule created by this research.",
+  "synthesis_rules": [
+    "Count independent upstream evidence, not the number of websites repeating it.",
+    "Separate executable cash bids, completed sales, asking prices, derived reference indices and play-interest proxies.",
+    "Compare USD US-market evidence with exact printing, finish, language and grade scope; retain unmatched candidates outside accepted valuations.",
+    "Store observed date separately from capture date, plus source, original identity, units, shipping, time window, filters and sample completeness.",
+    "Preserve conflicts; explain their economic implications instead of averaging unlike measures.",
+    "Dealer capacity must cover the proposed quantity; shared product capacity must not be allocated twice.",
+    "Use repeated comparable sales and supply evidence to assess higher-price opportunities; compare worthwhile net dollars after costs.",
+    "Hold requires a positive forward case and a condition for reassessment; past highs alone do not justify it."
+  ]
 }
