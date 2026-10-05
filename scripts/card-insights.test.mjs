@@ -34,7 +34,7 @@ test('capacity shared by duplicated inventory lots is not counted twice',()=>{
  const a=analyzeCollection([c,{...c,lotId:'b'}],S,asOf);assert.ok(a.get('a').findings.some(f=>f.id==='capacity'));assert.equal(a.get('a').breakEven,null);
 });
 test('higher prices can remain economically inferior after fixed order costs',()=>{
- const c=card({ckCents:160,recentSales:[p('2026-09-20',180),p('2026-09-21',190),p('2026-09-22',198),p('2026-09-23',140),p('2026-09-24',140),p('2026-09-25',140)]});
+ const c=card({ckCents:200,recentSales:[p('2026-09-20',180),p('2026-09-21',190),p('2026-09-22',198),p('2026-09-23',140),p('2026-09-24',140),p('2026-09-25',140)]});
  const a=analyzeCard(c,S,asOf);assert.ok(a.upperExtra<0);assert.ok(a.breakEven>198);
 });
 test('same-day dealer conflict blocks compelling conclusion and no premium is invented',()=>{

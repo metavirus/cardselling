@@ -1,9 +1,9 @@
 import type {ReviewCard} from './review-data';
-import {estimate,type Settings} from './selling-economics';
+import {estimate,defaultSettings,type Settings} from './selling-economics';
 import {timingReadout} from './price-trends';
 
 export const insightVersion='collection-synthesis-v1';
-export const analysisDefaults:Settings={postage:135,tracked:550,materials:25,batch:1000,basis:'median'};
+export const analysisDefaults:Settings={...defaultSettings};
 export type Finding={id:string;label:string;tone:'sell'|'opportunity'|'watch'|'neutral';detail:string};
 export type CardInsight={version:string;headline:string;summary:string;nextStep:string;category:'dealer'|'patient'|'specialist'|'review'|'compare';confidence:'strong'|'moderate'|'limited';findings:Finding[];median:number|null;upperPrice:number|null;upperNet:number|null;upperExtra:number|null;breakEven:number|null;pairedSales:number;aboveReference:number;recentSales:number;priority:number};
 const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n/100);

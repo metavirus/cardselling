@@ -1,6 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {estimate} from '../src/lib/selling-economics.ts';
+import {estimate,defaultSettings,migrateShippingSettings,shippingModelVersion} from '../src/lib/selling-economics.ts';
+test('routine letter credits shipping and charges fixed processing once',()=>{
+ const r=estimate({askCents:1000,medianCents:1000,ckCents:null,ckCapacity:null,quantity:1},defaultSettings);
+ assert.equal(r.net,902);assert.equal(r.credit,135);assert.equal(r.postage+r.materials,120);assert.equal(r.processing,63);
+ const old=estimate({askCents:1000,medianCents:1000,ckCents:null,ckCapacity:null,quantity:1},{...defaultSettings,postage:135,materials:25});assert.equal(r.net-old.net,40);
+ const tracked=estimate({askCents:6000,medianCents:6000,ckCents:null,ckCapacity:null,quantity:1},defaultSettings);assert.equal(tracked.materials,25);assert.equal(tracked.credit,0);
+});
+test('legacy defaults migrate once and custom costs remain intact',()=>{
+ const old={postage:135,materials:25,tracked:550,batch:1000,basis:'ask'};
+ const migrated=migrateShippingSettings(old);assert.equal(migrated.postage,82);assert.equal(migrated.materials,38);assert.equal(migrated.trackedMaterials,25);
+ assert.deepEqual(migrateShippingSettings(migrated,shippingModelVersion),migrated);
+ assert.equal(migrateShippingSettings({...old,postage:111,materials:50}).postage,111);assert.equal(migrateShippingSettings({...old,materials:50}).materials,50);
+});
 const settings={postage:135,tracked:550,materials:25,batch:1000,basis:'ask'};
 test('Decision receipt matches existing Astral Dragon economics and whole-lot difference',()=>{
  const result=estimate({askCents:2357,medianCents:null,ckCents:2050,ckCapacity:26,quantity:2},settings);

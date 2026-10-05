@@ -138,3 +138,11 @@ estimate/review process does not meet the owner's advance-price requirement.
 Other buyers require event and process qualification. Retained inventory examples
 illustrate candidate roles without claiming refreshed executable quotes. No
 outreach, reservations, stock changes, UI changes or accepted sale occurred.
+
+Routine shipping handoff audit corrected letter defaults from135c postage+25c
+materials to82c postage+38c integrated-envelope materials; buyer135c receipt and
+fee scope were already correct. Self-sale letter net rises40c/order. Tracked
+materials now separate; browser migration preserves owner plans/custom settings.
+Strict strong screen recalculates18→7; four new history candidates remain and
+Dust Bowl moves to convenience parity. Older immutable written reviews marked
+earlier cost assumptions.56 tests/build/typecheck pass. See routine-shipping-audit.md.
