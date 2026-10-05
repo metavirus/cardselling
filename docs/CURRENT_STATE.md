@@ -1,184 +1,22 @@
 # Current state — October 5, 2026
 
-Daily pricing hydration is operational and scheduled for 8 AM Pacific. Today's
-TCGSentry quotes, Mana Pool catalog/sales/supply, and MTGJSON USD histories were
-applied and replay verified. See `daily-market-refresh.md` for coverage and
-operation. The interface now uses monetary decision badges and a pricing
-timestamp with per-source freshness. Existing written AI reviews remain dated;
-refreshed evidence does not silently make those earlier reviews current.
+Canonical local SQL inventory: **758 lots /853 owned and available copies**, verified live October5. Live status reports559,072 eligible observations. No sale is represented merely by a browser direction.
 
-The local PostgreSQL canonical store is operational. The accepted ManaBox Sell.csv
-baseline was **723 physical lots / 817 copies**; the accepted additions-only scan now brings current inventory to **758 lots / 853 copies**. Subsequent owner corrections
-are stored in canonical assertions and normalized fields; source rows are
-preserved. The database, not a spreadsheet, owns stock. Retired TCGSentry exports
-are hydration/history only. `canonical_inventory` is the current-stock view.
+The desktop-first mobile-capable workspace includes continuous collection scrolling, exact card imagery, broad buylist filters with monetary badges, per-card proceeds and USD histories, dated individual AI reviews, and weekly deduplicated Mana Pool observed-copy bars. Owner prefers Mana Pool for self-sale. Shipping model v4 repairs the known stale letter defaults to$0.82 postage/$0.38 materials, preserving other custom costs.
 
-## Latest analysis checkpoint
+Public pricing refresh is implemented; daily-market-refresh.md records the8AM Pacific schedule and operational dependencies. Latest saved successful run report:October5,9:25AM PDT. Dealer cash/capacity refresh requires authenticated export or targeted public checks. Latest source capture and source publication dates are separate; a new download cannot manufacture new prices.
 
-All 758 lots now have individually revised written reviews using the maintained
-shipping model, saved as immutable run `035aef03-2759-5eeb-ab24-4e087017c235`.
-Eighteen targeted live CK checks added 36 price/capacity observations. The app's
-next-action queue separates cash channel from timing and exposes whole-lot
-comparison dollars; owner directions and available inventory are unchanged.
-A structured AI price test supports newer transaction regimes rather than always
-falling back to the full-window median. See `collection-ai-analysis.md` for current
-counts, provenance and guardrails, and `magiccon-candidate-checkpoint.md` for the
-18-card quote pilot. Older sections below retain earlier dated source scopes.
+All758 lots have individually authored reviews, but their last written checkpoint predates subsequent evidence and model-version changes. Live calculations/detectors recalculate; written narratives remain explicitly dated. Working plans/notes still persist only in browser storage. Quote/sale tables exist but application execution workflows remain unimplemented.
 
-## Accepted facts
+TCG references have unresolved aggregate shipping basis; do not use them as directly comparable merchandise proceeds. Mana Pool sale samples are bounded, and activity bars are observed units rather than complete volume. See tcgplayer-price-normalization.md and sales-volume-signals.md.
 
-- 755 lots are owner-graded Near Mint; three are Lightly Played. Mana Pool's
-  ManaBox CSV import translation does not regrade the cards.
-- Five SOA Japanese-only printings are normalized to Japanese, despite English
-  labels in original ManaBox rows and English booster packaging. The five
-  physical lots, quantities and raw records remain distinct. Japanese
-  Gigantosaurus, eight Phyrexian treatments and nonfoil Psychic Frog #433 are
-  settled. See `identity-clarifications.md`. Do not reopen these from retired
-  source flags or conflicting enrichment.
-- No active Scryfall identity candidates or Mana Pool exact-product mismatches
-  remain for the 723 lots. Three SOA lots share provider products with other
-  separate lots; market observations are stored once per provider product.
+## Next priorities
 
-## Market evidence available
+1. Canonical owner plans/notes and reviewed CK batch-to-quote-to-sale workflow.
+2. Faster list/detail loading and material-change-triggered AI review refresh.
+3. Buyer-qualified MagicCon advance package and incremental add-on quote comparison.
+4. Selective high-value enrichment and incremental history storage.
 
-- The retained Mana Pool catalog maps every lot by printing, finish and printed
-  language. Five grade scenarios yield 3,615 product-grade mappings, 27,649
-  observations, including 22,151 bounded sale-sample records and 1,898 asks.
-  The same product's samples are not duplicated for separate physical lots.
-- An official dated MTGJSON capture adds 52,184 Card Kingdom indicative NM
-  buylist points and 63,759 TCGplayer retail reference points from its rolling
-  price history. These are provider observations, not fresh executable quotes,
-  dealer capacity or completed sales. Exact identity and language gates apply.
-- MTGJSON-transmitted EDHREC ranks add gameplay-interest context. A rank is not
-  exact-printing liquidity or a sale count.
-- `canonical_lot_market_evidence` joins lot, owner grade and exact Mana Pool
-  product. `scripts/market-insights.mjs` produces a read-only research queue,
-  not sell/hold recommendations. See `market-ingestion.md`.
-- A targeted public Card Kingdom check covers 24 exact lots: 22 listed products
-  with indicative cash and displayed wanted quantities, and two not listed.
-  It contributes 46 typed observations. This is a capture of a public page,
-  not an accepted checkout quote or guaranteed capacity.
-- A fresh 16:25 local TCGSentry collection export contributes 2,095 eligible
-  dealer observations: 700 CK bids, 700 CK wanted quantities and 695 SCG bids.
-  The source has 718 rows; incompatible hydration stays excluded. Dealer
-  refresh time and SCG capacity remain unknown. These observations never change
-  inventory. CK quantities of zero exclude 124 displayed prices from available
-  bid comparisons. See `market-ingestion.md`.
+Detailed assessment: project-assessment-2026-10-05.md. Source coverage/operations:daily-market-refresh.md. Durable schema:canonical-store.md. Shipping:shipping-model.md. AI checkpoint:collection-ai-analysis.md. MagicCon:magiccon-advance-quote-methodology.md and magiccon-candidate-checkpoint.md.
 
-## First reviewed tranche
-
-All 723 lots were screened using proposed, transparent comparison thresholds.
-The read-only screen found 98 lots / 114 copies for buylist research; 78 of
-those still rest on historical bid indications only. The 20 live-checked lots
-cover 29 copies and $181 in gross indicative cash. An analyst-reviewed
-`JUST_SELL_TO_BUYLIST` proposal for those 20 lots is stored in run
-`8ee01bb3-77a9-53c6-a36c-f9b739f34193`. It is a **proposal pending owner
-execution**, not an owner choice, approved dealer quote, reservation or sale.
-The gross amount excludes dealer shipping, possible grading changes and other
-batch costs. A fresh TCGSentry buyer comparison preserves canonical identity:
-703 lots match exact printing/finish/language, three of these disagree with the
-owner's LP grade and are excluded from price use. For the reviewed 20 lots,
-SCG's aggregator indications total $115.82 versus $181 direct CK; only one
-SCG line exceeds CK, by $0.50. Reapplying the proposed screen with fresh CK
-indications surfaces 73 more research candidates, bringing the screen to 93
-lots / 109 copies / $365.05 gross indications. These additional lots are not
-stored decisions or approved quotes. See `buylist-first-pass.md`.
-The additional candidates cover 80 copies and $184.05 in gross indications;
-the screen is not an exhaustive classification of what should be sold.
-
-## Still needed for decisions
-
-Accepted checkout quotes and confirmed capacity, physical grade acceptance,
-dealer-batch shipping/material costs, fee settlement, comparable completed sales
-coverage and wider disposition logic are incomplete. Mana Pool samples
-are capped and of unknown completeness; MTGJSON TCG prices are reference prices.
-Do not infer market-wide velocity, realized proceeds or profit from them. The
-order-economics module can calculate scenarios with explicit inputs; it does not
-supply unknown postage, labor or sell-through probability. MagicCon Atlanta in
-November is a planned workflow; no vendor quote or transaction is recorded.
-
-A local all-collection interface design preview now reads the canonical store.
-It provides comparison columns, source details, editable estimate settings and
-browser-saved working plans/notes across Undecided, Buylist, Sell myself,
-MagicCon and Hold. Only existing analyst proposals are labeled as assessed.
-This is not a canonical sale or owner-choice workflow. Scheduled collectors,
-vendor communication and hosting remain unimplemented. See `interface-design.md`.
-The detail panel now includes read-only printing traits, bounded Mana Pool sale
-activity, competing supply and channel research leads. Coverage and limits are
-in `semantic-signal-audit.md`; these are not new stored dispositions.
-
-## Operational checks
-
-Use `npm run db:canonical-status`, `npm run db:verify-canonical` and
-`npm run db:verify-market`. Custom SQL migrations are authoritative; do not use
-`drizzle push` or rerun retired bootstrap/import commands as live stock updates.
-The original starting-data audit and older reanalysis are historical checkpoints;
-their unresolved flags and counts no longer describe current state.
-
-## USD trend enrichment (October 4 evening)
-
-The app now includes retained CK retail and Mana Pool retail-reference history:
-120,769 additional daily points, kept distinct from bids and completed sales.
-The 19:33 Pacific dealer capture refreshes 700 matched lots. Daily chart points,
-source-separated quote markers, shared-date timing context and current-evidence
-channel comparisons replace weekly chart sampling and unconditional old-proposal
-priority. EUR excluded at the owner's request. Details: trend-normalization.md
-and trend-source-research.md. No stock or owner decision changed.
-
-## Collection-wide model review (October 4 evening)
-
-All 723 lots / 817 copies now have individually authored analytical reviews in
-canonical_decisions, run f5e23e64-ecc2-5c44-a184-5151d25dc772. Each has a distinct
-headline, economic/timing interpretation, next move, and pinned input snapshot.
-The app exposes per-card AI analysis, scenario dollars, strong SELL alerts,
-sale/reference discrepancy and self-sale candidate filters. At default costs:
-13 strong modeled-net buylist cases, 399 same-day sale/reference discrepancies,
-and six self-sale comparison candidates. Full 90-day median is now consistent
-between the comparison cards and analysis; retained observations are unchanged.
-47 tests, build and typecheck passed. Import staging, exact replay and untouched
-stock/owner-choice checks passed; prewrite backup restoration was verified.
-See collection-ai-analysis.md. No sale or owner plan was executed.
-
-Oct 4 follow-up: compact list badges, concise AI take with expandable evidence. Targeted SOA hydration applied for 5 exact Japanese products /8 lots:809 CK history points and10 dealer facts, preserving original dates. Eight revised immutable AI reviews saved as4ec1dd70-2877-5be2-a7ad-a16e68e52e76. Exact accepted product aliases share histories and dealer capacity; separate physical lots retained. Crop Rotation116 wants zero.48 tests/build/typecheck passed; desktop/mobile checked; stock817 copies/723 lots and27 browser draft plans unchanged. See soa-market-hydration.md.
-
-## Additional ManaBox scan (October 4 late evening)
-
-Owner-authorized additions-only reconciliation of Sell (1).csv found all 723 prior source identities and quantities unchanged, plus 35 lots / 36 copies. Canonical stock is 758 lots / 853 copies. Source rows/hash persist in SQL; snapshot is retired after acceptance. Replay adds zero stock. Owner corrections and choices preserved. Backup full-content restoration, 20 canonical invariant checks and 52 unit tests passed. New source hydration and individual reviews documented in scan-additions.md when completed. MagicCon advance itemized quote methodology is in magiccon-advance-quote-methodology.md; no buyer contacted or quote agreed.
-
-New-scan completion: 35 exact Scryfall/Mana Pool matches; all four dated USD history series present for every addition. 35 individual AI reviews saved as a345fa5a-1daf-5b4f-ad75-6131ab369c9a. A serialization defect was corrected by132 explicit superseding observations; graph-date coverage checked.53 tests and20 canonical checks pass. See scan-additions.md.
-
-MagicCon research: broad online review of 10 buyer candidates and experienced
-selling guidance is saved in magiccon-package-research.md and
-magiccon-research-sources.json. Proposed package: buyer-specific desirable core,
-specialist module and optional slower add-ons; paired bids measure incremental
-value while protecting the core's outside alternative. Only Three for One's
-upcoming Atlanta attendance was independently confirmed in this pass; its default
-estimate/review process does not meet the owner's advance-price requirement.
-Other buyers require event and process qualification. Retained inventory examples
-illustrate candidate roles without claiming refreshed executable quotes. No
-outreach, reservations, stock changes, UI changes or accepted sale occurred.
-
-Routine shipping handoff audit corrected letter defaults from135c postage+25c
-materials to82c postage+38c integrated-envelope materials; buyer135c receipt and
-fee scope were already correct. Self-sale letter net rises40c/order. Tracked
-materials now separate; browser migration preserves owner plans/custom settings.
-Strict strong screen recalculates18→7; four new history candidates remain and
-Dust Bowl moves to convenience parity. Older immutable written reviews marked
-earlier cost assumptions.56 tests/build/typecheck pass. See routine-shipping-audit.md.
-
-Tracked handoff audit: purchased packaging rounds39.4518c to40c; separate editable
-5c label/print planning allowance added.550c postage remains a configurable
-scenario requiring actual Pirate Ship quotes. UI now distinguishes buyer-paid
-tracked upgrade below$60 (649c receipt) from free tracked at$60+ (zero receipt).
-Default seller-funded tracked net declines20c; letter scenario unchanged.
-57 tests/build/typecheck pass. See tracked-shipping-audit.md.
-
-Shipping research consolidated in shipping-model.md as the maintained reference. Letter/tracked handoffs are retired inputs; audit receipts retain provenance. No raw handoff is required for continuing implementation.
-
-
-### 2026-10-05 broader buylist workflow
-
-Added a median-net buylist shortlist with undecided-only and captured CK range-high filters. Browser verification preserved 55 assigned lots (51 buylist, 3 self-sale, 1 hold); 74 undecided lots passed CK-beats-median-net plus near-high using the owner browser costs ($1.35 letter postage, $0.25 materials). This count is settings-dependent, not a universal recommendation. Emrakul INR 481, Astral Dragon CLB 613, Descent into Avernus CLB 580 foil and Mightform Harmonizer EOE 297 were still undecided. Tyvar DSK 353 foil and Valley Floodcaller BLB 308 foil display newer higher-sale warnings and need review before treating their older medians as sale targets. No owner plans or inventory events changed. Full check passed 69 tests, production build and typecheck; desktop and 390px visual checks completed.
-
-
-2026-10-05 continuous collection browsing: removed 40-row pagination; all filtered lots are rendered in one scrollable table with lazy card images. Select matching cards now explicitly applies to the whole filtered result. Fixed table column sizing and wrapped identity/commentary prevent long warnings from moving dollar and plan columns off-screen. Verified 758-row collection and 166-row filtered shortlist, no desktop table overflow at 1265px, no page overflow at 390px; narrow tables retain horizontal scrolling. Full check passed 69 tests, build and typecheck.
+Prior chronological checkpoint text is preserved in state-history-through-2026-10-05.md; its historical counts and unimplemented claims are not current status.
