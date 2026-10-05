@@ -45,6 +45,8 @@ the images load from Scryfall while online.
 The detail view also shows printing traits, bounded sale activity, competing
 stock and channel research leads; see `docs/semantic-signal-audit.md` for
 coverage, examples and interpretation limits.
+Card decisions now lead with proceeds and next steps, with interactive retained
+price history and expandable fee breakdowns. See `docs/card-decision-audit.md`.
 The server-only `/api/health` endpoint reports readiness without connection details.
 
 ## Commands

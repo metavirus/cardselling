@@ -72,4 +72,12 @@ not assign owner plans or change stored analyst proposals. The experimental
 effort thresholds and collection-wide coverage are documented in
 `semantic-signal-audit.md`.
 
+The October 4 substantive redesign supersedes that signals-first layout. Card
+details now lead with a next-move prompt and side-by-side dealer/self-sale
+proceeds. The view adds asking-price versus sale-median scenarios, an itemized
+net receipt, real retained price-history lines and sale dots with range/series
+controls, and immediate working-plan buttons. Long methodological caveats live
+under Sources & calculation details. See `card-decision-audit.md` for the live
+TCGSentry comparison, adopted patterns, data coverage and remaining workflows.
+
 Verified at desktop 1440x1000 and mobile 390x844: all 723 lots / 817 copies are accessible; filters, search, draft persistence, and editable estimates work. The 20-proposal selection reconciles to 29 copies, 181.00 dollars in CK bids and 132.37 dollars in modeled self-sale net. Raising postage by 0.50 dollars reduces that net by 14.50 dollars. Production build and TypeScript checks pass.

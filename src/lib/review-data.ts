@@ -2,9 +2,11 @@ import "server-only";
 import {sql} from "drizzle-orm";
 import {database} from "@/db/client";
 
+export type PricePoint={date:string;cents:number};
 export type ReviewCard={
  lotId:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
+ marketHistory:{tcg:PricePoint[];ck:PricePoint[]};recentSales:PricePoint[];
  semantic:{traits:string[];typeLine:string|null;edhrecRank:number|null;releasedAt:string|null;
   observedSales30:number;observedSales90:number;saleSampleCapped:boolean;latestObservedSaleAt:string|null;
   competingQuantity:number|null};
@@ -30,6 +32,7 @@ type ImageRow={variant_id:string;product_id:string;raw:{image_uris?:Record<strin
  promo_types?:string[];frame_effects?:string[];full_art?:boolean;textless?:boolean;border_color?:string;
  set_type?:string;type_line?:string;edhrec_rank?:number;released_at?:string}|null};
 type Supply={lot_id:string;numeric_value:string};
+type History={variant_id:string;condition_scope:string;provider:string;numeric_value:string;source_date:Date|string};
 const iso=(x:Date|string|null|undefined)=>x==null?null:new Date(x).toISOString();
 function cardImages(row:ImageRow|undefined){
  const source=row?.raw;
@@ -73,7 +76,7 @@ export async function getReviewData():Promise<ReviewData>{
  const run=(await db.execute(sql`SELECT id,input_manifest FROM canonical_decision_runs
   WHERE prompt_version='human-requested-just-sell-first-pass-v1' ORDER BY created_at DESC LIMIT 1`)).rows[0] as unknown as Run|undefined;
  if(!run)throw new Error("No reviewed buylist run is available");
- const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult,imagesResult,supplyResult]=await Promise.all([
+ const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult,imagesResult,supplyResult,historyResult]=await Promise.all([
   db.execute(sql`SELECT count(*)::int lots,coalesce(sum(available_quantity),0)::int copies FROM canonical_inventory`),
   db.execute(sql`SELECT i.lot_id,i.variant_id,i.name,i.set_code,i.collector_number,i.finish,i.printed_language,
     i.condition_normalized,i.available_quantity,d.proposal FROM canonical_inventory i
@@ -105,7 +108,24 @@ export async function getReviewData():Promise<ReviewData>{
     ORDER BY m.variant_id,m.id`),
   db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value FROM canonical_lot_market_evidence
     WHERE metric='available_quantity' AND condition_scope=condition_normalized
-    ORDER BY lot_id,captured_at DESC,id DESC`)
+    ORDER BY lot_id,captured_at DESC,id DESC`),
+  // Keep the first and last source day plus weekly closing points. Latest capture
+  // wins an overlapping source day; historical references never become quotes.
+  db.execute(sql`WITH daily AS (
+    SELECT DISTINCT ON (m.variant_id,m.provider,m.condition_scope,e.window_start)
+      m.variant_id,m.provider,m.condition_scope,e.numeric_value,e.window_start AS source_date
+    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id
+    WHERE (m.provider='MTGJSON/tcgplayer' AND e.metric='daily_retail_reference')
+       OR (m.provider='MTGJSON/cardkingdom' AND e.metric='indicated_nm_buylist')
+    ORDER BY m.variant_id,m.provider,m.condition_scope,e.window_start,e.captured_at DESC,e.id DESC
+  ), bounded AS (
+    SELECT *,max(source_date) OVER (PARTITION BY variant_id,provider,condition_scope) latest FROM daily
+  ), ranked AS (
+    SELECT *,row_number() OVER (PARTITION BY variant_id,provider,condition_scope,date_trunc('week',source_date AT TIME ZONE 'UTC') ORDER BY source_date DESC) week_rank,
+      row_number() OVER (PARTITION BY variant_id,provider,condition_scope ORDER BY source_date) first_rank
+    FROM bounded WHERE source_date>=latest-interval '90 days'
+  ) SELECT variant_id,provider,condition_scope,numeric_value,source_date FROM ranked
+    WHERE week_rank=1 OR first_rank=1 ORDER BY source_date`)
  ]);
  const stock=stockResult.rows[0] as unknown as {lots:number;copies:number}|undefined;
  const lots=lotsResult.rows as unknown as Lot[];
@@ -135,6 +155,14 @@ export async function getReviewData():Promise<ReviewData>{
  const tcg=new Map((tcgResult.rows as unknown as {variant_id:string;numeric_value:string;source_date:Date|string}[]).map(x=>[x.variant_id,x]));
  const imageRows=new Map((imagesResult.rows as unknown as ImageRow[]).map(x=>[x.variant_id,x]));
  const supply=new Map((supplyResult.rows as unknown as Supply[]).map(x=>[x.lot_id,Number(x.numeric_value)]));
+ const histories=new Map<string,PricePoint[]>();
+ for(const row of historyResult.rows as unknown as History[]){
+  const historyKey=`${row.variant_id}|${row.provider}|${row.condition_scope}`,price=cents(row.numeric_value);
+  if(price===null)continue;
+  if(!histories.has(historyKey))histories.set(historyKey,[]);
+  histories.get(historyKey)!.push({date:iso(row.source_date)!,cents:price});
+ }
+ const recentSales=new Map<string,PricePoint[]>();
  const now=Date.parse(evidenceAsOf),samples=new Map<string,number[]>();
  const activity=new Map<string,{all:number;last:Date|string|null;d30:number;d90:number}>();
  const saleRows=salesResult.rows as unknown as Sale[];
@@ -154,6 +182,8 @@ export async function getReviewData():Promise<ReviewData>{
   activity.set(sale.lot_id,prior);
   if(sale.quantity!==1||!Number.isFinite(observed)||age<0||age>120)continue;
   const price=cents(sale.numeric_value);if(price==null)continue;
+  if(!recentSales.has(sale.lot_id))recentSales.set(sale.lot_id,[]);
+  recentSales.get(sale.lot_id)!.push({date:iso(sale.observed_at)!,cents:price});
   if(!samples.has(sale.lot_id))samples.set(sale.lot_id,[]);samples.get(sale.lot_id)!.push(price);
  }
  const cards:ReviewCard[]=lots.map(lot=>{
@@ -170,6 +200,9 @@ export async function getReviewData():Promise<ReviewData>{
   const cardRef=imageRows.get(lot.variant_id),raw=cardRef?.raw,activityRow=activity.get(lot.lot_id);
   return {lotId:lot.lot_id,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
    images:cardImages(cardRef),
+   marketHistory:{tcg:histories.get(`${lot.variant_id}|MTGJSON/tcgplayer|not_applicable`)??[],
+    ck:histories.get(`${lot.variant_id}|MTGJSON/cardkingdom|${lot.condition_normalized}`)??[]},
+   recentSales:(recentSales.get(lot.lot_id)??[]).toSorted((a,b)=>a.date.localeCompare(b.date)),
    semantic:{traits:printingTraits(cardRef,lot.finish,lot.set_code),typeLine:raw?.type_line??null,
     edhrecRank:Number.isSafeInteger(raw?.edhrec_rank)?raw!.edhrec_rank!:null,releasedAt:raw?.released_at??null,
     observedSales30:activityRow?.d30??0,observedSales90:activityRow?.d90??0,
