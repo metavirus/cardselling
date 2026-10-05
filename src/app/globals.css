@@ -44,3 +44,40 @@
 .channel-checks strong{font-size:10px}
 .channel-checks span,.channel-checks p{font-size:9px;color:var(--muted);line-height:1.35}
 .semantic-panel .semantic-caution{font-size:9px;color:var(--muted);line-height:1.4;margin-top:10px}
+
+/* Collection-first layout: details open only when requested. */
+.review-grid{display:block}
+.workspace{max-width:1920px;padding-top:20px}
+.page-heading .eyebrow{display:none}
+h1{font-size:25px;margin:0 0 5px}
+.context-line{margin:12px 0}
+.overview{margin-bottom:18px}
+.overview>div,.overview>button{padding:11px 18px;gap:3px}
+.overview strong{font-size:21px;letter-spacing:-.4px}
+.overview small{display:inline;margin-left:8px}
+.card-identity{min-height:45px}
+.art-thumb,.art-unavailable{width:33px;height:46px}
+td{padding-top:8px;padding-bottom:8px}
+.card-link{max-width:none}
+.column-sort{border:0;background:none;color:inherit;font-size:inherit;padding:0;border-radius:0}
+.column-sort:hover{color:var(--accent)}
+.plan-pill{max-width:125px;cursor:pointer;padding:6px}
+.detail-dialog{width:min(760px,calc(100vw - 32px));max-height:90vh;padding:0;border:1px solid var(--line);border-radius:12px;color:var(--ink);box-shadow:0 20px 70px #182d2355}
+.detail-dialog::backdrop{background:#182d2370}
+.detail-dialog .detail-panel{border:0;border-radius:0;padding:24px}
+.detail-top{position:sticky;top:-24px;background:white;padding:10px 0;z-index:1}
+.detail-top .pill{margin-left:auto}
+.detail-close{font-size:24px;line-height:1;padding:2px 9px;margin-left:8px}
+.detail-dialog .detail-art{float:right;width:180px;margin:16px 0 16px 22px}
+.detail-dialog .detail-art img{height:210px}
+.detail-dialog .semantic-panel{overflow:hidden}
+.detail-dialog .recommendation{clear:both}
+@media(max-width:640px){
+ .overview small{display:block;margin-left:0}
+ .detail-dialog{width:calc(100vw - 16px);max-height:94vh}
+ .detail-dialog .detail-panel{padding:16px}
+ .detail-top{top:-16px}
+ .detail-dialog .detail-art{float:none;width:100%;margin:14px 0}
+ .table-tools{flex-wrap:wrap}
+ .search{flex-basis:180px}
+}

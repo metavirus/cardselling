@@ -17,8 +17,8 @@ existing reviewed decisions have a suggested channel; the rest remain unassessed
 No numerical screen silently classifies the whole collection. Hold notes prompt
 for a thesis/review trigger; event notes prompt for convention buyer questions.
 
-A card detail panel keeps source figures, evidence limits, analyst reasoning,
-counterarguments and owner notes next to the comparison. Bulk selection can
+A card detail dialog opens from the card name and keeps source figures, evidence
+limits, analyst reasoning, counterarguments and owner notes available on demand. Bulk selection can
 assign a direction. The selection tray reports subtotal coverage explicitly;
 missing prices do not become zero-dollar bids. Whole-lot plans are the initial
 interaction; splitting physical quantities across channels is a later workflow.
@@ -36,9 +36,20 @@ sync, split quantities, chart histories, richer demand signals and event quotes
 remain implementation work. The local SQL database supplies inventory and
 evidence through a server-only reader. No remote deployment is authorized.
 
-Desktop uses the table and a side detail panel. Narrow layouts stack the detail
-panel below a horizontally scrollable comparison table; inspecting a card moves
-to its details. Keep numeric columns comparable rather than hiding them on phones.
+Desktop uses the full-width table with no initially selected card or persistent
+detail pane. Card details open in a native modal dialog with Escape, close-button,
+and backdrop dismissal. Native modal focus handling returns to the trigger.
+Narrow layouts use the same dialog with a scrollable interior. Keep numeric
+columns comparable rather than hiding them on phones.
+
+The owner requested inspiration from TCGSentry's live collection UI. Inspected
+its list, sell-signal popover and card-grid view in the signed-in Chrome tab.
+Adopted compact summary/rows, direct key-column sorting and inline plan selectors.
+The useful general pattern is to expose explanations on demand while keeping
+the collection comparison prominent. The card-grid toggle is a potential later
+addition; its presence in TCGSentry is not a requirement to copy its scoring.
+Verified the dialog at desktop and 390px width, Escape/close dismissal, direct
+sorting, and nested artwork enlargement. Existing plan storage is preserved.
 
 The comparison table now shows a card thumbnail and the detail panel shows a
 larger image. Hovering a thumbnail previews the card on pointer devices;
