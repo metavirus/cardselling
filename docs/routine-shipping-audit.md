@@ -43,3 +43,7 @@ The default strict strong screen changes18→7 cases: four history verification 
 - No owner wage, loss rate or guarantee of zero claims is invented. Buylist shipment costs are separate and unchanged.
 
 56 tests, build and typecheck passed. Independent agent arithmetic audit agreed. No stock, allocations, prices or owner decisions were mutated.
+
+## October 5 saved-settings repair
+
+The owner screenshot exposed the legacy $1.35 postage/$0.25 materials pair despite the intended $0.82/$0.38 baseline. Version v4 repairs that exact stale pair in v2/v3 saves; other customized values remain intact. Client hydration now guards its saved model version to prevent an old state being stamped with a new version during hot reload. Buyer shipping receipt ($1.35) remains distinct from actual postage ($0.82). At a $0.47 Mabel sale, 5% merchandise fee rounds to $0.02; processing on $1.82 rounds to $0.35 including fixed charge; $0.82 postage and $0.38 materials leave $0.25. The former settings left -$0.15. One $1 sale leaves $0.73 under this one-copy scenario. Combined orders share fixed costs; sub-dollar cards are not inherently loss-making.

@@ -1,0 +1,100 @@
+{
+  "audit_date": "2026-10-05",
+  "card": "Warden of the Grove",
+  "canonical_identity": {
+    "variant_id": "e74de881-7bc2-4b6f-91c3-22c70cf2ab79",
+    "set": "tdm",
+    "collector_number": "351",
+    "treatment": "borderless",
+    "finish": "foil",
+    "language": "en",
+    "condition": "near_mint",
+    "tcgplayer_product_id": "625028",
+    "mtgjson_uuid": "707f1d02-3458-5023-8013-6ad3b97c0c05"
+  },
+  "evidence": {
+    "canonical_tcg_reference": {
+      "currency": "USD",
+      "first_date": "2026-07-06",
+      "last_date": "2026-10-05",
+      "minimum": 5.09,
+      "maximum": 6.67,
+      "maximum_plateau": "2026-09-23 through 2026-09-27",
+      "2026-10-04": 6.46,
+      "2026-10-05": 6.35,
+      "mapping_finish": "foil",
+      "price_basis": "unspecified_retail_reference",
+      "upstream": "TCGplayer via MTGJSON",
+      "condition_scope": "not_applicable"
+    },
+    "owner_screenshot": {
+      "normal_comparison_market": 3.48,
+      "foil_comparison_market": 6.35,
+      "charted_market_range_approximate": [
+        2.5,
+        3.5
+      ],
+      "interpretation": "The displayed chart corresponds to normal, while the canonical holding and reference series are foil. The screenshot foil comparison exactly agrees with the latest canonical foil reference."
+    },
+    "other_canonical_foil_references": {
+      "cardkingdom_retail_range": [
+        4.99,
+        6.99
+      ],
+      "manapool_retail_range": [
+        2.6,
+        4.24
+      ],
+      "interval": "2026-07-06 through 2026-10-05",
+      "interpretation": "A genuine cross-market reference gap remains. These are reference series, not a reconciled set of exact-condition individual realized sales."
+    }
+  },
+  "conclusion": "No incorrect TCG product mapping, finish selection in canonical evidence, or inflated historical spike found. The apparent discrepancy is a normal-versus-foil comparison.",
+  "interface_follow_up": "Show finish beside the TCG reference legend and select the inventory finish in outbound product links. Keep TCG product-level market reference distinct from condition-filtered sales history and listed median.",
+  "primary_sources": [
+    "https://help.tcgplayer.com/hc/en-us/articles/222376867-What-do-the-different-price-points-on-TCGplayer-com-mean",
+    "https://mtgjson.com/data-models/price/price-list/"
+  ],
+  "source_semantics": "TCGplayer says price points reflect selected printing and condition filters; Market Price derives from completed sales, while Listed Median derives from listings. MTGJSON PriceList exposes retail/buylist and currency, without asserting exact-condition sales counts or distribution. Preserve the existing unspecified reference basis rather than claiming new precision from matching one current value.",
+  "data_changes": "none",
+  "live_foil_page_check": {
+    "checked_date": "2026-10-05",
+    "url": "https://www.tcgplayer.com/product/625028/magic-tarkir-dragonstorm-warden-of-the-grove-borderless?Language=English&page=1&Printing=Foil",
+    "selected_price_scope": "Near Mint Foil",
+    "market_price_usd": 6.35,
+    "most_recent_sale_usd": 3.2,
+    "three_month_units_sold": 52,
+    "three_month_low_sale_usd": 3.0,
+    "three_month_high_sale_usd": 13.94,
+    "interpretation": "Foil reference matches our series, but most recent sale is substantially lower. Reference is not current realizable proceeds. Normal screenshot volume193 is a different finish."
+  },
+  "shipping_basis_audit": {
+    "status": "unresolved",
+    "hypothesis": "Separately charged shipping or embedded shipping economics may explain some spread. Do not subtract guessed shipping from aggregate references.",
+    "official_definition": "TCGplayer describes Market Price as aggregate recent completed transactions, but inspected help pages do not specify shipping treatment.",
+    "visible_nm_foil_sales": [
+      {
+        "date": "2026-10-04",
+        "quantity": 1,
+        "displayed_price": 3.2
+      },
+      {
+        "date": "2026-10-03",
+        "quantity": 1,
+        "displayed_price": 5.72
+      },
+      {
+        "date": "2026-09-30",
+        "quantity": 1,
+        "displayed_price": 3.0
+      },
+      {
+        "date": "2026-09-22",
+        "quantity": 1,
+        "displayed_price": 6.78
+      }
+    ],
+    "shipping_separately_exposed_in_sales_table": false,
+    "normalization": "Keep merchandise price, buyer shipping, delivered total, quantity, condition and source price basis separate. Unknown shipping remains unknown; the aggregate reference does not enter the Mana Pool net estimate as realized sale evidence."
+  }
+}

@@ -2,9 +2,11 @@ import "server-only";
 import {sql} from "drizzle-orm";
 import {database} from "@/db/client";
 import {reviewCheckpointCurrent} from './review-checkpoint';
+import {sampledSalesActivity,type ActivitySale,type ActivityCapture} from './sales-activity';
 
 export type PricePoint={date:string;cents:number};
 export type ReviewCard={
+ salesActivity?:ReturnType<typeof sampledSalesActivity>;
  analystReview?:{headline:string;commentary:string;nextStep:string;channel?:string;timing?:string;reconsideration?:string;buyerFit?:string;counterargument?:string;priceScenario?:{grossCents:number|null;basis:string};asOf:string;current:boolean};
  lotId:string;printingKey?:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
@@ -175,6 +177,36 @@ export async function getReviewData():Promise<ReviewData>{
  const lots=lotsResult.rows as unknown as Lot[];
  const evidenceAsOf=iso((capturesResult.rows[0] as {latest:Date|string|null}|undefined)?.latest);
  if(!stock||!evidenceAsOf||lots.length!==stock.lots)throw new Error("Canonical inventory/evidence is unavailable or duplicated");
+ // One mapping per lot/capture prevents the alias/mapping fanout present in the
+ // broad evidence view. Retain overlapping historical samples for units only;
+ // the price-dot and median paths still use the newest capture above.
+ const activityResult=await db.execute(sql`WITH products AS MATERIALIZED (
+   SELECT DISTINCT ON (i.lot_id,c.id) i.lot_id,m.id mapping_id,c.id capture_id,c.captured_at
+   FROM canonical_inventory i JOIN canonical_product_mappings m ON m.variant_id=i.variant_id
+     AND m.provider='Mana Pool' AND m.status='accepted' AND m.finish_scope=i.finish
+     AND m.language_scope=i.printed_language AND m.condition_scope=i.condition_normalized
+   JOIN canonical_captures c ON c.id=m.capture_id AND c.use_state='eligible'
+   WHERE c.captured_at BETWEEN ${evidenceAsOf}::timestamptz-interval '90 days' AND ${evidenceAsOf}::timestamptz
+     AND NOT EXISTS(SELECT 1 FROM canonical_product_mappings n WHERE n.supersedes_id=m.id)
+     AND NOT EXISTS(SELECT 1 FROM canonical_source_retirements r WHERE r.source_file_id=c.source_file_id)
+   ORDER BY i.lot_id,c.id,m.id
+ ) SELECT p.lot_id,p.capture_id,p.captured_at,o.numeric_value,o.quantity,o.observed_at
+   FROM products p LEFT JOIN canonical_observations o ON o.mapping_id=p.mapping_id
+     AND o.capture_id=p.capture_id AND o.metric='reported_sale_price' AND o.currency='USD'
+     AND NOT EXISTS(SELECT 1 FROM canonical_observations n WHERE n.supersedes_id=o.id)`);
+ const historicalSales=new Map<string,ActivitySale[]>(),activityCaptures=new Map<string,Map<string,ActivityCapture>>();
+ for(const raw of activityResult.rows){
+  const r=raw as unknown as {lot_id:string;capture_id:string;captured_at:Date|string;numeric_value:string|null;quantity:number|null;observed_at:Date|string|null};
+  const capturedAt=iso(r.captured_at)!;
+  const captures=activityCaptures.get(r.lot_id)??new Map<string,ActivityCapture>();
+  const capture=captures.get(r.capture_id)??{capturedAt,records:0,limit:20};
+  if(r.observed_at!=null&&r.numeric_value!=null&&r.quantity!=null){
+   const rows=historicalSales.get(r.lot_id)??[];
+   rows.push({capturedAt,soldAt:iso(r.observed_at)!,cents:cents(r.numeric_value)!,quantity:r.quantity});
+   historicalSales.set(r.lot_id,rows);capture.records++;
+  }
+  captures.set(r.capture_id,capture);activityCaptures.set(r.lot_id,captures);
+ }
  const bidRows=bidsResult.rows as unknown as Evidence[];
  const direct=new Map<string,{price:Evidence;capacity:Evidence}>(),exported=new Map<string,{price:Evidence;capacity:Evidence}>(),scg=new Map<string,Evidence>();
  const grouped=new Map<string,Evidence[]>();
@@ -252,6 +284,7 @@ export async function getReviewData():Promise<ReviewData>{
   const scgValue=scg.get(k);
   const cardRef=imageRows.get(lot.variant_id),raw=cardRef?.raw,activityRow=activity.get(lot.lot_id);
   return {lotId:lot.lot_id,printingKey:`${cardRef?.product_id??lot.variant_id}|${lot.finish}|${lot.printed_language}`,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
+   salesActivity:sampledSalesActivity(historicalSales.get(lot.lot_id)??[],[...(activityCaptures.get(lot.lot_id)?.values()??[])],evidenceAsOf),
    images:cardImages(cardRef),
    marketHistory:{tcg:histories.get(`${lot.variant_id}|MTGJSON/tcgplayer|not_applicable|daily_retail_reference`)??[],
     ck:histories.get(`${lot.variant_id}|MTGJSON/cardkingdom|${lot.condition_normalized}|indicated_nm_buylist`)??[],

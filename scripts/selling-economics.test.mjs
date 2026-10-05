@@ -13,6 +13,18 @@ test('legacy defaults migrate once and custom costs remain intact',()=>{
  assert.deepEqual(migrateShippingSettings(migrated,shippingModelVersion),migrated);
  assert.equal(migrateShippingSettings({...old,postage:111,materials:50}).postage,111);assert.equal(migrateShippingSettings({...old,materials:50}).materials,50);
 });
+test('versioned stale letter default pair is repaired and sub-dollar sale remains positive',()=>{
+ const old={...defaultSettings,postage:135,materials:25};
+ for(const version of ['tracked-pilot-v3','integrated-letter-v2']){
+  const repaired=migrateShippingSettings(old,version);
+  assert.equal(repaired.postage,82);assert.equal(repaired.materials,38);
+  const mabel={askCents:47,medianCents:47,ckCents:72,ckCapacity:24,quantity:1};
+  assert.equal(estimate(mabel,old).net,-15);assert.equal(estimate(mabel,repaired).net,25);
+  assert.equal(estimate({...mabel,medianCents:100},repaired).net,73);
+ }
+ assert.equal(migrateShippingSettings({...old,postage:111},'tracked-pilot-v3').postage,111);
+ assert.deepEqual(migrateShippingSettings(old,shippingModelVersion),old);
+});
 const settings={postage:135,tracked:550,materials:25,batch:1000,basis:'ask'};
 test('buyer-paid tracking and free tracking have distinct cash flows',()=>{
  const c={askCents:5000,medianCents:5000,ckCents:null,ckCapacity:null,quantity:1};
