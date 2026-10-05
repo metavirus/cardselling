@@ -6,9 +6,21 @@ are stored in canonical assertions and normalized fields; source rows are
 preserved. The database, not a spreadsheet, owns stock. Retired TCGSentry exports
 are hydration/history only. `canonical_inventory` is the current-stock view.
 
+## Latest analysis checkpoint
+
+All 758 lots now have individually revised written reviews using the maintained
+shipping model, saved as immutable run `035aef03-2759-5eeb-ab24-4e087017c235`.
+Eighteen targeted live CK checks added 36 price/capacity observations. The app's
+next-action queue separates cash channel from timing and exposes whole-lot
+comparison dollars; owner directions and available inventory are unchanged.
+A structured AI price test supports newer transaction regimes rather than always
+falling back to the full-window median. See `collection-ai-analysis.md` for current
+counts, provenance and guardrails, and `magiccon-candidate-checkpoint.md` for the
+18-card quote pilot. Older sections below retain earlier dated source scopes.
+
 ## Accepted facts
 
-- 720 lots are owner-graded Near Mint; three are Lightly Played. Mana Pool's
+- 755 lots are owner-graded Near Mint; three are Lightly Played. Mana Pool's
   ManaBox CSV import translation does not regrade the cards.
 - Five SOA Japanese-only printings are normalized to Japanese, despite English
   labels in original ManaBox rows and English booster packaging. The five

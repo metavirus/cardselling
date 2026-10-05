@@ -1,10 +1,11 @@
 import "server-only";
 import {sql} from "drizzle-orm";
 import {database} from "@/db/client";
+import {reviewCheckpointCurrent} from './review-checkpoint';
 
 export type PricePoint={date:string;cents:number};
 export type ReviewCard={
- analystReview?:{headline:string;commentary:string;nextStep:string;asOf:string;current:boolean};
+ analystReview?:{headline:string;commentary:string;nextStep:string;channel?:string;timing?:string;reconsideration?:string;buyerFit?:string;counterargument?:string;priceScenario?:{grossCents:number|null;basis:string};asOf:string;current:boolean};
  lotId:string;printingKey?:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
  marketHistory:{tcg:PricePoint[];ck:PricePoint[];ckRetail?:PricePoint[];manaPoolRetail?:PricePoint[]};recentSales:PricePoint[];
@@ -233,7 +234,7 @@ export async function getReviewData():Promise<ReviewData>{
    rationale:proposal?.rationale??null,counterargument:proposal?.counterargument??null};
  });
  const analystRows=await db.execute(sql`SELECT DISTINCT ON (d.lot_id) d.lot_id,d.proposal,r.input_manifest FROM canonical_decisions d JOIN canonical_decision_runs r ON r.id=d.run_id WHERE r.prompt_version='collection-ai-review-v1' ORDER BY d.lot_id,r.created_at DESC`);
- const analystMap=new Map((analystRows.rows as unknown as {lot_id:string;proposal:{headline:string;commentary:string;nextStep:string;input_snapshot:{quantity:number;ckSourceDate:string|null;askCapturedAt:string|null}};input_manifest:{asOf:string}}[]).map(r=>[r.lot_id,{quantity:r.proposal.input_snapshot.quantity,headline:r.proposal.headline,commentary:r.proposal.commentary,nextStep:r.proposal.nextStep,asOf:r.input_manifest.asOf,current:r.input_manifest.asOf===evidenceAsOf&&(r.input_manifest as unknown as {settings?:{postage:number;materials:number}}).settings?.postage===82&&(r.input_manifest as unknown as {settings?:{postage:number;materials:number}}).settings?.materials===38}]));
+ const analystMap=new Map((analystRows.rows as unknown as {lot_id:string;proposal:{headline:string;commentary:string;nextStep:string;channel?:string;timing?:string;reconsideration?:string;buyerFit?:string;counterargument?:string;priceScenario?:{grossCents:number|null;basis:string};input_snapshot:{quantity:number}};input_manifest:{asOf:string;shipping_model_version?:string;settings?:Record<string,unknown>}}[]).map(r=>[r.lot_id,{quantity:r.proposal.input_snapshot.quantity,headline:r.proposal.headline,commentary:r.proposal.commentary,nextStep:r.proposal.nextStep,channel:r.proposal.channel,timing:r.proposal.timing,reconsideration:r.proposal.reconsideration,buyerFit:r.proposal.buyerFit,counterargument:r.proposal.counterargument,priceScenario:r.proposal.priceScenario,asOf:r.input_manifest.asOf,current:reviewCheckpointCurrent(r.input_manifest,evidenceAsOf)}]));
  for(const card of cards){const saved=analystMap.get(card.lotId);if(saved){const {quantity,...review}=saved;card.analystReview={...review,current:review.current&&quantity===card.quantity};}}
  const reviewed=lots.filter(x=>x.proposal),reviewedCopies=reviewed.reduce((sum,x)=>sum+x.available_quantity,0);
  const reviewedGrossCents=reviewed.reduce((sum,x)=>sum+(x.proposal?.gross_cents??0),0);

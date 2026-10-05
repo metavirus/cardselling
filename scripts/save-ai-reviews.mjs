@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {appClient} from './database.mjs';
+import {defaultSettings,shippingModelVersion} from '../src/lib/selling-economics.ts';
 const inputBytes=readFileSync('.local/analysis/full-input.json'),input=JSON.parse(inputBytes);
 const additions=process.argv.includes('--additions');
 const partial=process.argv.includes('--soa')||additions;
@@ -11,11 +12,19 @@ const ids=new Set(input.cards.map(c=>c.lotId));
 if(!partial)assert.equal(reviews.length,input.cards.length);
 assert.equal(new Set(reviews.map(r=>r.lotId)).size,reviews.length);
 if(partial&&!additions){const soa=input.cards.filter(c=>c.setCode==='soa'&&c.printedLanguage==='ja'&&['80','116','72','124','126'].includes(c.collectorNumber));assert.deepEqual(reviews.map(r=>r.lotId).sort(),soa.map(c=>c.lotId).sort());}
-for(const r of reviews){assert.ok(ids.has(r.lotId));for(const k of ['headline','commentary','nextStep'])assert.ok(typeof r[k]==='string'&&r[k].length>10&&r[k].length<6000,`${r.lotId} ${k}`);}
+for(const r of reviews){
+ assert.ok(ids.has(r.lotId));for(const k of ['headline','commentary','nextStep'])assert.ok(typeof r[k]==='string'&&r[k].length>10&&r[k].length<6000,`${r.lotId} ${k}`);
+ {
+  for(const k of ['timing','reconsideration','buyerFit'])assert.ok(typeof r[k]==='string'&&r[k].length>10&&r[k].length<6000,`${r.lotId} ${k}`);
+  assert.ok(['ck_buylist','patient_self_sale','magiccon_quote','alternative_buylist','batch_bundle','hold_watch','verify'].includes(r.channel),`${r.lotId} channel`);
+  assert.ok(r.priceScenario&&typeof r.priceScenario.basis==='string');
+  assert.ok(r.priceScenario.grossCents===null||(Number.isSafeInteger(r.priceScenario.grossCents)&&r.priceScenario.grossCents>0));
+ }
+}
 const hash=x=>createHash('sha256').update(x).digest('hex');
-const combined=JSON.stringify(reviews),fingerprint=hash(Buffer.concat([inputBytes,Buffer.from(combined)]));
+const combined=JSON.stringify(reviews),fingerprint=hash(Buffer.concat([inputBytes,Buffer.from(combined),Buffer.from(JSON.stringify({defaultSettings,shippingModelVersion}))]));
 const id=`${fingerprint.slice(0,8)}-${fingerprint.slice(8,12)}-5${fingerprint.slice(13,16)}-a${fingerprint.slice(17,20)}-${fingerprint.slice(20,32)}`;
-const manifest={asOf:input.asOf,input_sha256:hash(inputBytes),review_sha256:hash(combined),lot_count:reviews.length,copy_count:reviews.reduce((n,r)=>n+input.cards.find(c=>c.lotId===r.lotId).quantity,0),analysis_version:'collection-synthesis-v1',settings:{postage:135,tracked:550,materials:25,batch:1000,basis:'median'},review_origin:'Codex agents individually reviewed each lot; primary agent audited examples and collection coverage',detector_source_sha256:hash(readFileSync('src/lib/card-insights.ts'))};
+const manifest={asOf:input.asOf,input_sha256:hash(inputBytes),review_sha256:hash(combined),lot_count:reviews.length,copy_count:reviews.reduce((n,r)=>n+input.cards.find(c=>c.lotId===r.lotId).quantity,0),analysis_version:'collection-synthesis-v2',shipping_model_version:shippingModelVersion,settings:defaultSettings,review_origin:'Codex agents revised every lot using prior individualized interpretations and current inputs; primary agent audited examples and collection coverage. Live external research refreshed targeted dealer candidates, not every market source.',detector_source_sha256:hash(readFileSync('src/lib/card-insights.ts'))};
 const c=await appClient();
 try{
  await c.query('BEGIN');

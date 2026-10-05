@@ -12,9 +12,9 @@ Unknown values stay absent. A CK numeric bid with zero wanted quantity is visibl
 as unavailable rather than usable proceeds. SCG capacity remains unknown.
 
 Working directions are Undecided, Buylist, Sell myself, MagicCon and Hold.
-Owner draft directions are separate from stored analyst proposals. Only the
-existing reviewed decisions have a suggested channel; the rest remain unassessed.
-No numerical screen silently classifies the whole collection. Hold notes prompt
+Owner draft directions are separate from stored analyst proposals. All 758 lots
+have dated individual reviews; a research/action queue exposes their suggested
+next move without changing owner directions. Hold notes prompt
 for a thesis/review trigger; event notes prompt for convention buyer questions.
 
 A card detail dialog opens from the card name and keeps source figures, evidence
@@ -81,3 +81,9 @@ under Sources & calculation details. See `card-decision-audit.md` for the live
 TCGSentry comparison, adopted patterns, data coverage and remaining workflows.
 
 Verified at desktop 1440x1000 and mobile 390x844: all 723 lots / 817 copies are accessible; filters, search, draft persistence, and editable estimates work. The 20-proposal selection reconciles to 29 copies, 181.00 dollars in CK bids and 132.37 dollars in modeled self-sale net. Raising postage by 0.50 dollars reduces that net by 14.50 dollars. Production build and TypeScript checks pass.
+
+The current detail leads with a short AI headline, primary channel, timing and
+next move. Longer evidence, countercase and reconsideration triggers are an
+optional disclosure. A structured authored price test can drive the adjacent
+cash/net comparison while remaining explicitly a scenario. The next-action queue
+is separate from the owner working-plan tabs, and never assigns an owner choice.

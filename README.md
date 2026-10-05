@@ -6,6 +6,11 @@ local PostgreSQL. Desktop first, with a responsive mobile layout.
 ## Status
 
 Current readiness: `docs/CURRENT_STATE.md` and `docs/data-readiness.json`.
+All 758 lots now have refreshed, individually revised AI reviews using the
+maintained shipping assumptions. The next-action queue separates channel,
+timing and whole-lot dollars; an AI price test can replace an obsolete median
+in the detail comparison. See `docs/collection-ai-analysis.md` and
+`docs/magiccon-candidate-checkpoint.md` for the current research checkpoint.
 The original starting-data audit is a historical checkpoint. Controlled Mana Pool,
 MTGJSON and EDHREC evidence is ingested: see `docs/market-ingestion.md` for source
 scope and limits.

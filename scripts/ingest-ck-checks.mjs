@@ -6,23 +6,25 @@ import {readFileSync,statSync} from 'node:fs';
 import {join,relative} from 'node:path';
 import {appClient,root} from './database.mjs';
 
-const path=join(root,'data/private/market/2026-10-04/ck-buylist-checks.json');
+const inputAt=process.argv.indexOf('--input');
+const path=join(root,inputAt>=0?process.argv[inputAt+1]:'data/private/market/2026-10-04/ck-buylist-checks.json');
 const bytes=readFileSync(path),raw=JSON.parse(bytes);
 const sha=value=>createHash('sha256').update(value).digest('hex');
 const uuid=value=>{const h=sha(value);return `${h.slice(0,8)}-${h.slice(8,12)}-5${h.slice(13,16)}-a${h.slice(17,20)}-${h.slice(20,32)}`;};
-assert.equal(raw.provider,'Card Kingdom');assert.equal(raw.checks.length,24);
+assert.equal(raw.provider,'Card Kingdom');assert.ok(raw.checks.length>0);
 const listed=raw.checks.filter(r=>r.status==='listed');
 const absent=raw.checks.filter(r=>r.status==='not_listed');
-assert.equal(listed.length,22);assert.equal(absent.length,2);
+assert.equal(listed.length+absent.length,raw.checks.length);
 assert.equal(new Set(raw.checks.map(r=>r.lot_id)).size,raw.checks.length);
 const captureTime=raw.checks[0].captured_at,sourceDay=raw.checks[0].observed_date;
 assert.match(captureTime,/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/);
 assert.match(sourceDay,/^\d{4}-\d{2}-\d{2}$/);
 assert.equal(new Date(captureTime).toISOString().slice(0,10),sourceDay);
 const sourceId=sha(bytes),captureId=uuid(`ck-public-buylist:${sourceId}`);
-const sourceFile={id:sourceId,path:relative(root,path).replaceAll('\\','/'),classification:'targeted_public_buylist_checks',byte_size:statSync(path).size,metadata:{provider:'Card Kingdom',scope:`${raw.checks.length} targeted read-only title searches, ${listed.length} exact listings and ${absent.length} exact printings absent from visible results`,time_basis:'Transcription time; exact page-read times not retained',source_date:sourceDay}};
+const detailedTimes=raw.checks.every(r=>typeof r.page_read_at==='string');
+const sourceFile={id:sourceId,path:relative(root,path).replaceAll('\\','/'),classification:'targeted_public_buylist_checks',byte_size:statSync(path).size,metadata:{provider:'Card Kingdom',scope:`${raw.checks.length} targeted read-only ${detailedTimes?'lot checks':'title searches'}, ${listed.length} exact listings and ${absent.length} exact printings absent from visible results`,time_basis:detailedTimes?raw.checks[0].timestamp_basis:'Transcription time; exact page-read times not retained',source_date:sourceDay}};
 const sourceRecords=raw.checks.map((check,i)=>({id:`${sourceId}:${i+1}`,source_file_id:sourceId,record_number:i+1,raw:check}));
-const capture={id:captureId,provider:'Card Kingdom',upstream_provider:'Card Kingdom public buylist website',source_file_id:sourceId,source_url:'https://www.cardkingdom.com/purchasing/mtg_singles',content_hash:sourceId,captured_at:captureTime,source_observed_at:null,source_time_text:sourceDay,use_state:'eligible',sample_kind:'targeted_public_buylist_snapshot',sample_limit:null,completeness:'unknown',metadata:{checks:raw.checks.length,listed:listed.length,not_listed:absent.length,date_precision:'day',timestamp_basis:'Browser page read during task; exact page-read time not retained; captured_at is transcription time',not_order:true,condition_basis:'English NM base; final grade and approval may differ'}};
+const capture={id:captureId,provider:'Card Kingdom',upstream_provider:'Card Kingdom public buylist website',source_file_id:sourceId,source_url:'https://www.cardkingdom.com/purchasing/mtg_singles',content_hash:sourceId,captured_at:captureTime,source_observed_at:null,source_time_text:sourceDay,use_state:'eligible',sample_kind:'targeted_public_buylist_snapshot',sample_limit:null,completeness:'unknown',metadata:{checks:raw.checks.length,listed:listed.length,not_listed:absent.length,date_precision:'day',timestamp_basis:detailedTimes?raw.checks[0].timestamp_basis:'Browser page read during task; exact page-read time not retained; captured_at is transcription time',not_order:true,condition_basis:'English NM base; final grade and approval may differ'}};
 const c=await appClient();let checks=0;
 const allowed=new Set(['source_files','source_records','canonical_captures','canonical_product_mappings','canonical_observations']);
 async function insert(table,rows){
@@ -38,7 +40,7 @@ async function insert(table,rows){
 try{
  await c.query('BEGIN');await c.query("SELECT pg_advisory_xact_lock(hashtext('ck-public-buylist-checks'))");
  const stock=(await c.query('SELECT count(*)::int lots,sum(owned_quantity)::int copies,sum(available_quantity)::int available FROM canonical_inventory')).rows[0];
- assert.deepEqual(stock,{lots:723,copies:817,available:817});
+ assert.ok(stock.lots>0&&stock.copies>=stock.available);
  const inventory=(await c.query('SELECT * FROM canonical_inventory WHERE lot_id=ANY($1)',[raw.checks.map(r=>r.lot_id)])).rows;
  assert.equal(inventory.length,raw.checks.length);const byLot=new Map(inventory.map(r=>[r.lot_id,r]));
  const mappings=[],observations=[];
@@ -56,7 +58,7 @@ try{
   if(row.status==='listed'){
    assert.equal(row.printed_language,'en');assert.equal(row.condition_normalized,'near_mint');
    assert.ok(Number.isFinite(row.cash_usd)&&row.cash_usd>0&&Math.round(row.cash_usd*100)/100===row.cash_usd);
-   assert.ok(Number.isSafeInteger(row.max_quantity)&&row.max_quantity>0);
+   assert.ok(Number.isSafeInteger(row.max_quantity)&&row.max_quantity>=0);
    const product=new URL(row.product_url);
    assert.equal(product.origin,'https://www.cardkingdom.com');assert.match(product.pathname,/^\/mtg\/[^/?#]+\/[^/?#]+$/);
    assert.ok(row.product_title?.trim());

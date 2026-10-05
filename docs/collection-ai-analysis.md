@@ -2,6 +2,49 @@
 
 October 4, 2026. Applied detector plus model-written per-printing reviews.
 
+## Current refreshed checkpoint
+
+Run `035aef03-2759-5eeb-ab24-4e087017c235` revises all **758 lots / 853 copies**
+against evidence captured through `2026-10-05T05:50:55.685Z` (October 4 local).
+Two agents reassessed the prior individualized interpretations and current
+inputs; the primary agent audited examples, coverage and arithmetic. This is
+not a new external-market survey for every card. Eighteen targeted live CK lot
+checks added 36 cash/wanted observations; other markets retain their dated captures.
+
+Every review now includes primary channel, separate timing, a reconsideration
+trigger, suggested buyer audience and a structured price scenario. The latter
+is a comparison/test, not a forecast. Newer exact transactions can supersede a
+stale full-window median in the authored interpretation. In detail, **AI price
+test** compares that scenario with cash and lets the user switch back to the
+full sample median or current ask. Long reasoning and countercases are collapsed
+behind “Why this call”; the next move and amounts remain prominent.
+
+The research queue at the baseline costs contains 413 CK batch comparisons,
+179 other-cash/advance-quote/add-on inquiries, 111 patient self-sale tests,
+51 timing-watch cases, and four evidence-verification cases. These are next
+research/action suggestions, not ready orders or owner allocations. Watch cases
+separate a preferred CK channel from divergent dealer/reference direction; they
+do not assert future appreciation. Low-dollar alternative-buyer and add-on cases
+belong in shared batches, not separate outreach or fulfillment work.
+
+Three cases pass the stricter maximum-sale-net/gross-dominance detector at the
+lower shipping costs. A practical CK comparison can be worthwhile without
+passing this very restrictive alert. Filter those separately from the much
+broader CK convenience queue. Near-high, sampled-sale-shift and reference-gap
+alerts retain dated coverage and never imply complete market velocity.
+
+Settings in the immutable manifest match `tracked-pilot-v3`: 82c letter postage,
+38c letter materials, $5.50 tracked postage, 40c tracked packaging, 5c consumables,
+and the $10 shared dealer-shipment scenario. Future-version or evidence changes
+mark the written checkpoint earlier. Current calculations still use editable
+settings. The default queue ranks whole-lot comparison dollars first and signal
+priority second; unknown comparisons do not become zero-price alternatives.
+
+Use `node scripts/export-action-checkpoint.mjs` for a complete research snapshot
+after a saved run. The MagicCon pilot is documented separately in
+`magiccon-candidate-checkpoint.md`; it deliberately protects easy CK exits and
+keeps premium and optional add-on modules distinct. No vendor outreach occurred.
+
 The owner wants the app to find the patterns across all holdings, rather than
 requiring manual chart inspection. Every canonical lot receives a saved review;
 list alerts and filters expose the most actionable evidence. AI commentary is
