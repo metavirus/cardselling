@@ -174,3 +174,9 @@ Use coherent Git checkpoints and `codex/` names when creating development
 branches. Work locally through ordinary iterations; hosting is not configured.
 
 Keep credentials and local environment files out of Git. An `.env.example` file may contain placeholder values when configuration is needed.
+
+Daily USD history now includes CK buylist, TCG retail reference, Mana Pool retail
+reference and optional CK retail reference, alongside Mana Pool sale dots and
+separately sourced current dealer markers. Channel comparison and timing context
+are separate; old reviewed proposals are retained as history. See
+`docs/trend-normalization.md` for applied coverage and reproducible ingestion.

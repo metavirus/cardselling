@@ -6,7 +6,7 @@ export type PricePoint={date:string;cents:number};
 export type ReviewCard={
  lotId:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
- marketHistory:{tcg:PricePoint[];ck:PricePoint[]};recentSales:PricePoint[];
+ marketHistory:{tcg:PricePoint[];ck:PricePoint[];ckRetail?:PricePoint[];manaPoolRetail?:PricePoint[]};recentSales:PricePoint[];
  semantic:{traits:string[];typeLine:string|null;edhrecRank:number|null;releasedAt:string|null;
   observedSales30:number;observedSales90:number;saleSampleCapped:boolean;latestObservedSaleAt:string|null;
   competingQuantity:number|null};
@@ -27,12 +27,12 @@ type Evidence={variant_id:string;condition_scope:string;provider:string;product_
  quantity:number|null;captured_at:Date|string;source_date:Date|string|null};
 type Ask={lot_id:string;numeric_value:string;captured_at:Date|string};
 type Sale={lot_id:string;numeric_value:string;quantity:number;observed_at:Date|string;capture_id:string;captured_at:Date|string};
-type Absent={provider_subject:string};
+type Absent={provider_subject:string;captured_at:Date|string};
 type ImageRow={variant_id:string;product_id:string;raw:{image_uris?:Record<string,string>;card_faces?:{image_uris?:Record<string,string>}[];
  promo_types?:string[];frame_effects?:string[];full_art?:boolean;textless?:boolean;border_color?:string;
  set_type?:string;type_line?:string;edhrec_rank?:number;released_at?:string}|null};
 type Supply={lot_id:string;numeric_value:string};
-type History={variant_id:string;condition_scope:string;provider:string;numeric_value:string;source_date:Date|string};
+type History={variant_id:string;condition_scope:string;provider:string;metric:string;numeric_value:string;source_date:Date|string};
 const iso=(x:Date|string|null|undefined)=>x==null?null:new Date(x).toISOString();
 function cardImages(row:ImageRow|undefined){
  const source=row?.raw;
@@ -89,7 +89,7 @@ export async function getReviewData():Promise<ReviewData>{
     WHERE (m.provider='Card Kingdom/public_buylist' AND e.metric IN ('public_cash_buylist_indication','public_max_wanted_quantity'))
        OR (m.provider='TCGSentry/Card Kingdom' AND e.metric IN ('exported_ck_cash_buylist_indication','exported_ck_wanted_quantity'))
        OR (m.provider='TCGSentry/Star City Games' AND e.metric='exported_scg_cash_buylist_indication')`),
-  db.execute(sql`SELECT o.provider_subject FROM canonical_observations o JOIN canonical_captures c ON c.id=o.capture_id
+  db.execute(sql`SELECT o.provider_subject,c.captured_at FROM canonical_observations o JOIN canonical_captures c ON c.id=o.capture_id
     WHERE c.provider='Card Kingdom' AND c.use_state='eligible' AND o.metric='exact_printing_not_visible_in_title_search'`),
   db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value,captured_at FROM canonical_lot_market_evidence
     WHERE metric='lowest_asking_price' AND condition_scope=condition_normalized
@@ -109,23 +109,20 @@ export async function getReviewData():Promise<ReviewData>{
   db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value FROM canonical_lot_market_evidence
     WHERE metric='available_quantity' AND condition_scope=condition_normalized
     ORDER BY lot_id,captured_at DESC,id DESC`),
-  // Keep the first and last source day plus weekly closing points. Latest capture
-  // wins an overlapping source day; historical references never become quotes.
+  // Retain daily observations, including flat days. Window clipping must not
+  // erase flat runs or hide intraweek peaks.
   db.execute(sql`WITH daily AS (
-    SELECT DISTINCT ON (m.variant_id,m.provider,m.condition_scope,e.window_start)
-      m.variant_id,m.provider,m.condition_scope,e.numeric_value,e.window_start AS source_date
+    SELECT DISTINCT ON (m.variant_id,m.provider,m.condition_scope,e.metric,e.window_start)
+      m.variant_id,m.provider,m.condition_scope,e.metric,e.numeric_value,e.window_start AS source_date
     FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id
-    WHERE (m.provider='MTGJSON/tcgplayer' AND e.metric='daily_retail_reference')
-       OR (m.provider='MTGJSON/cardkingdom' AND e.metric='indicated_nm_buylist')
-    ORDER BY m.variant_id,m.provider,m.condition_scope,e.window_start,e.captured_at DESC,e.id DESC
+    WHERE e.currency='USD' AND e.numeric_value>0 AND (
+      (m.provider IN ('MTGJSON/tcgplayer','MTGJSON/cardkingdom','MTGJSON/manapool') AND e.metric='daily_retail_reference')
+       OR (m.provider='MTGJSON/cardkingdom' AND e.metric='indicated_nm_buylist'))
+    ORDER BY m.variant_id,m.provider,m.condition_scope,e.metric,e.window_start,e.captured_at DESC,e.id DESC
   ), bounded AS (
-    SELECT *,max(source_date) OVER (PARTITION BY variant_id,provider,condition_scope) latest FROM daily
-  ), ranked AS (
-    SELECT *,row_number() OVER (PARTITION BY variant_id,provider,condition_scope,date_trunc('week',source_date AT TIME ZONE 'UTC') ORDER BY source_date DESC) week_rank,
-      row_number() OVER (PARTITION BY variant_id,provider,condition_scope ORDER BY source_date) first_rank
-    FROM bounded WHERE source_date>=latest-interval '90 days'
-  ) SELECT variant_id,provider,condition_scope,numeric_value,source_date FROM ranked
-    WHERE week_rank=1 OR first_rank=1 ORDER BY source_date`)
+    SELECT *,max(source_date) OVER (PARTITION BY variant_id,provider,condition_scope,metric) latest FROM daily
+  ) SELECT variant_id,provider,condition_scope,metric,numeric_value,source_date FROM bounded
+    WHERE source_date>=latest-interval '90 days' ORDER BY source_date`)
  ]);
  const stock=stockResult.rows[0] as unknown as {lots:number;copies:number}|undefined;
  const lots=lotsResult.rows as unknown as Lot[];
@@ -150,14 +147,17 @@ export async function getReviewData():Promise<ReviewData>{
   const target=e.provider==='Card Kingdom/public_buylist'?direct:exported,previous=target.get(k);
   if(!previous||time>Date.parse(String(previous.price.captured_at)))target.set(k,{price,capacity});
  }
- const absent=new Set((absentResult.rows as unknown as Absent[]).map(x=>x.provider_subject));
+ const absent=new Map<string,number>();
+ for(const row of absentResult.rows as unknown as Absent[]){
+  absent.set(row.provider_subject,Math.max(absent.get(row.provider_subject)??0,Date.parse(String(row.captured_at))));
+ }
  const asks=new Map((asksResult.rows as unknown as Ask[]).map(x=>[x.lot_id,x]));
  const tcg=new Map((tcgResult.rows as unknown as {variant_id:string;numeric_value:string;source_date:Date|string}[]).map(x=>[x.variant_id,x]));
  const imageRows=new Map((imagesResult.rows as unknown as ImageRow[]).map(x=>[x.variant_id,x]));
  const supply=new Map((supplyResult.rows as unknown as Supply[]).map(x=>[x.lot_id,Number(x.numeric_value)]));
  const histories=new Map<string,PricePoint[]>();
  for(const row of historyResult.rows as unknown as History[]){
-  const historyKey=`${row.variant_id}|${row.provider}|${row.condition_scope}`,price=cents(row.numeric_value);
+  const historyKey=`${row.variant_id}|${row.provider}|${row.condition_scope}|${row.metric}`,price=cents(row.numeric_value);
   if(price===null)continue;
   if(!histories.has(historyKey))histories.set(historyKey,[]);
   histories.get(historyKey)!.push({date:iso(row.source_date)!,cents:price});
@@ -190,9 +190,15 @@ export async function getReviewData():Promise<ReviewData>{
   const proposal=lot.proposal;
   if(proposal&&(proposal.disposition!=="JUST_SELL_TO_BUYLIST"||proposal.status!=="analyst_recommendation_pending_owner_execution"||proposal.quantity!==lot.available_quantity))
    throw new Error(`Stored proposal/current stock mismatch for ${lot.lot_id}`);
-  const k=key(lot.variant_id,lot.condition_normalized),notListed=absent.has(lot.lot_id);
-  const ck=direct.get(k)??(notListed?undefined:exported.get(k));
-  const ckSource=direct.has(k)?"direct_public":ck?"tcgsentry_export":null;
+  const k=key(lot.variant_id,lot.condition_normalized),absentAt=absent.get(lot.lot_id)??0;
+  const directCandidate=direct.get(k),exportCandidate=exported.get(k);
+  const directBid=directCandidate&&Date.parse(String(directCandidate.price.captured_at))>absentAt?directCandidate:undefined;
+  const exportBid=exportCandidate&&Date.parse(String(exportCandidate.price.captured_at))>absentAt?exportCandidate:undefined;
+  const notListed=absentAt>0&&!directBid&&!exportBid;
+  const ck=directBid&&exportBid
+   ?(Date.parse(String(exportBid.price.captured_at))>Date.parse(String(directBid.price.captured_at))?exportBid:directBid)
+   :directBid??exportBid;
+  const ckSource=ck?(ck===directBid?"direct_public":"tcgsentry_export"):null;
   const wanted=ck?.capacity.quantity??null;
   if(wanted!==null&&(!Number.isSafeInteger(wanted)||wanted<0))throw new Error("Invalid dealer wanted quantity");
   const ask=asks.get(lot.lot_id),tcgValue=tcg.get(lot.variant_id),sample=samples.get(lot.lot_id)??[];
@@ -200,8 +206,10 @@ export async function getReviewData():Promise<ReviewData>{
   const cardRef=imageRows.get(lot.variant_id),raw=cardRef?.raw,activityRow=activity.get(lot.lot_id);
   return {lotId:lot.lot_id,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
    images:cardImages(cardRef),
-   marketHistory:{tcg:histories.get(`${lot.variant_id}|MTGJSON/tcgplayer|not_applicable`)??[],
-    ck:histories.get(`${lot.variant_id}|MTGJSON/cardkingdom|${lot.condition_normalized}`)??[]},
+   marketHistory:{tcg:histories.get(`${lot.variant_id}|MTGJSON/tcgplayer|not_applicable|daily_retail_reference`)??[],
+    ck:histories.get(`${lot.variant_id}|MTGJSON/cardkingdom|${lot.condition_normalized}|indicated_nm_buylist`)??[],
+    ckRetail:histories.get(`${lot.variant_id}|MTGJSON/cardkingdom|not_applicable|daily_retail_reference`)??[],
+    manaPoolRetail:histories.get(`${lot.variant_id}|MTGJSON/manapool|not_applicable|daily_retail_reference`)??[]},
    recentSales:(recentSales.get(lot.lot_id)??[]).toSorted((a,b)=>a.date.localeCompare(b.date)),
    semantic:{traits:printingTraits(cardRef,lot.finish,lot.set_code),typeLine:raw?.type_line??null,
     edhrecRank:Number.isSafeInteger(raw?.edhrec_rank)?raw!.edhrec_rank!:null,releasedAt:raw?.released_at??null,

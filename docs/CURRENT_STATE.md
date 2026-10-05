@@ -95,3 +95,13 @@ Use `npm run db:canonical-status`, `npm run db:verify-canonical` and
 `drizzle push` or rerun retired bootstrap/import commands as live stock updates.
 The original starting-data audit and older reanalysis are historical checkpoints;
 their unresolved flags and counts no longer describe current state.
+
+## USD trend enrichment (October 4 evening)
+
+The app now includes retained CK retail and Mana Pool retail-reference history:
+120,769 additional daily points, kept distinct from bids and completed sales.
+The 19:33 Pacific dealer capture refreshes 700 matched lots. Daily chart points,
+source-separated quote markers, shared-date timing context and current-evidence
+channel comparisons replace weekly chart sampling and unconditional old-proposal
+priority. EUR excluded at the owner's request. Details: trend-normalization.md
+and trend-source-research.md. No stock or owner decision changed.

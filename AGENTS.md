@@ -22,6 +22,10 @@ prototyping is now in scope; follow docs/interface-design.md for its boundaries.
   move, supported by useful charts. Keep methodology and repeated caveats behind
   an optional disclosure; use brief labels for material distinctions in the main
   view. The owner explicitly rejected boilerplate warnings as screen clutter.
+- Multi-source price histories are central to decisions. Keep sale dots, retail
+  references and dealer quotes distinct; assess channel and timing separately.
+  Use US-dollar market evidence in operational charts and recommendations. The
+  owner explicitly excluded EUR prices because they represent a different market.
 - Inspect affected desktop and narrow layouts before claiming visual completion.
 - Protect accepted work; keep targeted fixes separate from speculative polish.
 - Fix recurring failures at their cause; verify the original failing example.

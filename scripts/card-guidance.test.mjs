@@ -18,3 +18,9 @@ test('Thin premium Island goes to collector comparison, despite high ask',()=>{
  const result=cardGuidance({...base,ckCents:5200,scgCents:8000,askCents:20540,sampleCount:1,semantic:{traits:['Full art'],observedSales90:1}},{net:18312,gap:13112},{net:17814},'ask');
  assert.equal(result.suggested,'event');assert.equal(result.gap,10312);assert.match(result.reason,/SCG indicates \$80.00/);
 });
+
+test('Historical buylist proposal cannot override lost capacity or improved self-sale economics',()=>{
+ const card={...base,proposal:'buylist',rationale:'Old recommendation',ckCapacity:0,scgCents:null};
+ const result=cardGuidance(card,{net:4000,gap:null},{net:4000},'median');
+ assert.equal(result.suggested,'self');assert.doesNotMatch(result.reason,/Old recommendation/);
+});

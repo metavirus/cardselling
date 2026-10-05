@@ -69,3 +69,81 @@ database-backed plans, listing outcomes, and persistent review triggers are stil
 needed. They are not represented by decorative buttons. The current next-move
 prompts are deterministic comparisons rather than individually researched AI
 judgments for every lot. This UI makes their inputs inspectable and actionable.
+
+## Follow-up workflow findings and owner preference (2026-10-04)
+
+The owner explicitly called the combined price-history graph VERY valuable.
+Preserve its prominence: dealer bids and retail references as distinct lines,
+actual exact-product sales as dots. Its purpose is to make spreads, changing bids,
+and dispersion in realized prices inspectable together. Future enhancements
+should favor exact point details and a net-proceeds comparison mode with explicit
+fee assumptions; do not convert gross sale dots into implied net proceeds.
+
+Further read-only TCGSentry inspection covered home, empty dealer carts, buylist
+orders, and alerts. Home surfaces newly worthwhile sales and near-target cards.
+Carts are dealer-specific, show estimated payout, cap quantities to buyer demand,
+and hand off to the dealer for review. The orders page promises sale/timing
+tracking; no populated order was available to inspect. Triggered alerts are
+rechecked against live prices and split into Still worth it and Fell back.
+Sources: https://tcgsentry.com/, https://tcgsentry.com/trades,
+https://tcgsentry.com/alerts. No account mutations were made.
+
+Proposed priorities, not newly implemented functionality:
+- Dealer baskets comparing net batch proceeds and the incremental return from
+  splitting across buyers after extra postage and work.
+- A short action inbox ranked by meaningful whole-lot dollar impact. Avoid
+  surfacing pennies merely because a price moved.
+- Holds with explicit review triggers; recheck price and capacity before action.
+- Quote-to-payment tracking and actual realized net to calibrate estimates.
+- Chart-supported recommendations explaining the economically relevant gap,
+  without treating a historical peak as a promised recovery target.
+
+## Owner's three chart examples (2026-10-04)
+
+Owner identifies the first two screenshots as obvious buylist sales and questions
+our third recommendation. Matching retained prices/capacity identifies the first
+as Scavenger's Talent BLB #111 normal, the second as Famished Worldsire EOE #341
+normal, and the third chart as Carmen, Cruel Skymarcher LCC #26 normal.
+The first two show favorable CK bids relative to realized sale samples. Carmen
+shows a weakened CK history against a gently rising retail reference and dispersed
+sales. Channel preference and timing conviction must be separate: preferring CK
+at today's comparison does not establish that selling today beats waiting.
+
+Code audit: cardGuidance currently uses pooled sample medians and current quotes,
+not marketHistory trends. The Carmen offer tile uses the TCGSentry CK $5 capture;
+the Oct 4 MTGJSON CK history point is $4. Preserve both observations and label
+provenance; do not silently splice them into one series. Additional source history
+and a timing-aware analysis remain work to do, not completed by this audit.
+Owner prioritizes multiple independent sale/buylist histories in the graph.
+
+## Applied USD trend expansion — October 4, 2026
+
+The new history importer was applied after a database backup and full isolated
+restore verification. It added 120,769 immutable daily USD retail-reference
+observations: 58,892 CK points (702 lots) and 61,877 Mana Pool points (722 lots),
+July 6–October 4. These complement existing CK buylist and TCG reference series
+and exact-grade Mana Pool sale samples. EUR was explicitly excluded by the owner.
+
+A supported TCGSentry collection export at 19:33 Pacific refreshed 700 matched
+rows / 2,095 dealer observations. Across the source export, 195 rows changed at
+least one dealer price or wanted quantity from 16:25. Carmen nonfoil now shows
+CK $4 / 11 wanted, matching the retained October 4 $4 history value. Earlier
+$5 evidence remains immutable. Canonical inventory remains 723 lots / 817 copies.
+
+The app plots retained daily points rather than weekly closes, breaks lines over
+missing days, and keeps current captured CK/SCG quotes as separate diamond
+markers. Mana Pool retail reference is visible by default; CK retail reference is
+optional. Capture timestamps display in Pacific time; date-only history keeps its
+source date. Timing compares shared observed CK/TCG dates (minimum 7-day span in
+1M, 14-day span in 3M), with separately dated Mana Pool context. These are
+transparent descriptive heuristics, not a calibrated forecast or hold thesis.
+
+Older reviewed proposals no longer override current channel economics or timing.
+Their original rationale remains in the optional history disclosure. Latest
+captured compatible bids can supersede older direct checks; an old unsuccessful
+product search cannot suppress a newer compatible quote indefinitely.
+
+No new independent completed-sales market or bulk SCG history has been ingested.
+TCGSentry has visible SCG chart history, but its supported collection export only
+provides current prices. TCGCSV's advertised historical archives are withdrawn.
+See trend-source-research.md for tested access and remaining US research paths.

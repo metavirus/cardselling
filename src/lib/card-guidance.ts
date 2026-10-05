@@ -12,8 +12,7 @@ export function cardGuidance(card:ReviewCard,e:{net:number|null;gap:number|null}
  const premium=card.semantic.traits.length>0&&(card.askCents??0)>=5000;
  const thin=card.semantic.observedSales90<5;
  let title="Get a firm buyer quote",reason="Compare a buyer's offer with the self-sale proceeds below before choosing a route.",suggested:Plan="undecided",tone="research";
- if(card.proposal==="buylist") {title="A good fit for your buylist batch";reason=card.rationale??"The reviewed comparison favors a low-effort buylist sale.";suggested="buylist";tone="buylist";}
- else if(premium&&thin){title="Compare collector offers first";reason=`${dealer!==null?`${dealerName} indicates ${cash(dealer)}. `:""}${card.askCents!==null?`The ${cash(card.askCents)} ask has `:"There is "}${card.semantic.observedSales90} captured sale${card.semantic.observedSales90===1?"":"s"} in 90 days. Get exact-treatment comps and a MagicCon quote before accepting a dealer bid.`;suggested="event";}
+ if(premium&&thin){title="Compare collector offers first";reason=`${dealer!==null?`${dealerName} indicates ${cash(dealer)}. `:""}${card.askCents!==null?`The ${cash(card.askCents)} ask has `:"There is "}${card.semantic.observedSales90} captured sale${card.semantic.observedSales90===1?"":"s"} in 90 days. Get exact-treatment comps and a MagicCon quote before accepting a dealer bid.`;suggested="event";}
  else if(scgHigher&&dealer!==null&&card.sampleCount>=5&&sampleGap!==null&&sampleGap<1500){title="Check the higher SCG offer";reason=`SCG indicates ${cash(dealer)} per copy${ckReady?`, ${cash((dealer-card.ckCents!)*card.quantity)} more for your lot than CK`:""}. Confirm how many they want; the sampled self-sale comparison leaves little extra for the work.`;suggested="buylist";tone="buylist";}
  else if(ckReady&&((sampleCkGap!==null&&card.sampleCount>=5&&sampleCkGap<1500)||(e.gap!==null&&e.gap<=500))){
   const useSample=sampleCkGap!==null&&card.sampleCount>=5&&sampleCkGap<1500;
