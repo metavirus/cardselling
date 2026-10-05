@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {reconcileScan} from './scan-reconciliation.mjs';
+const headers='Name,ManaBox ID,Added,Scryfall ID,Foil,Language,Condition,Quantity,Proxy,Misprint,Altered,Signed';
+const row='Card,1,2026-10-04T00:00:00Z,id,normal,en,near_mint,1,false,false,false,false';
+const raw={Name:'Card','ManaBox ID':'1',Added:'2026-10-04T00:00:00Z','Scryfall ID':'id',Foil:'normal',Language:'en',Condition:'near_mint',Quantity:'1',Proxy:'false',Misprint:'false',Altered:'false',Signed:'false'};
+test('replay matches source identity without overwriting owner-normalized fields',()=>{assert.equal(reconcileScan(headers+'\n'+row,[{raw,printed_language:'ja',condition_normalized:'lightly_played'}]).added.length,0);});
+test('additions preserve old rows and count only new identities',()=>{assert.equal(reconcileScan(headers+'\n'+row+'\n'+row.replace('Card,1,','Other,2,'),[{raw}]).added.length,1);});
+test('missing rows and quantity changes stop reconciliation',()=>{assert.throws(()=>reconcileScan(headers+'\n'+row.replace(',1,false',',2,false'),[{raw}]),/quantity changes/);assert.throws(()=>reconcileScan(headers+'\n'+row.replace('Card,1,','Other,2,'),[{raw}]),/missing/);});
+test('duplicate scan rows and special physical attributes require resolution',()=>{assert.throws(()=>reconcileScan(headers+'\n'+row+'\n'+row,[]),/Duplicate/);assert.throws(()=>reconcileScan(headers+'\n'+row.replace(',false,false,false,false',',true,false,false,false'),[]),/physical attributes/);});

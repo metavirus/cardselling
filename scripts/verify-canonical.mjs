@@ -19,7 +19,8 @@ try {
   const assumptions=JSON.parse(readFileSync(join(root,'docs/assumptions.json'),'utf8'));
   await adoptCanonical(c,assumptions);
   const before=await canonicalSummary(c);
-  assert.equal(before.lots,723); assert.equal(before.owned,817); assert.equal(before.available,817); checks++;
+  const additions=(await c.query("SELECT count(*)::int lots,coalesce(sum((value->>'quantity')::int),0)::int copies FROM canonical_assertions WHERE field_name='inventory_addition' AND authority='accepted_inventory'")).rows[0];
+  assert.equal(before.lots,723+additions.lots); assert.equal(before.owned,817+additions.copies); assert.equal(before.available,before.owned); checks++;
   const replay=await adoptCanonical(c,assumptions);
   assert.equal(replay.alreadyAdopted,true); assert.deepEqual(await canonicalSummary(c),before); checks++;
   const differences=(await c.query(`SELECT count(*)::int AS n FROM canonical_inventory i JOIN inventory_holdings h ON h.id=i.origin_record_id
@@ -71,6 +72,6 @@ try {
   await c.query(`INSERT INTO canonical_observations(capture_id,mapping_id,source_locator,provider_subject,metric,evidence_kind,numeric_value,currency,unit,limitations,raw)
     VALUES($1,$2,'normal','normal','price','asking_price',9,'USD','per_copy','correct finish test','{}')`,[liveCapture,map.id]);
   assert.equal((await canonicalSummary(c)).eligible_observations,before.eligible_observations+1); checks++;
-  assert.equal((await canonicalSummary(c)).owned,817); checks++;
+  assert.equal((await canonicalSummary(c)).owned,before.owned); checks++;
   console.log(`PASS: ${checks} canonical adoption/inventory/evidence checks; all test writes rolled back.`);
 } finally {await c.query('ROLLBACK'); await c.end();}

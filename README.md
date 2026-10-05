@@ -10,8 +10,8 @@ The original starting-data audit is a historical checkpoint. Controlled Mana Poo
 MTGJSON and EDHREC evidence is ingested: see `docs/market-ingestion.md` for source
 scope and limits.
 
-The canonical database is adopted and verified locally: 723 inventory lots and
-817 copies. Owner corrections are persisted: 720 lots are NM, three LP; five
+The canonical database is adopted and verified locally: 758 inventory lots and
+853 copies after the accepted additions-only scan. Owner corrections are persisted: 755 lots are NM, three LP; five
 SOA Japanese-only printings have accepted language and Scryfall mappings, with
 distinct lots preserved. Prior exports/workbooks are historical evidence, not
 operational inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`.
@@ -185,3 +185,5 @@ Every lot now has a saved model-written review and live evidence findings. The
 collection surfaces strong buylist cases, sale/reference discrepancies and
 self-sale candidates; card details explain the dollars, timing and next move.
 See `docs/collection-ai-analysis.md` for the review and persistence contract.
+
+New scans use `npm run db:reconcile-scan -- <path>` for a rolled-back trial, then `--apply` for an accepted additions-only transaction. Missing old rows, changed quantities, ambiguous identities or special physical attributes stop the import; they never reset stock. Raw rows/hash remain in SQL after disposal of the CSV. See docs/scan-additions.md and docs/magiccon-advance-quote-methodology.md.

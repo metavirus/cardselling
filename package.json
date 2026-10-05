@@ -39,7 +39,8 @@
     "market:export-buylist-review": "node scripts/export-buylist-review.mjs",
     "db:verify-buylist-review": "node scripts/verify-buylist-review.mjs",
     "db:ingest-tcgsentry-current": "node scripts/ingest-tcgsentry-current.mjs",
-    "market:compare-buyers": "node scripts/compare-tcgsentry-buyers.mjs"
+    "market:compare-buyers": "node scripts/compare-tcgsentry-buyers.mjs",
+    "db:reconcile-scan": "node scripts/reconcile-manabox-scan.mjs"
   },
   "dependencies": {
     "csv-parse": "7.0.3",

@@ -22,6 +22,6 @@ mkdirSync('.local/analysis',{recursive:true});
 writeFileSync('.local/analysis/full-input.json',JSON.stringify(data));
 const compact=data.cards.map(c=>({lotId:c.lotId,name:c.name,set:c.setCode,number:c.collectorNumber,finish:c.finish,grade:c.grade,quantity:c.quantity,ck:c.ckCents,wanted:c.ckCapacity,scg:c.scgCents,ask:c.askCents,traits:c.semantic.traits,analysis:analyses.get(c.lotId)}));
 writeFileSync('.local/analysis/detected.json',JSON.stringify({asOf:data.asOf,cards:compact},null,2));
-for(let i=0;i<3;i++)writeFileSync('.local/analysis/review-'+i+'.json',JSON.stringify(compact.slice(i*241,(i+1)*241)));
+for(let i=0;i<3;i++)writeFileSync('.local/analysis/review-'+i+'.json',JSON.stringify(compact.slice(i*Math.ceil(compact.length/3),(i+1)*Math.ceil(compact.length/3))));
 console.log(JSON.stringify({lots:compact.length,counts:Object.fromEntries(['dealer','patient','specialist','review','compare'].map(k=>[k,compact.filter(c=>c.analysis.category===k).length]))}));
 process.exit(0);

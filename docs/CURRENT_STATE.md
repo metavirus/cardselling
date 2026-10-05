@@ -1,7 +1,7 @@
 # Current state — October 4, 2026
 
 The local PostgreSQL canonical store is operational. The accepted ManaBox Sell.csv
-baseline remains **723 physical lots / 817 copies**. Subsequent owner corrections
+baseline was **723 physical lots / 817 copies**; the accepted additions-only scan now brings current inventory to **758 lots / 853 copies**. Subsequent owner corrections
 are stored in canonical assertions and normalized fields; source rows are
 preserved. The database, not a spreadsheet, owns stock. Retired TCGSentry exports
 are hydration/history only. `canonical_inventory` is the current-stock view.
@@ -121,3 +121,9 @@ stock/owner-choice checks passed; prewrite backup restoration was verified.
 See collection-ai-analysis.md. No sale or owner plan was executed.
 
 Oct 4 follow-up: compact list badges, concise AI take with expandable evidence. Targeted SOA hydration applied for 5 exact Japanese products /8 lots:809 CK history points and10 dealer facts, preserving original dates. Eight revised immutable AI reviews saved as4ec1dd70-2877-5be2-a7ad-a16e68e52e76. Exact accepted product aliases share histories and dealer capacity; separate physical lots retained. Crop Rotation116 wants zero.48 tests/build/typecheck passed; desktop/mobile checked; stock817 copies/723 lots and27 browser draft plans unchanged. See soa-market-hydration.md.
+
+## Additional ManaBox scan (October 4 late evening)
+
+Owner-authorized additions-only reconciliation of Sell (1).csv found all 723 prior source identities and quantities unchanged, plus 35 lots / 36 copies. Canonical stock is 758 lots / 853 copies. Source rows/hash persist in SQL; snapshot is retired after acceptance. Replay adds zero stock. Owner corrections and choices preserved. Backup full-content restoration, 20 canonical invariant checks and 52 unit tests passed. New source hydration and individual reviews documented in scan-additions.md when completed. MagicCon advance itemized quote methodology is in magiccon-advance-quote-methodology.md; no buyer contacted or quote agreed.
+
+New-scan completion: 35 exact Scryfall/Mana Pool matches; all four dated USD history series present for every addition. 35 individual AI reviews saved as a345fa5a-1daf-5b4f-ad75-6131ab369c9a. A serialization defect was corrected by132 explicit superseding observations; graph-date coverage checked.53 tests and20 canonical checks pass. See scan-additions.md.

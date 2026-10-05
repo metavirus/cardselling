@@ -3,9 +3,9 @@
   "authority": "Canonical PostgreSQL inventory and owner assertions; external captures are sourced observations, not inventory authority",
   "status": "inventory_reconciled_first_tranche_proposed_execution_pending",
   "inventory": {
-    "lots": 723,
-    "copies": 817,
-    "owner_near_mint_lots": 720,
+    "lots": 758,
+    "copies": 853,
+    "owner_near_mint_lots": 755,
     "owner_lightly_played_lots": 3,
     "active_scryfall_mapping_candidates": 0,
     "unmatched_manapool_lots": 0,
@@ -20,7 +20,8 @@
     "bounded_sale_sample_records": 22151,
     "asking_price_observations": 1898,
     "sale_sample_completeness": "unknown; up to 20 per product",
-    "distinct_lots_sharing_provider_product": 3
+    "distinct_lots_sharing_provider_product": 3,
+    "scope": "Original opening-inventory hydration checkpoint; additional35-lot coverage in latest_scan"
   },
   "mtgjson_capture": {
     "ck_indicative_nm_buylist_points": 52184,
@@ -106,5 +107,18 @@
     "vendor_refresh_time": "unknown",
     "scg_capacity": "unknown",
     "inventory_changed": false
+  },
+  "latest_scan": {
+    "source_hash": "6b0b766915d6da943aa4f34012de5c64417ee4288d7f29bc5221f6aace938f6e",
+    "added_lots": 35,
+    "added_copies": 36,
+    "reconciliation": "applied; replay zero; raw rows retained SQL",
+    "hydration": "completed;35/35 exact product and four dated USD history series",
+    "fresh_dealer_capacity": "unknown",
+    "individual_ai_reviews": 35,
+    "review_run": "a345fa5a-1daf-5b4f-ad75-6131ab369c9a",
+    "forward_observation_corrections": 132,
+    "artifact_disposed": true,
+    "post_ingestion_backup_restore": "full content fingerprint matched"
   }
 }
