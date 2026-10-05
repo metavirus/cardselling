@@ -40,7 +40,8 @@
     "db:verify-buylist-review": "node scripts/verify-buylist-review.mjs",
     "db:ingest-tcgsentry-current": "node scripts/ingest-tcgsentry-current.mjs",
     "market:compare-buyers": "node scripts/compare-tcgsentry-buyers.mjs",
-    "db:reconcile-scan": "node scripts/reconcile-manabox-scan.mjs"
+    "db:reconcile-scan": "node scripts/reconcile-manabox-scan.mjs",
+    "data:refresh": "node --use-system-ca scripts/refresh-market-data.mjs"
   },
   "dependencies": {
     "csv-parse": "7.0.3",

@@ -1,4 +1,11 @@
-# Current state — October 4, 2026
+# Current state — October 5, 2026
+
+Daily pricing hydration is operational and scheduled for 8 AM Pacific. Today's
+TCGSentry quotes, Mana Pool catalog/sales/supply, and MTGJSON USD histories were
+applied and replay verified. See `daily-market-refresh.md` for coverage and
+operation. The interface now uses monetary decision badges and a pricing
+timestamp with per-source freshness. Existing written AI reviews remain dated;
+refreshed evidence does not silently make those earlier reviews current.
 
 The local PostgreSQL canonical store is operational. The accepted ManaBox Sell.csv
 baseline was **723 physical lots / 817 copies**; the accepted additions-only scan now brings current inventory to **758 lots / 853 copies**. Subsequent owner corrections

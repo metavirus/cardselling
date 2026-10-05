@@ -18,7 +18,8 @@ export type ReviewCard={
  medianCents:number|null;sampleCount:number;tcgCents:number|null;tcgSourceDate:string|null;
  optimisticNetCents:number|null;rationale:string|null;counterargument:string|null;
 };
-export type ReviewData={runId:string;asOf:string;evidenceAsOf:string;reviewAsOf:string;
+export type PricingFreshness={updatedAt:string|null;sources:{name:string;capturedAt:string;sourceThrough:string|null}[]};
+export type ReviewData={pricingFreshness:PricingFreshness;runId:string;asOf:string;evidenceAsOf:string;reviewAsOf:string;
  inventoryLots:number;inventoryCopies:number;reviewedLots:number;reviewedCopies:number;reviewedGrossCents:number;cards:ReviewCard[]};
 
 type Run={id:string;input_manifest:{report_as_of:string;reviewed_lots:number;reviewed_copies:number;reviewed_gross_cents:number}};
@@ -75,63 +76,101 @@ const key=(variant:string,grade:string)=>`${variant}|${grade}`;
 
 export async function getReviewData():Promise<ReviewData>{
  const db=database();
+ const targetMappings=sql`SELECT DISTINCT variant_id,provider,product_id,condition_scope,finish_scope,language_scope
+   FROM canonical_product_mappings m WHERE status='accepted'
+   AND NOT EXISTS(SELECT 1 FROM canonical_product_mappings n WHERE n.supersedes_id=m.id)`;
+ const scopedEvidence=(providers:string[],metrics:string[])=>sql`WITH active_mappings AS MATERIALIZED (
+   SELECT m.id,m.variant_id,m.provider,m.product_id,m.condition_scope,m.finish_scope,m.language_scope
+   FROM canonical_product_mappings m JOIN canonical_variants v ON v.id=m.variant_id
+   WHERE m.provider IN (${sql.join(providers.map(p=>sql`${p}`),sql`, `)}) AND m.status='accepted'
+   AND m.finish_scope=v.finish AND m.language_scope=v.printed_language
+   AND NOT EXISTS(SELECT 1 FROM canonical_product_mappings n WHERE n.supersedes_id=m.id)
+ ), active_captures AS MATERIALIZED (
+   SELECT c.id,c.captured_at FROM canonical_captures c WHERE c.use_state='eligible'
+   AND NOT EXISTS(SELECT 1 FROM canonical_source_retirements r WHERE r.source_file_id=c.source_file_id)
+ ) SELECT o.id,o.capture_id,o.mapping_id,o.metric,o.numeric_value,o.quantity,o.window_start,
+   c.captured_at,m.variant_id,m.provider,m.product_id,m.condition_scope,m.finish_scope,m.language_scope
+   FROM active_mappings m JOIN canonical_observations o ON m.id=o.mapping_id
+   JOIN active_captures c ON c.id=o.capture_id
+   WHERE o.metric IN (${sql.join(metrics.map(m=>sql`${m}`),sql`, `)})
+   AND (o.currency='USD' OR o.metric IN ('public_max_wanted_quantity','exported_ck_wanted_quantity'))
+   AND NOT EXISTS(SELECT 1 FROM canonical_observations n WHERE n.supersedes_id=o.id)`;
  const run=(await db.execute(sql`SELECT id,input_manifest FROM canonical_decision_runs
   WHERE prompt_version='human-requested-just-sell-first-pass-v1' ORDER BY created_at DESC LIMIT 1`)).rows[0] as unknown as Run|undefined;
  if(!run)throw new Error("No reviewed buylist run is available");
- const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult,imagesResult,supplyResult,historyResult]=await Promise.all([
+ const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,manaPoolResult,tcgResult,imagesResult,historyResult]=await Promise.all([
   db.execute(sql`SELECT count(*)::int lots,coalesce(sum(available_quantity),0)::int copies FROM canonical_inventory`),
   db.execute(sql`SELECT i.lot_id,i.variant_id,i.name,i.set_code,i.collector_number,i.finish,i.printed_language,
     i.condition_normalized,i.available_quantity,d.proposal FROM canonical_inventory i
     LEFT JOIN canonical_decisions d ON d.lot_id=i.lot_id AND d.run_id=${run.id}
     ORDER BY i.name,i.set_code,i.collector_number,i.finish,i.lot_id`),
   db.execute(sql`SELECT max(captured_at) latest FROM canonical_captures WHERE use_state='eligible'`),
-  db.execute(sql`SELECT target.variant_id,m.condition_scope,m.provider,m.product_id,e.capture_id,e.mapping_id,e.metric,e.numeric_value,e.quantity,
-    e.captured_at,e.window_start AS source_date FROM canonical_eligible_evidence e
-    JOIN canonical_product_mappings m ON m.id=e.mapping_id JOIN canonical_product_mappings target ON target.provider=m.provider AND target.product_id=m.product_id
+  db.execute(sql`WITH targets AS MATERIALIZED (${targetMappings}), scoped AS MATERIALIZED (${scopedEvidence(['Card Kingdom/public_buylist','TCGSentry/Card Kingdom','TCGSentry/Star City Games'],['public_cash_buylist_indication','public_max_wanted_quantity','exported_ck_cash_buylist_indication','exported_ck_wanted_quantity','exported_scg_cash_buylist_indication'])}) SELECT target.variant_id,m.condition_scope,m.provider,m.product_id,m.capture_id,m.mapping_id,m.metric,m.numeric_value,m.quantity,
+    m.captured_at,m.window_start AS source_date FROM scoped m
+    JOIN targets target ON target.provider=m.provider AND target.product_id=m.product_id
  AND target.condition_scope=m.condition_scope AND target.finish_scope=m.finish_scope AND target.language_scope=m.language_scope
- AND target.status='accepted' AND NOT EXISTS (SELECT 1 FROM canonical_product_mappings replacement WHERE replacement.supersedes_id=target.id)
-    WHERE (m.provider='Card Kingdom/public_buylist' AND e.metric IN ('public_cash_buylist_indication','public_max_wanted_quantity'))
-       OR (m.provider='TCGSentry/Card Kingdom' AND e.metric IN ('exported_ck_cash_buylist_indication','exported_ck_wanted_quantity'))
-       OR (m.provider='TCGSentry/Star City Games' AND e.metric='exported_scg_cash_buylist_indication')`),
+
+    WHERE (m.provider='Card Kingdom/public_buylist' AND m.metric IN ('public_cash_buylist_indication','public_max_wanted_quantity'))
+       OR (m.provider='TCGSentry/Card Kingdom' AND m.metric IN ('exported_ck_cash_buylist_indication','exported_ck_wanted_quantity'))
+       OR (m.provider='TCGSentry/Star City Games' AND m.metric='exported_scg_cash_buylist_indication')`),
   db.execute(sql`SELECT o.provider_subject,c.captured_at FROM canonical_observations o JOIN canonical_captures c ON c.id=o.capture_id
     WHERE c.provider='Card Kingdom' AND c.use_state='eligible' AND o.metric='exact_printing_not_visible_in_title_search'`),
-  db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value,captured_at FROM canonical_lot_market_evidence
-    WHERE metric='lowest_asking_price' AND condition_scope=condition_normalized
-    ORDER BY lot_id,captured_at DESC,id DESC`),
-  db.execute(sql`SELECT lot_id,numeric_value,quantity,observed_at,capture_id,captured_at FROM canonical_lot_market_evidence
-    WHERE metric='reported_sale_price' AND condition_scope=condition_normalized AND observed_at IS NOT NULL`),
-  db.execute(sql`SELECT DISTINCT ON (target.variant_id) target.variant_id,e.numeric_value,e.window_start AS source_date
-    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id JOIN canonical_product_mappings target ON target.provider=m.provider AND target.product_id=m.product_id
+  // Materialize the small owner/product scope before joining observations. The
+  // broad lot-evidence view caused repeated-capture joins to saturate the pool.
+  // Pick the newest eligible capture per exact owned grade, including products
+  // with no sales/asks, so a newer empty sample cannot revive stale prices.
+  db.execute(sql`WITH owned AS MATERIALIZED (
+    SELECT lot_id,variant_id,finish,printed_language,condition_normalized FROM canonical_inventory
+  ), products AS MATERIALIZED (
+    SELECT DISTINCT ON (i.lot_id) i.lot_id,m.product_id,c.id capture_id,c.captured_at
+    FROM owned i JOIN canonical_product_mappings m ON m.variant_id=i.variant_id
+      AND m.provider='Mana Pool' AND m.status='accepted'
+      AND m.finish_scope=i.finish AND m.language_scope=i.printed_language
+      AND m.condition_scope=i.condition_normalized
+    JOIN canonical_captures c ON c.id=m.capture_id AND c.use_state='eligible'
+    WHERE NOT EXISTS(SELECT 1 FROM canonical_product_mappings n WHERE n.supersedes_id=m.id)
+      AND NOT EXISTS(SELECT 1 FROM canonical_source_retirements r WHERE r.source_file_id=c.source_file_id)
+    ORDER BY i.lot_id,c.captured_at DESC,c.id DESC,m.id DESC
+  ) SELECT p.lot_id,o.id,o.metric,o.numeric_value,o.quantity,o.observed_at,p.capture_id,p.captured_at
+    FROM products p JOIN canonical_observations o
+      ON o.provider_subject=p.product_id AND o.capture_id=p.capture_id
+    JOIN canonical_product_mappings m ON m.id=o.mapping_id AND m.provider='Mana Pool' AND m.status='accepted'
+    WHERE o.metric IN ('lowest_asking_price','reported_sale_price','available_quantity')
+      AND NOT EXISTS(SELECT 1 FROM canonical_observations n WHERE n.supersedes_id=o.id)
+      AND NOT EXISTS(SELECT 1 FROM canonical_product_mappings n WHERE n.supersedes_id=m.id)
+    ORDER BY p.lot_id,o.id`),
+  db.execute(sql`WITH targets AS MATERIALIZED (${targetMappings}), scoped AS MATERIALIZED (${scopedEvidence(['MTGJSON/tcgplayer'],['daily_retail_reference'])}) SELECT DISTINCT ON (target.variant_id) target.variant_id,m.numeric_value,m.window_start AS source_date
+    FROM scoped m JOIN targets target ON target.provider=m.provider AND target.product_id=m.product_id
  AND target.condition_scope=m.condition_scope AND target.finish_scope=m.finish_scope AND target.language_scope=m.language_scope
- AND target.status='accepted' AND NOT EXISTS (SELECT 1 FROM canonical_product_mappings replacement WHERE replacement.supersedes_id=target.id)
-    WHERE m.provider='MTGJSON/tcgplayer' AND e.metric='daily_retail_reference'
-    ORDER BY target.variant_id,e.window_start DESC,e.id DESC`),
+
+    WHERE m.provider='MTGJSON/tcgplayer' AND m.metric='daily_retail_reference'
+    ORDER BY target.variant_id,m.window_start DESC,m.id DESC`),
   db.execute(sql`SELECT DISTINCT ON (m.variant_id) m.variant_id,m.product_id,r.raw
     FROM canonical_product_mappings m
     LEFT JOIN LATERAL (SELECT raw FROM card_reference_snapshots
       WHERE scryfall_id=m.product_id::uuid LIMIT 1) r ON true
     WHERE m.provider='Scryfall' AND m.status='accepted'
     ORDER BY m.variant_id,m.id`),
-  db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value FROM canonical_lot_market_evidence
-    WHERE metric='available_quantity' AND condition_scope=condition_normalized
-    ORDER BY lot_id,captured_at DESC,id DESC`),
   // Retain daily observations, including flat days. Window clipping must not
   // erase flat runs or hide intraweek peaks.
-  db.execute(sql`WITH daily AS (
-    SELECT DISTINCT ON (target.variant_id,m.provider,m.condition_scope,e.metric,e.window_start)
-      target.variant_id,m.provider,m.condition_scope,e.metric,e.numeric_value,e.window_start AS source_date
-    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id JOIN canonical_product_mappings target ON target.provider=m.provider AND target.product_id=m.product_id
+  db.execute(sql`WITH targets AS MATERIALIZED (${targetMappings}), scoped AS MATERIALIZED (${scopedEvidence(['MTGJSON/tcgplayer','MTGJSON/cardkingdom','MTGJSON/manapool'],['daily_retail_reference','indicated_nm_buylist'])}), daily AS (
+    SELECT DISTINCT ON (target.variant_id,m.provider,m.condition_scope,m.metric,m.window_start)
+      target.variant_id,m.provider,m.condition_scope,m.metric,m.numeric_value,m.window_start AS source_date
+    FROM scoped m JOIN targets target ON target.provider=m.provider AND target.product_id=m.product_id
  AND target.condition_scope=m.condition_scope AND target.finish_scope=m.finish_scope AND target.language_scope=m.language_scope
- AND target.status='accepted' AND NOT EXISTS (SELECT 1 FROM canonical_product_mappings replacement WHERE replacement.supersedes_id=target.id)
-    WHERE e.currency='USD' AND e.numeric_value>0 AND (
-      (m.provider IN ('MTGJSON/tcgplayer','MTGJSON/cardkingdom','MTGJSON/manapool') AND e.metric='daily_retail_reference')
-       OR (m.provider='MTGJSON/cardkingdom' AND e.metric='indicated_nm_buylist'))
-    ORDER BY target.variant_id,m.provider,m.condition_scope,e.metric,e.window_start,e.captured_at DESC,e.id DESC
+
+    WHERE m.numeric_value>0 AND (
+      (m.provider IN ('MTGJSON/tcgplayer','MTGJSON/cardkingdom','MTGJSON/manapool') AND m.metric='daily_retail_reference')
+       OR (m.provider='MTGJSON/cardkingdom' AND m.metric='indicated_nm_buylist'))
+    ORDER BY target.variant_id,m.provider,m.condition_scope,m.metric,m.window_start,m.captured_at DESC,m.id DESC
   ), bounded AS (
     SELECT *,max(source_date) OVER (PARTITION BY variant_id,provider,condition_scope,metric) latest FROM daily
   ) SELECT variant_id,provider,condition_scope,metric,numeric_value,source_date FROM bounded
     WHERE source_date>=latest-interval '90 days' ORDER BY source_date`)
  ]);
+ const asksResult={rows:manaPoolResult.rows.filter(r=>r.metric==='lowest_asking_price')};
+ const salesResult={rows:manaPoolResult.rows.filter(r=>r.metric==='reported_sale_price'&&r.observed_at!=null)};
+ const supplyResult={rows:manaPoolResult.rows.filter(r=>r.metric==='available_quantity')};
  const stock=stockResult.rows[0] as unknown as {lots:number;copies:number}|undefined;
  const lots=lotsResult.rows as unknown as Lot[];
  const evidenceAsOf=iso((capturesResult.rows[0] as {latest:Date|string|null}|undefined)?.latest);
@@ -233,6 +272,19 @@ export async function getReviewData():Promise<ReviewData>{
    optimisticNetCents:proposal?.source_snapshot.retail.optimistic_order_economics?.netCents??null,
    rationale:proposal?.rationale??null,counterargument:proposal?.counterargument??null};
  });
+ const freshnessRows=await db.execute(sql`SELECT CASE
+  WHEN metric='exported_ck_cash_buylist_indication' THEN 'CK quotes · TCGSentry'
+  WHEN metric='exported_scg_cash_buylist_indication' THEN 'SCG quotes · TCGSentry'
+  WHEN metric='public_cash_buylist_indication' THEN 'CK direct checks'
+  WHEN metric='reported_sale_price' THEN 'Mana Pool completed-sale sample'
+  WHEN metric='lowest_asking_price' THEN 'Mana Pool asking prices'
+  ELSE 'USD price histories' END AS name,
+  max(captured_at) AS captured_at,max(window_start) AS source_through
+  FROM canonical_eligible_evidence WHERE currency='USD' AND metric IN
+  ('exported_ck_cash_buylist_indication','exported_scg_cash_buylist_indication','public_cash_buylist_indication','reported_sale_price','lowest_asking_price','daily_retail_reference','indicated_nm_buylist')
+  GROUP BY 1 ORDER BY 1`);
+ const pricingSources=(freshnessRows.rows as unknown as {name:string;captured_at:Date|string;source_through:Date|string|null}[]).map(r=>({name:r.name,capturedAt:iso(r.captured_at)!,sourceThrough:iso(r.source_through)}));
+ const pricingFreshness:PricingFreshness={updatedAt:pricingSources.length?new Date(Math.max(...pricingSources.map(r=>Date.parse(r.capturedAt)))).toISOString():null,sources:pricingSources};
  const analystRows=await db.execute(sql`SELECT DISTINCT ON (d.lot_id) d.lot_id,d.proposal,r.input_manifest FROM canonical_decisions d JOIN canonical_decision_runs r ON r.id=d.run_id WHERE r.prompt_version='collection-ai-review-v1' ORDER BY d.lot_id,r.created_at DESC`);
  const analystMap=new Map((analystRows.rows as unknown as {lot_id:string;proposal:{headline:string;commentary:string;nextStep:string;channel?:string;timing?:string;reconsideration?:string;buyerFit?:string;counterargument?:string;priceScenario?:{grossCents:number|null;basis:string};input_snapshot:{quantity:number}};input_manifest:{asOf:string;shipping_model_version?:string;settings?:Record<string,unknown>}}[]).map(r=>[r.lot_id,{quantity:r.proposal.input_snapshot.quantity,headline:r.proposal.headline,commentary:r.proposal.commentary,nextStep:r.proposal.nextStep,channel:r.proposal.channel,timing:r.proposal.timing,reconsideration:r.proposal.reconsideration,buyerFit:r.proposal.buyerFit,counterargument:r.proposal.counterargument,priceScenario:r.proposal.priceScenario,asOf:r.input_manifest.asOf,current:reviewCheckpointCurrent(r.input_manifest,evidenceAsOf)}]));
  for(const card of cards){const saved=analystMap.get(card.lotId);if(saved){const {quantity,...review}=saved;card.analystReview={...review,current:review.current&&quantity===card.quantity};}}
@@ -240,7 +292,7 @@ export async function getReviewData():Promise<ReviewData>{
  const reviewedGrossCents=reviewed.reduce((sum,x)=>sum+(x.proposal?.gross_cents??0),0);
  if(reviewed.length!==run.input_manifest.reviewed_lots||reviewedCopies!==run.input_manifest.reviewed_copies||reviewedGrossCents!==run.input_manifest.reviewed_gross_cents)
   throw new Error("Saved review totals differ from run manifest");
- return {runId:run.id,asOf:evidenceAsOf,evidenceAsOf,reviewAsOf:run.input_manifest.report_as_of,
+ return {pricingFreshness,runId:run.id,asOf:evidenceAsOf,evidenceAsOf,reviewAsOf:run.input_manifest.report_as_of,
   inventoryLots:stock.lots,inventoryCopies:stock.copies,reviewedLots:reviewed.length,reviewedCopies,reviewedGrossCents,cards};
 }
 

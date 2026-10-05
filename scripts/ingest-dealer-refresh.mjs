@@ -45,12 +45,12 @@ try{
  assert.ok(priorCapture.length<=1,'Ambiguous duplicate capture');
  if(priorCapture.length){captureId=priorCapture[0].id;capture.id=captureId;}
  const stock=(await c.query('SELECT count(*)::int lots,sum(owned_quantity)::int owned,sum(available_quantity)::int available FROM canonical_inventory')).rows[0];
- assert.deepEqual(stock,{lots:723,owned:817,available:817});
+ assert.ok(stock.lots>0&&stock.owned>=stock.available,'Canonical stock is unavailable');
  const inventory=(await c.query(`SELECT i.*,r.raw->>'Scryfall ID' AS raw_sid,s.product_id AS accepted_sid
   FROM canonical_inventory i JOIN source_records r ON r.id=i.origin_record_id
   JOIN canonical_product_mappings s ON s.variant_id=i.variant_id AND s.provider='Scryfall' AND s.status='accepted'
    AND NOT EXISTS(SELECT 1 FROM canonical_product_mappings next WHERE next.supersedes_id=s.id)`)).rows;
- assert.equal(inventory.length,723);
+ assert.equal(inventory.length,stock.lots);
  const byAccepted=new Map(),byRaw=new Map();for(const lot of inventory){for(const [map,key] of [[byAccepted,lot.accepted_sid],[byRaw,lot.raw_sid]]){if(!map.has(key))map.set(key,[]);map.get(key).push(lot);}}
  const mappings=[],observations=[],rejected=[];let acceptedRows=0,ckBids=0,ckCapacity=0,scgBids=0;
  for(let i=0;i<rows.length;i++){

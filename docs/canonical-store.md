@@ -134,3 +134,63 @@ repeat adoption and migration, both legacy CLI guards, and pre/post-cutover back
 restores with matching full table-content fingerprints. Live counts: 723 lots,
 817 available/owned copies, 16 retired artifacts, 3,718 archived observations,
 784 archived interpretations, zero new eligible observations and decisions.
+
+## Automatic public pricing refresh
+
+`npm run data:refresh` starts the existing pinned database if stopped, downloads
+the public Mana Pool catalog and official MTGJSON AllIdentifiers/AllPrices feeds,
+extracts current canonical inventory identities, validates exact printing,
+finish, language and provider grade, then applies eligible observations directly
+to canonical SQL. It does not stage observations for manual approval. It never
+changes stock, owner plans, assertions, transactions or written AI reviews.
+
+The command uses Windows/system certificate trust, three bounded download
+attempts, timeouts, an exclusive PostgreSQL advisory lock and one transaction per
+source. Failed sources roll back independently; other valid sources still apply.
+Last good evidence remains available. Reports live in
+`.local/market-ingestion/daily-refresh-latest.json` and timestamped sibling files,
+including failures, coverage, last-good source state and unchanged protected-data
+checks. Scheduled callers must report a persistent/partial failure meaningfully;
+they should not ask the owner to approve valid normalized data.
+
+Freshness has separate meanings: `checked_at` is the download/check time;
+canonical `captured_at` is the retained source capture time; MTGJSON
+`metadata.source_date` and observation daily windows are provider publication/
+price dates. Mana Pool HTTP Last-Modified is recorded separately. Same-hash replay
+keeps original capture times and cannot manufacture newer pricing. Recovery uses
+`--reuse-run=data/private/market/daily/<run-id>` only for hash-verified downloads
+younger than 24 hours. Identical bulk archives share hard-linked bytes, preserving
+registered originals. Changed bulk captures remain retained; no destructive
+retention policy is implied. Full rolling histories are archived per capture;
+incremental point deduplication/retention is a future scaling improvement.
+
+Mana Pool supplies exact-grade asks, offered quantity and up to 20 recent sale
+records per product. Overlapping captures are not added into transaction volume.
+MTGJSON provides separate USD CK indicative NM buylist, CK retail, TCGplayer retail
+and Mana Pool retail histories. These are references, not exact-grade completed
+sales or executable quotes. Zero references are omitted; native collisions and
+incompatible identities are excluded, never averaged. Non-English cards do not
+receive ordinary CK NM buylist mappings. TCGplayer Direct/low/high values are not
+silently substituted for the retail reference.
+
+Public feeds do not refresh SCG cash or CK wanted quantities. An authorized
+TCGSentry browser export can join the same run using
+`--dealer-manifest=path/to/capture.manifest.json`; the existing strict dealer
+importer applies it automatically with its original capture timestamp. Browser
+authentication and export availability remain a distinct source dependency.
+
+Verified October 5, 2026: 758 lots; exact owner-grade Mana Pool coverage 757;
+28,883 catalog observations; 245,249 USD daily history observations through
+October 5. CK buylist covers 731 lots, CK retail 737, TCGplayer retail 744 and Mana
+Pool retail 757. Full same-source replay produced no new observations or mappings,
+retained source times, and left every protected table fingerprint unchanged.
+
+Read-path verification after refresh: the collection still renders all 758 lots,
+247,181 plotted daily points and 9,691 latest-snapshot, owner-grade sale records.
+Repeated-capture alias joins previously saturated the five-connection app pool;
+the workspace now materializes eligible mappings/captures before evidence joins,
+deduplicates product aliases and reads one latest exact-grade Mana Pool snapshot
+for asks, supply and sales. A newer empty snapshot cannot resurrect old asks or
+sales. Refresh applies `ANALYZE` after bulk writes to update planner statistics.
+The verified full loader took approximately 10 seconds with one serial database
+client; it is functional, with further latency reduction still worthwhile.
