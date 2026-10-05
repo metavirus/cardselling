@@ -1,0 +1,15 @@
+Buylist shipping research — checked October 4, 2026
+
+Recommended service: quote USPS Ground Advantage in a sturdy card container inside a snug corrugated outer box; compare Priority Mail weight-based/Flat Rate and UPS Ground for larger shipments. USPS Ground Advantage includes tracking and $100 insurance; additional coverage costs extra. Use actual packed weight/dimensions, origin ZIP, dealer destination and ship date. No exact quote is possible from card quantity alone. Prefer commercial online label rates. Do not use an untracked letter for dealer batches.
+
+Observed USPS webpage figures (indicative, recheck on label date): Ground Advantage retail starts8.40; Priority Small Flat Rate Box12.95commercial/14.65retail; Medium22.02commercial/25.80retail. A working small-batch allowance15 total, plus insurance above included coverage, is a planning assumption rather than a quote. Larger batch25 plus extra insurance until measured. Existing app10 CKbatch allowance is illustrative and excludes any unentered insurance/material costs.
+
+CK: invoice-order, unsleeved singles, sturdy container, no movement; tracking/insurance encouraged. Postmark within7days. Current receiving address Monroe WA98272; confirm checkout address. SCG: approval first, postmark Sell List within2businessdays; unsleeved/no top-loaders, invoice-order; tracking/insurance; Roanoke VA24012. Multiple separately labeled requests may share a parcel. SCG Ship+Sell collection service has10% processing fee (<10000); do not apply this to standard itemized Sell List workflow.
+
+Model: dealer batch net=sum eligible cash bids - postage - protective supplies - extra insurance - applicable payout charges. Fixed shipment expense once per dealer parcel, not per card. Marginal added-card postage often zero until weight/box/insurance tier changes. Splitting between dealers only when incremental cash gain exceeds additional parcel costs and worthwhile effort. Separate channel preference from timing/hold assessment. Show quoted/estimated/actual batch costs and keep source/date. In-person event handoff has zero parcel postage but requires buyer attendance/preapproval confirmation, not an assumed upcoming event vendor.
+
+https://www.cardkingdom.com/purchasing/how_to_sell
+https://help.starcitygames.com/en-US/approval-shipping-instructions-1056762
+https://help.starcitygames.com/processing-your-ship-sell-request
+https://www.usps.com/ship/ground-advantage.htm
+https://www.usps.com/ship/priority-mail.htm
