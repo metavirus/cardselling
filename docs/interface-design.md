@@ -105,3 +105,10 @@ view. Dollar columns, continuous browsing and on-demand card details remain.
 Rendered desktop/mobile verification for this pass is pending: the browser tool
 rejected the localhost URL under its URL policy. Earlier layout checks above
 apply to earlier revisions, not this one.
+
+October 5 label audit: all 758 lots surveyed. The next-move queue now names
+missing bids, stale bids, unavailable/insufficient capacity, conflicting quotes,
+and missing sale samples separately. Thin but complete comparisons use
+"CK favored · limited evidence" or a price-specific comparison label rather
+than suggesting that evidence is absent. Owner plans and prices are unchanged.
+Avacyn PF25 #1F is the regression example. 86 unit tests and build passed.

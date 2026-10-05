@@ -2,9 +2,10 @@ import type {ReviewCard} from './review-data';
 import type {CardInsight} from './card-insights';
 import {estimate,type Settings} from './selling-economics';
 import {timingReadout} from './price-trends';
+import {buylistScreen} from './buylist-screen';
 
 export type ActionKind='ck'|'quote'|'list'|'watch'|'verify';
-export const actionLabels:Record<ActionKind,string>={ck:'Batch with CK',quote:'Cash quotes / add-ons',list:'List patiently',watch:'Hold / watch',verify:'Verify evidence'};
+export const actionLabels:Record<ActionKind,string>={ck:'Batch with CK',quote:'Cash quotes / add-ons',list:'List patiently',watch:'Hold / watch',verify:'Needs a closer comparison'};
 export type ActionReadout={kind:ActionKind;label:string;reason:string;dollars:number|null;timing:string;alerts:string[];comparisonBasis:string};
 // A next research/action queue, never an owner plan or a sale instruction.
 export function actionFor(card:ReviewCard,insight:CardInsight,settings:Settings,asOf:string):ActionReadout{
@@ -28,7 +29,7 @@ export function actionFor(card:ReviewCard,insight:CardInsight,settings:Settings,
  else if(insight.category==='patient'){kind='list';reason='Captured sales support a patient listing test; compare the extra whole-lot proceeds.';}
  else if(insight.category==='specialist'){kind='quote';reason='Seek an exact-treatment advance cash offer; buyer acceptance remains unconfirmed.';}
  const review=card.analystReview;
- const cashReady=quoteAge>=0&&quoteAge<=7&&(card.ckCents??0)>0&&!has('capacity')&&!timing.conflict;
+ const cashReady=quoteAge>=0&&quoteAge<=7&&(card.ckCents??0)>0&&card.ckCapacity!==null&&card.ckCapacity>=card.quantity&&!has('capacity')&&!timing.conflict;
  let dollars=kind==='ck'?gap===null?null:-gap:kind==='list'?insight.upperExtra??gap:null;
  // Current authored judgment can recognize a newer price regime that a full-window
  // median misses. It cannot bypass a missing/stale/shared-capacity dealer gate.
@@ -45,6 +46,25 @@ export function actionFor(card:ReviewCard,insight:CardInsight,settings:Settings,
   const reviewedGap=cashReady&&reviewedNet!==null?(reviewedNet-card.ckCents!)*card.quantity:null;
   dollars=kind==='ck'?reviewedGap===null?null:-reviewedGap:kind==='list'?reviewedGap:null;
  }
- const label=kind==='quote'?(review?.current&&review.channel==='batch_bundle'?'Optional batch add-on':review?.current&&review.channel==='alternative_buylist'?'Compare other buylists':'Seek advance quote'):actionLabels[kind];
+ let label=kind==='quote'?(review?.current&&review.channel==='batch_bundle'?'Optional batch add-on':review?.current&&review.channel==='alternative_buylist'?'Compare other buylists':'Seek advance quote'):actionLabels[kind];
+ if(kind==='verify'){
+  dollars=null;
+  if(timing.conflict){label='Confirm CK quote';reason=timing.conflict;}
+  else if(card.ckCents===null){label='No current CK quote';reason='A current exact-product cash bid is missing; this does not mean the card has no market data.';}
+  else if(card.ckCapacity===0){label='CK not currently buying';reason='The captured CK buying quantity is zero.';}
+  else if(card.ckCapacity===null){label='Confirm CK buying quantity';reason='A cash bid is captured, but the quantity CK will accept is unknown.';}
+  else if(card.ckCapacity<card.quantity||has('capacity')){label='CK cannot cover this lot';reason='Captured buying capacity does not cover the lot or the shared copies competing for that capacity.';}
+  else if(quoteAge<0||quoteAge>7){label='Refresh CK quote';reason='The CK quote is undated or outside the seven-day freshness window.';}
+  else if(card.medianCents===null){label='No comparable sale samples';reason='The cash quote is available, but a compatible sale median is missing. Asking prices remain a separate comparison.';}
+  else {
+   const screen=buylistScreen(card,settings,asOf,has('capacity'));
+   if(screen.decision==='win'||screen.decision==='batch'){
+    label=screen.decision==='win'?'CK favored · limited evidence':'Small self-sale upside';
+    reason=`${screen.basis} favors ${screen.decision==='win'?'CK':'a convenience tradeoff'}, but the broader analysis remains cautious. ${insight.recentSales??0} comparable sales captured in 30 days; inspect the sale distribution before treating the median as definitive.`;
+   }else if(screen.label!=='Check price evidence'){label=screen.label;reason=screen.explanation;}
+   else {label='Compare cash and sale evidence';reason='Both cash and market data are available; the captured patterns do not establish a clear channel preference.';}
+  }
+ }
  return {kind,label,reason,dollars,timing:review?.current&&review.timing?review.timing:timing.title,alerts,comparisonBasis:review?.current&&review.priceScenario?review.priceScenario.basis:kind==='list'&&insight.upperExtra!==null?'Repeated higher-price band · scenario':'Captured sale median'};
 }
+

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {registerHooks} from 'node:module';
-registerHooks({resolve(s,c,n){if(s==='./selling-economics'||s==='./price-trends')return n(s+'.ts',c);return n(s,c);}});
+registerHooks({resolve(s,c,n){if(s==='./selling-economics'||s==='./price-trends'||s==='./buylist-screen')return n(s+'.ts',c);return n(s,c);}});
 const {actionFor}=await import('../src/lib/action-queue.ts');
 const {analyzeCollection,analysisDefaults:S}=await import('../src/lib/card-insights.ts');
 const asOf='2026-10-04T20:00:00Z',p=(date,cents)=>({date,cents});
@@ -21,4 +21,15 @@ test('current individual judgment can replace a stale median with a newer realiz
 test('model-authored buylist preference cannot bypass unavailable dealer capacity',()=>{
  const c={...base,ckCapacity:0,analystReview:{current:true,channel:'ck_buylist',nextStep:'Add to a CK batch.',priceScenario:{grossCents:100,basis:'Captured median'}}};
  assert.equal(read(c).kind,'verify');assert.equal(read(c).dollars,null);
+});
+
+
+test('limited evidence distinguishes a favorable cash comparison from missing data',()=>{
+ const insight={category:'review',upperExtra:null,findings:[{id:'thin-sales'}]};
+ const c={...base,semantic:{...base.semantic,observedSales30:2}};
+ const result=actionFor(c,insight,S,asOf);
+ assert.equal(result.label,'CK favored · limited evidence');assert.doesNotMatch(result.reason,/missing/);
+ assert.equal(actionFor({...c,medianCents:null},insight,S,asOf).label,'No comparable sale samples');
+ assert.equal(actionFor({...c,ckCapacity:null},insight,S,asOf).label,'Confirm CK buying quantity');
+ assert.equal(actionFor({...c,ckCents:null},insight,S,asOf).label,'No current CK quote');
 });

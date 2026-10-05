@@ -95,3 +95,31 @@ Historical correction receipts: routine-shipping-audit.md and tracked-shipping-a
 5. Cards per order, fulfillment minutes, shipping receipts/costs, fees, days to sell and claims outcomes. Keep realized facts separate from estimates.
 
 For eventual order telemetry, retain merchandise subtotal, card count, shipping lane and receipt, fee bases, actual label amount, weight/dimensions, actual material counts/costs, optional insurance and labor, final proceeds and source/date. This is a proposed data contract; it does not claim an order ledger or Pirate Ship integration is already implemented.
+
+## Free-shipping threshold research — October 5, 2026
+
+US Mana Pool seller packages at $60+ require free tracked shipping. Sellers cannot
+change rates or opt out; disabling letters does not remove the threshold. Ground
+Advantage or better with a bubble mailer/box is required. This is absorbed postage,
+not a separate $6.49 platform fee.
+
+With our provisional fulfillment costs, a $59.99 1–14-card letter order nets about
+$56.00; a $60 free-tracked order nets $49.01: a ~$6.99 cliff. For 15–199 cards
+already requiring tracking, losing the $6.49 shipping credit after processing
+reduces net by ~$6.30. Illustrations exclude additional buyer-fee/tax fee basis.
+
+Mitigate by modeling whole baskets and allocating postage/fixed processing once,
+showing letter versus free-tracked outcomes for sub-$60 cards, pricing eligible
+high-value singles with fulfillment included, and using commercial labels.
+Covering $5.95 fulfillment at 7.9% marginal fees requires ~$6.46 extra gross.
+Pricing at $59.99 is fragile because another purchased card triggers free shipping.
+Small self-sale advantages remain good CK batch candidates. Price modifiers and
+floors are available; no shop settings or application economics changed here.
+An inconsistent $45 sealed example in fixed-modifier help is not used as policy.
+
+Sources verified:
+https://manapool.com/shipping-rates
+https://support.manapool.com/hc/en-us/articles/33495670240023-Setting-your-shipping-options
+https://support.manapool.com/hc/en-us/articles/20931944865559-Shipping-Rates-and-Methods
+https://support.manapool.com/hc/en-us/articles/21779686206615-Fees-Mana-Pool-and-Credit-Card-Fees
+https://support.manapool.com/hc/en-us/articles/28214418426391-Price-Modifier-Tools
