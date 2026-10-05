@@ -167,3 +167,8 @@ Default seller-funded tracked net declines20c; letter scenario unchanged.
 57 tests/build/typecheck pass. See tracked-shipping-audit.md.
 
 Shipping research consolidated in shipping-model.md as the maintained reference. Letter/tracked handoffs are retired inputs; audit receipts retain provenance. No raw handoff is required for continuing implementation.
+
+
+### 2026-10-05 broader buylist workflow
+
+Added a median-net buylist shortlist with undecided-only and captured CK range-high filters. Browser verification preserved 55 assigned lots (51 buylist, 3 self-sale, 1 hold); 74 undecided lots passed CK-beats-median-net plus near-high using the owner browser costs ($1.35 letter postage, $0.25 materials). This count is settings-dependent, not a universal recommendation. Emrakul INR 481, Astral Dragon CLB 613, Descent into Avernus CLB 580 foil and Mightform Harmonizer EOE 297 were still undecided. Tyvar DSK 353 foil and Valley Floodcaller BLB 308 foil display newer higher-sale warnings and need review before treating their older medians as sale targets. No owner plans or inventory events changed. Full check passed 69 tests, production build and typecheck; desktop and 390px visual checks completed.

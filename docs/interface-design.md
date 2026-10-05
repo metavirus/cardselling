@@ -87,3 +87,8 @@ next move. Longer evidence, countercase and reconsideration triggers are an
 optional disclosure. A structured authored price test can drive the adjacent
 cash/net comparison while remaining explicitly a scenario. The next-action queue
 is separate from the owner working-plan tabs, and never assigns an owner choice.
+
+
+## Broader buylist screen (2026-10-05)
+
+Buylist shortlist compares CK with captured 90-day sale-median net, independent of the global asking-price selector. The broad default admits CK wins and self-sale premiums of at most $2 for the whole lot. This is an explicit convenience screen, not a rewritten individual AI recommendation. Only undecided excludes all assigned directions. Optional near-high means the current CK bid is at least 80% up its own captured 90-day bid range, with at least 14 days of history; flat and short ranges remain unknown. Quotes must cover the lot, including shared capacity, have a recent capture, and have no conflicting chronology. Higher recent sales, higher authored price tests, and weakening bids remain visible as warnings. Sort by best CK advantage to review the largest dollar benefit first. Prices are per copy; the difference is for the whole lot and excludes the shared dealer shipment.

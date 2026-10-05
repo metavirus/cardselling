@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {registerHooks} from 'node:module';
+registerHooks({resolve(s,c,n){if(s==='./selling-economics'||s==='./price-trends')return n(s+'.ts',c);return n(s,c);}});
+const {buylistScreen}=await import('../src/lib/buylist-screen.ts');
+const {defaultSettings}=await import('../src/lib/selling-economics.ts');
+const asOf='2026-10-05T05:50:55Z';
+const base={quantity:1,ckCents:500,ckCapacity:10,ckSourceDate:asOf,medianCents:600,askCents:9000,marketHistory:{ck:[{date:'2026-07-10',cents:200},{date:'2026-10-04',cents:550}],tcg:[]},recentSales:[]};
+test('broad screen uses sale median even with ask selected, and measures whole-lot effort tradeoff',()=>{const r=buylistScreen(base,{...defaultSettings,basis:'ask'},asOf);assert.equal(r.net,534);assert.equal(r.gap,34);assert.equal(r.competitive,true);assert.equal(r.nearHigh,true);assert.equal(buylistScreen({...base,quantity:6},defaultSettings,asOf).competitive,false);});
+test('unknown, zero, insufficient and shared capacity cannot appear as covered buylist candidates',()=>{for(const capacity of [null,0])assert.equal(buylistScreen({...base,ckCapacity:capacity},defaultSettings,asOf).competitive,false);assert.equal(buylistScreen(base,defaultSettings,asOf,true).competitive,false);assert.equal(buylistScreen({...base,medianCents:null},defaultSettings,asOf).competitive,false);assert.equal(buylistScreen({...base,ckSourceDate:'2026-08-01'},defaultSettings,asOf).competitive,false);});
+test('higher recent sales remain in broad screen with warning, not a concealed median override',()=>{const r=buylistScreen({...base,medianCents:400,recentSales:[{date:'2026-09-22',cents:900}]},defaultSettings,asOf);assert.equal(r.beatsNet,true);assert.deepEqual(r.warnings,['Recent higher sale · thin sample']);assert.equal(r.nearHigh,true);});
+test('short and flat histories do not imply a position in a historical range',()=>{for(const history of [[{date:'2026-10-04',cents:500}],[{date:'2026-07-10',cents:500},{date:'2026-10-04',cents:500}]])assert.equal(buylistScreen({...base,marketHistory:{ck:history,tcg:[]}},defaultSettings,asOf).position,null);});
