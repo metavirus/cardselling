@@ -4,6 +4,7 @@ import {database} from "@/db/client";
 
 export type ReviewCard={
  lotId:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
+ images:{thumb:string;normal:string;large:string}[];
  proposal:"buylist"|null;ckCents:number|null;ckCapacity:number|null;ckSource:"direct_public"|"tcgsentry_export"|null;
  ckSourceDate:string|null;ckProductUrl:string|null;ckDirectNotListed:boolean;
  scgCents:number|null;scgSourceDate:string|null;askCents:number|null;askCapturedAt:string|null;
@@ -22,7 +23,22 @@ type Evidence={variant_id:string;condition_scope:string;provider:string;product_
 type Ask={lot_id:string;numeric_value:string;captured_at:Date|string};
 type Sale={lot_id:string;numeric_value:string;quantity:number;observed_at:Date|string};
 type Absent={provider_subject:string};
+type ImageRow={variant_id:string;product_id:string;raw:{image_uris?:Record<string,string>;card_faces?:{image_uris?:Record<string,string>}[]}|null};
 const iso=(x:Date|string|null|undefined)=>x==null?null:new Date(x).toISOString();
+function cardImages(row:ImageRow|undefined){
+ const source=row?.raw;
+ const faces=source?.image_uris?[source.image_uris]:source?.card_faces?.map(face=>face.image_uris).filter((x):x is Record<string,string>=>!!x)??[];
+ const result=faces.map(face=>({thumb:face.small??face.thumb,normal:face.normal??face.large,large:face.large??face.normal}))
+  .filter(face=>Object.values(face).every(url=>typeof url==="string"&&url.startsWith("https://cards.scryfall.io/")));
+ if(result.length||!row?.product_id)return result;
+ // One accepted language-specific printing is absent from the retained bulk snapshot.
+ const id=row.product_id;
+ return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)?[{
+  thumb:`https://api.scryfall.com/cards/${id}?format=image&version=small`,
+  normal:`https://api.scryfall.com/cards/${id}?format=image&version=normal`,
+  large:`https://api.scryfall.com/cards/${id}?format=image&version=large`
+ }]:[];
+}
 function cents(x:string|null|undefined):number|null{if(x==null)return null;const n=Math.round(Number(x)*100);if(!Number.isSafeInteger(n)||n<0)throw new Error("Invalid source price");return n;}
 function median(values:number[]):number|null{if(!values.length)return null;const s=values.toSorted((a,b)=>a-b),m=Math.floor(s.length/2);return Math.round(s.length%2?s[m]:(s[m-1]+s[m])/2);}
 const key=(variant:string,grade:string)=>`${variant}|${grade}`;
@@ -32,7 +48,7 @@ export async function getReviewData():Promise<ReviewData>{
  const run=(await db.execute(sql`SELECT id,input_manifest FROM canonical_decision_runs
   WHERE prompt_version='human-requested-just-sell-first-pass-v1' ORDER BY created_at DESC LIMIT 1`)).rows[0] as unknown as Run|undefined;
  if(!run)throw new Error("No reviewed buylist run is available");
- const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult]=await Promise.all([
+ const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult,imagesResult]=await Promise.all([
   db.execute(sql`SELECT count(*)::int lots,coalesce(sum(available_quantity),0)::int copies FROM canonical_inventory`),
   db.execute(sql`SELECT i.lot_id,i.variant_id,i.name,i.set_code,i.collector_number,i.finish,i.printed_language,
     i.condition_normalized,i.available_quantity,d.proposal FROM canonical_inventory i
@@ -55,7 +71,13 @@ export async function getReviewData():Promise<ReviewData>{
   db.execute(sql`SELECT DISTINCT ON (m.variant_id) m.variant_id,e.numeric_value,e.window_start AS source_date
     FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id
     WHERE m.provider='MTGJSON/tcgplayer' AND e.metric='daily_retail_reference'
-    ORDER BY m.variant_id,e.window_start DESC,e.id DESC`)
+    ORDER BY m.variant_id,e.window_start DESC,e.id DESC`),
+  db.execute(sql`SELECT DISTINCT ON (m.variant_id) m.variant_id,m.product_id,r.raw
+    FROM canonical_product_mappings m
+    LEFT JOIN LATERAL (SELECT raw FROM card_reference_snapshots
+      WHERE scryfall_id=m.product_id::uuid LIMIT 1) r ON true
+    WHERE m.provider='Scryfall' AND m.status='accepted'
+    ORDER BY m.variant_id,m.id`)
  ]);
  const stock=stockResult.rows[0] as unknown as {lots:number;copies:number}|undefined;
  const lots=lotsResult.rows as unknown as Lot[];
@@ -83,6 +105,7 @@ export async function getReviewData():Promise<ReviewData>{
  const absent=new Set((absentResult.rows as unknown as Absent[]).map(x=>x.provider_subject));
  const asks=new Map((asksResult.rows as unknown as Ask[]).map(x=>[x.lot_id,x]));
  const tcg=new Map((tcgResult.rows as unknown as {variant_id:string;numeric_value:string;source_date:Date|string}[]).map(x=>[x.variant_id,x]));
+ const imageRows=new Map((imagesResult.rows as unknown as ImageRow[]).map(x=>[x.variant_id,x]));
  const now=Date.now(),samples=new Map<string,number[]>();
  for(const sale of salesResult.rows as unknown as Sale[]){
   const observed=Date.parse(String(sale.observed_at)),age=(now-observed)/86_400_000;
@@ -102,6 +125,7 @@ export async function getReviewData():Promise<ReviewData>{
   const ask=asks.get(lot.lot_id),tcgValue=tcg.get(lot.variant_id),sample=samples.get(lot.lot_id)??[];
   const scgValue=scg.get(k);
   return {lotId:lot.lot_id,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
+   images:cardImages(imageRows.get(lot.variant_id)),
    printedLanguage:lot.printed_language,grade:lot.condition_normalized,quantity:lot.available_quantity,
    proposal:proposal?"buylist":null,ckCents:cents(ck?.price.numeric_value),ckCapacity:wanted,ckSource,
    ckSourceDate:iso(ck?.price.captured_at),ckProductUrl:ckSource==='direct_public'?ck?.price.product_id??null:null,

@@ -40,6 +40,8 @@ The local page is an all-collection decision design preview. It reads canonical
 inventory and evidence, compares dealer/self-sale amounts, and keeps working
 plans and notes in this browser. See `docs/interface-design.md` for scope and
 the distinction between browser drafts and canonical owner decisions.
+Card thumbnails and larger click/tap views use exact-printing Scryfall art;
+the images load from Scryfall while online.
 The server-only `/api/health` endpoint reports readiness without connection details.
 
 ## Commands

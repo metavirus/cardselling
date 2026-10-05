@@ -2,3 +2,26 @@
 @media(min-width:1550px){.review-grid{grid-template-columns:minmax(0,1fr) 350px}.card-link{max-width:280px}td{padding-top:12px;padding-bottom:12px}}
 @media(max-width:1099px){.review-grid{grid-template-columns:1fr}.detail-panel{max-width:none}.detail-panel .evidence-list{max-width:650px}.overview>*{padding:16px!important}.workspace{padding:24px}.workspace-footer{flex-direction:column}.table-scroll{max-height:550px}.selection-bar{flex-wrap:wrap}.settings-grid{grid-template-columns:1.5fr 1fr 1fr}.heading-actions{flex-direction:column}}
 @media(max-width:640px){.topbar{padding:0 16px;height:55px}.workspace-label{display:none}.prototype-label{font-size:8px}.workspace{padding:22px 14px}.page-heading{align-items:start;flex-direction:column;gap:12px}h1{font-size:26px}.page-heading p{font-size:12px}.heading-actions{flex-direction:row;flex-wrap:wrap}.context-line{font-size:10px;gap:6px;margin:15px 0}.overview{grid-template-columns:1fr 1fr;margin-bottom:18px}.overview>*:nth-child(3){border-left:0;border-top:1px solid var(--line)}.overview>*:nth-child(4){border-top:1px solid var(--line)}.overview strong{font-size:25px}.overview small{font-size:10px}.plan-tabs{gap:20px}.plan-tabs button{font-size:11px}.panel-heading{padding:16px 12px}.panel-heading h2{font-size:14px}.panel-heading p{font-size:10px}.table-tools{padding:0 12px 12px;gap:6px}.table-tools select{max-width:145px;font-size:10px}.table-footnote{padding:10px 12px}.settings-grid{grid-template-columns:1fr 1fr;gap:12px}.settings-grid>label:first-child{grid-column:1/-1}.detail-panel{padding:18px}.table-scroll{max-height:510px}.card-link{min-width:155px}.check-cell{padding-left:10px}.pagination{padding:10px 12px}.workspace-footer{font-size:9px}.search input{font-size:11px}.selection-bar{bottom:6px;padding:12px;gap:12px}.selection-bar .bulk-actions{width:100%}.selection-bar .bulk-actions>*{flex:1}}
+
+.card-identity{display:flex;align-items:center;gap:10px;min-height:61px}
+.art-thumb{width:44px;height:61px;flex:none;padding:0;border:1px solid #d4ddd3;border-radius:4px;overflow:hidden;background:#e7ebe5;box-shadow:0 1px 3px #24332f1a}
+.art-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.art-thumb:hover{border-color:var(--accent);box-shadow:0 0 0 2px #84ad902f}
+.art-unavailable{display:flex;width:44px;height:61px;flex:none;align-items:center;justify-content:center;border:1px dashed var(--line);border-radius:4px;color:var(--muted);background:#f7f8f4}
+.detail-art{display:flex;align-items:center;flex-direction:column;gap:5px;width:100%;padding:12px;margin-top:16px;background:#f6f8f4;border-color:#e4e9e1}
+.detail-art img{display:block;width:auto;max-width:100%;height:248px;object-fit:contain;border-radius:7px;box-shadow:0 6px 16px #26332822}
+.detail-art span{font-size:10px;color:var(--muted)}
+.art-hover{position:fixed;z-index:10;width:232px;padding:6px;background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 12px 32px #182d2340;pointer-events:none}
+.art-hover img{display:block;width:220px;height:307px;object-fit:contain;border-radius:6px}
+.art-hover span{display:block;padding:6px 4px 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.art-dialog{border:0;border-radius:12px;padding:0;max-width:min(96vw,560px);max-height:96vh;box-shadow:0 18px 60px #101c17a0;background:#fff;color:var(--ink)}
+.art-dialog::backdrop{background:#132219ba}
+.art-dialog-content{padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.art-dialog-heading{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.art-dialog-heading strong,.art-dialog-heading span{display:block}
+.art-dialog-heading strong{font-size:16px}
+.art-dialog-heading span,.art-dialog-content small{font-size:11px;color:var(--muted)}
+.art-dialog-heading button{font-size:24px;line-height:1;padding:3px 10px}
+.art-dialog-content>img{display:block;max-width:100%;width:auto;height:auto;max-height:calc(96vh - 140px);object-fit:contain;border-radius:10px}
+.art-face-switch{display:flex;align-items:center;justify-content:space-between;width:100%;gap:10px;font-size:12px}
+.art-face-switch button{font-size:11px}

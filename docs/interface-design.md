@@ -40,4 +40,16 @@ Desktop uses the table and a side detail panel. Narrow layouts stack the detail
 panel below a horizontally scrollable comparison table; inspecting a card moves
 to its details. Keep numeric columns comparable rather than hiding them on phones.
 
+The comparison table now shows a card thumbnail and the detail panel shows a
+larger image. Hovering a thumbnail previews the card on pointer devices;
+clicking or tapping opens a larger image with face navigation when the printing
+has multiple pictured faces. Image URLs come from the retained Scryfall bulk
+reference joined by accepted printing ID; one accepted printing absent from that
+bulk snapshot uses Scryfall's exact-ID image endpoint. Artwork requires an
+internet connection and describes the printing, not the condition of the
+owner's individual physical copy. The app does not store image binaries.
+
+Image interaction was checked at desktop and 390px mobile widths: thumbnails
+load, the enlarged image opens and closes, and a two-faced card switches faces.
+
 Verified at desktop 1440x1000 and mobile 390x844: all 723 lots / 817 copies are accessible; filters, search, draft persistence, and editable estimates work. The 20-proposal selection reconciles to 29 copies, 181.00 dollars in CK bids and 132.37 dollars in modeled self-sale net. Raising postage by 0.50 dollars reduces that net by 14.50 dollars. Production build and TypeScript checks pass.
