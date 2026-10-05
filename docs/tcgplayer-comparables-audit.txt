@@ -1,0 +1,13 @@
+TCGplayer comparables audit — October 4, 2026
+
+Code reads paper.tcgplayer.retail[normal|foil|etched][date] from retained MTGJSON AllPrices, mapped through accepted Scryfall ID/set/collector number/finish/language and native product ID. MTGJSON maintainer issue1341 identifies retail upstream field as marketPrice. Retained file has no separate low/mid/high history fields. Grade scope remains not_applicable: product/finish market reference is not an exact NM offer.
+
+Collection Self-sale price column is Mana Pool asking/sale basis, not TCGplayer. Example retained latest: Daze SOA80 nonfoil TCG4.17, ManaPool ask4.00, captured-sale median4.52. DemonicTutor CMM696 nonfoil TCG103.08, ask101.37, median100.40. HeartlessSummoning INR383 nonfoil TCG1.72, ask1.33, median1.40. Different INR309 variants have distinct higher values.
+
+TCG Market is recent completed-sales-derived; Mid/listed median is asking-price median; Low is lowest asking price and must be qualified by grade/language/shipping; High is an upper asking extreme, not an expected sale. Future hydration should preserve distinct metrics and source dates, exact matching scope, NM/LP condition, delivered price, seller/listing quantities, and completed transaction comparables. No automatic replacement of expected net with Mid/High. Missing listing metrics stay unknown. Higher price differences remain unproven until exact products and metric scopes are compared.
+
+Sources:
+https://help.tcgplayer.com/hc/en-us/articles/222376867-What-do-the-different-price-points-on-TCGplayer-com-mean
+https://help.tcgplayer.com/hc/en-us/articles/16007140992791-Price-Settings-and-Updates
+https://github.com/mtgjson/mtgjson/issues/1341
+https://mtgjson.com/data-models/price/price-list/
