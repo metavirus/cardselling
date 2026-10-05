@@ -36,7 +36,10 @@ npm.cmd run dev
 Open http://127.0.0.1:3010. The database has its own cluster on 127.0.0.1:5440.
 Setup generates credentials; repeat setup verifies the existing target.
 Startup never initializes a replacement. Missing/partial state needs inspection.
-The initial page is a plain development status page. Product design has not begun.
+The local page is an all-collection decision design preview. It reads canonical
+inventory and evidence, compares dealer/self-sale amounts, and keeps working
+plans and notes in this browser. See `docs/interface-design.md` for scope and
+the distinction between browser drafts and canonical owner decisions.
 The server-only `/api/health` endpoint reports readiness without connection details.
 
 ## Commands

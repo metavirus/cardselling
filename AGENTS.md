@@ -7,6 +7,9 @@ Six to ten hours/week is an effort ceiling, not a target. Prefer worthwhile net
 proceeds with low effort; do not chase pennies or assume historical highs recover.
 Environment setup authorizes infrastructure and a plain development status page,
 not product interface design, branding, navigation, or speculative layouts.
+The owner subsequently authorized a basic interface design on October 4:
+an all-collection decision workspace, not a buylist-only screen. Local UI
+prototyping is now in scope; follow docs/interface-design.md for its boundaries.
 
 - Carry accepted context and corrections forward. Ask only for material missing
   facts or choices. Do not ask the owner to repeat authorized routine work.

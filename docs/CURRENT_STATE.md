@@ -78,9 +78,12 @@ order-economics module can calculate scenarios with explicit inputs; it does not
 supply unknown postage, labor or sell-through probability. MagicCon Atlanta in
 November is a planned workflow; no vendor quote or transaction is recorded.
 
-No product interface, scheduled collector service, sale workflow,
-vendor communication or hosting is complete. The visible app is a local
-development status page. Desktop-first and mobile-capable remain the direction.
+A local all-collection interface design preview now reads the canonical store.
+It provides comparison columns, source details, editable estimate settings and
+browser-saved working plans/notes across Undecided, Buylist, Sell myself,
+MagicCon and Hold. Only existing analyst proposals are labeled as assessed.
+This is not a canonical sale or owner-choice workflow. Scheduled collectors,
+vendor communication and hosting remain unimplemented. See `interface-design.md`.
 
 ## Operational checks
 
