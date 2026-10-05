@@ -7,7 +7,7 @@ uses current canonical holdings and retained evidence, not placeholder card data
 The primary surface is a compact comparison table. Every row includes exact
 printing, finish, grade and quantity; CK and SCG bid indications; working
 self-sale price and net; whole-lot incremental self-sale dollars; and the owner's
-working direction. Search, sorting and paging apply to the complete inventory.
+working direction. Search, sorting and continuous scrolling apply to the complete inventory.
 Unknown values stay absent. A CK numeric bid with zero wanted quantity is visible
 as unavailable rather than usable proceeds. SCG capacity remains unknown.
 
@@ -29,12 +29,13 @@ estimates remain explicit. The default shipment allowances are illustrations,
 not measured costs; one-copy orders differ from combined orders. Labor, returns,
 losses and possible high-value fee rebates are not silently estimated.
 
-This is a design preview. Plans, notes and assumptions persist in local browser
-storage and can be exported as JSON; they are not canonical owner choices and
-do not reserve or sell stock. Database-backed draft persistence, multi-device
-sync, split quantities, chart histories, richer demand signals and event quotes
-remain implementation work. The local SQL database supplies inventory and
-evidence through a server-only reader. No remote deployment is authorized.
+Plans and notes now persist as versioned canonical owner choices in PostgreSQL.
+Estimate settings, filters, search, sorting and selections also persist in SQL.
+The browser reads the database before enabling edits; legacy browser choices
+migrate on a successful load, with conflicting payloads retained in SQL and
+existing database choices preferred. These plans do not reserve or sell stock.
+Multi-device access, split quantities and convention quote execution remain
+future work. No remote deployment is authorized.
 
 Desktop uses the full-width table with no initially selected card or persistent
 detail pane. Card details open in a native modal dialog with Escape, close-button,
@@ -95,3 +96,12 @@ Buylist shortlist compares CK with captured 90-day sale-median net, independent 
 
 
 2026-10-05 continuous collection browsing: removed 40-row pagination; all filtered lots are rendered in one scrollable table with lazy card images. Select matching cards now explicitly applies to the whole filtered result. Fixed table column sizing and wrapped identity/commentary prevent long warnings from moving dollar and plan columns off-screen. Verified 758-row collection and 166-row filtered shortlist, no desktop table overflow at 1265px, no page overflow at 390px; narrow tables retain horizontal scrolling. Full check passed 69 tests, build and typecheck.
+
+
+2026-10-05 holistic controls pass: replaced large overview tiles and stacked
+plan/action tabs with a compact collection summary, four primary research views,
+and two small refinement selectors. Buylist refinements appear only in that
+view. Dollar columns, continuous browsing and on-demand card details remain.
+Rendered desktop/mobile verification for this pass is pending: the browser tool
+rejected the localhost URL under its URL policy. Earlier layout checks above
+apply to earlier revisions, not this one.

@@ -1,5 +1,12 @@
 # Canonical database and artifact retirement
 
+Owner workspace update October5: migration0004 adds canonical_workspace_state
+and immutable canonical_workspace_requests. Owner plan/note changes append
+canonical_owner_choices with supersession; settings and filters live in SQL.
+Revision conflicts preserve original requests rather than overwriting newer
+choices. Legacy browser drafts transfer on the next successful owning-browser
+load; that transfer remains unverified. See workspace-persistence.md.
+
 The local PostgreSQL database is the operational source of truth after the
 `initial_manabox` adoption. ManaBox's accepted scan supplies the opening physical
 inventory. Later owner corrections and explicit inventory transactions belong in

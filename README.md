@@ -23,7 +23,7 @@ operational inputs. Read `docs/canonical-store.md` and `docs/CURRENT_STATE.md`.
 The first analyst-reviewed buylist proposal covers 20 exact lots / 29 copies at
 $181 gross indicative cash from direct public Card Kingdom checks. It is pending
 checkout, actual batch costs and owner execution; no stock or sale changed. See
-`docs/buylist-first-pass.md`. Public refresh collectors are implemented; canonical owner-plan and selling execution workflows remain to be built. See `docs/project-assessment-2026-10-05.md`.
+`docs/buylist-first-pass.md`. Public refresh collectors are implemented; SQL-backed owner plans/settings are implemented; selling execution workflows remain to be built. See `docs/project-assessment-2026-10-05.md`.
 
 ## Local development
 
