@@ -1,0 +1,292 @@
+{
+  "checkedOn": "2026-10-04",
+  "vendorResearch": {
+    "checked_on": "2026-10-04",
+    "scope": "First-party buyer policies and buyer-fit evidence for Atlanta November 13–15, 2026. No outreach, submissions or accepted offers.",
+    "owner_contract": "Price and exact scope agreed in advance; handoff verifies identity, quantities and condition. Core-only and core-plus-add-ons comparisons test bundle leverage. Explicit USD cash, no EUR comparables or implied currency conversion.",
+    "attendance_warning": "Official Atlanta directory is dynamically populated and its text extraction did not expose vendor names. Only Three for One attendance was independently confirmed from its own current Atlanta page in this research. Parent research may establish other directory entries separately.",
+    "vendors": [
+      {
+        "name": "Tales of Adventure / TOAMagic",
+        "attendance": "Not independently confirmed for Atlanta in this pass",
+        "facts": [
+          "The current Buylist link redirects to an Inactive Buylist page inviting emailed lists.",
+          "Preferred moderate-value $3–$100 format is TCGplayer Collection Tracker; ManaBox and Moxfield accepted; TCGplayer app unsupported.",
+          "Advertises 70% cash based on Low for English cards printed 2000-present; high-value cards or sealed require photos and list.",
+          "Policies allow different rates or refusal for signed/non-English cards; payout method fees and grading adjustment terms matter."
+        ],
+        "inference": "Potential anchor bidder for eligible English staples; unusual premium treatments need individual clarification. Featured retail high-end/serialized catalog demonstrates handling expertise, not an executable buying premium. Homepage featured cash amounts can coexist with Not Buying labels and must not become active bids.",
+        "required_qualification": "Confirm Atlanta attendance, exact treatment-specific Low comparator, USD net cash, quantity acceptance and price-first handoff exception terms.",
+        "urls": [
+          "https://www.toamagic.com/inactive_buylist",
+          "https://www.toamagic.com/buylist%20policy",
+          "https://www.toamagic.com/"
+        ]
+      },
+      {
+        "name": "Strike Zone Online",
+        "attendance": "Parent has historical owner relationship; upcoming Atlanta attendance unconfirmed in this pass",
+        "facts": [
+          "Buylist publishes wanted quantities and prices; exact set, collector number, finish and condition must match.",
+          "Full Magic buylist is available on one page; submission still requires invoice.",
+          "Orders have $15 minimum; desired quantities are strict; policy reserves repricing/refusal. Sort in invoice order to avoid sorting charges."
+        ],
+        "inference": "Best initial relationship to test the owner's prior successful fixed bundle process. Current catalog matching and wanted quantities can establish inventory holes, but historic successful offer is not today's promise.",
+        "required_qualification": "Obtain renewed written agreement overriding generic repricing uncertainty for the exact frozen Atlanta bundle and permitted verification exceptions.",
+        "urls": [
+          "https://shop.strikezoneonline.com/Buy_List.html",
+          "https://shop.strikezoneonline.com/Full_Buylist_Page.html"
+        ]
+      },
+      {
+        "name": "Journey's End Games",
+        "attendance": "Not independently confirmed for Atlanta in this pass",
+        "facts": [
+          "Supports email, video and in-person discussion; offers a condition-contingent range first.",
+          "Default remote process produces final collection offer plus card-by-card breakdown after receiving and inspecting cards.",
+          "Automated buylist prices and quantities require team approval and may change if discrepancies are identified."
+        ],
+        "inference": "Useful known competing bundle bidder with transparent breakdown; default range-first process fails owner requirement unless expressly upgraded to price-first conditional written quote.",
+        "required_qualification": "Firm scoped cash bundle, exception list and short verification handoff; no appraisal appointment.",
+        "urls": [
+          "https://journeysendgames.com/pages/sell-mtg-cards",
+          "https://journeysendgames.com/pages/buylist-policy"
+        ]
+      },
+      {
+        "name": "Star City Games",
+        "attendance": "Not independently confirmed for Atlanta in this pass",
+        "facts": [
+          "Event delivery option opens one week before an appearance; preapproval ends Thursday 3 PM ET.",
+          "Events first-come, no appointments, seller remains at booth; final grading/pricing review occurs in person.",
+          "Not all website Sell List items are bought at events because of space. Event scope must be confirmed.",
+          "Bulk non-English and deep duplicates excluded; higher-value requests may carry extra scan or payment terms."
+        ],
+        "inference": "Structured itemized alternative and private baseline, not automatically a short negotiated bundle handoff. The owner's desired appointment-free quick transfer is not guaranteed by website approval.",
+        "required_qualification": "Actual Atlanta event option, accepted quantities, grade adjustment schedule, payout details and processing time. General Thursday cutoff would imply November12 but is not event-confirmed.",
+        "urls": [
+          "https://help.starcitygames.com/en-US/selling-cards-to-us-1056972",
+          "https://help.starcitygames.com/en-US/approval-shipping-instructions-1056762"
+        ]
+      },
+      {
+        "name": "Three for One Trading",
+        "attendance": "Confirmed first-party Atlanta November13–15 2026",
+        "facts": [
+          "Atlanta page accepts spreadsheet/images and meeting preferences.",
+          "Default final offer follows in-person expert review, usually within10% of estimate; advertised up-to70% varies with condition, language and inventory.",
+          "Event assortment includes vintage, eternal staples, foil, promo, dual lands and Reserved List."
+        ],
+        "inference": "Potential specialty bidder, but assortment proves retail capability rather than demand for these exact cards. Current default process incompatible; request specific exception before preparing bespoke packet. Published EUR rate tiers are excluded from operational USD pricing.",
+        "required_qualification": "Explicit USD cash, exact bundle scope and written limited-verification terms; appointment or estimate alone insufficient.",
+        "urls": [
+          "https://www.threeforonetrading.com/en/sell-your-cards-atlanta-11-2026",
+          "https://www.threeforonetrading.com/en/veranstaltung/magiccon-atlanta-2026"
+        ]
+      },
+      {
+        "name": "Face to Face Games",
+        "attendance": "Not independently confirmed for Atlanta in this pass",
+        "facts": [
+          "Published standard buylist offers are nonnegotiable.",
+          "Foreign cards reviewed individually and generally discounted for lower demand.",
+          "At events only bulk rares, mythics and foils accepted; bulk commons/uncommons excluded."
+        ],
+        "inference": "Exact collectible-language exceptions should be investigated instead of assuming a generic foreign discount applies to every treatment. Standard nonnegotiable path is less promising for mixed-bundle premium.",
+        "required_qualification": "Current explicit USD quote and eligible exact foreign products; don't revive prior CAD conversion as pricing.",
+        "urls": [
+          "https://support.facetofacegames.com/en-US/articles/how-to-sell-cards-344162"
+        ]
+      },
+      {
+        "name": "Collector Legion",
+        "attendance": "Unconfirmed in this pass",
+        "facts": [
+          "Public buylist product pages show cash, credit, wanted limit, language and grade. Separate foil and prerelease entries observed."
+        ],
+        "inference": "Good candidate for treatment-aware cash capacity research and a private alternative baseline. Sample pages establish data structure, not demand for owner cards.",
+        "required_qualification": "Atlanta participation and advance fixed package process; query actual proposed cards and refresh capacities.",
+        "urls": [
+          "https://www.collectorlegion.com/buylist/magic_the_gathering-magic_singles-prerelease__release_promos/valgavoths_lair__foil__prerelease_promo/681900",
+          "https://www.collectorlegion.com/buylist/magic_the_gathering-magic_singles-theros_beyond_death/archon_of_suns_grace__foil/427743"
+        ]
+      },
+      {
+        "name": "HotSauce Games",
+        "attendance": "Unconfirmed in this pass",
+        "facts": [
+          "Public buylist categories distinguish masterpiece Inventions, Invocations, Expeditions and promo sets; includes Japanese Duel Decks."
+        ],
+        "inference": "Potential special-treatment matching source, no verified advance bid policy or contemporary Atlanta hotlist captured. Old site's event/news sections cannot establish current event buying.",
+        "required_qualification": "Actual USD exact-product cash, capacity, attendance and price-first package terms.",
+        "urls": [
+          "https://www.hotsaucegames.com/buylist"
+        ]
+      },
+      {
+        "name": "Pro-Play Games",
+        "attendance": "Unconfirmed in this pass",
+        "facts": [
+          "First-party buylist endpoint exists but crawler rendered Loading and mixed catalog examples."
+        ],
+        "inference": "Discovery candidate only; prices on general carousel not accepted Magic cash bids.",
+        "required_qualification": "Usable Magic buylist, exact treatments, currency, event presence and advance package quote workflow.",
+        "urls": [
+          "https://buylist.pro-playgames.com/"
+        ]
+      },
+      {
+        "name": "Trade Binder",
+        "attendance": "Unconfirmed for Atlanta; website allows approved convention drop-off where attending",
+        "facts": [
+          "Invites compatible CSV via email, exact set/version/condition, and permits approved buylist drop-off at attended conventions."
+        ],
+        "inference": "Useful alternate process lead showing data-first approved event delivery exists, not proof of Atlanta participation or short handoff.",
+        "required_qualification": "Attendance, USD terms, quoted quantity scope and limited grading verification.",
+        "urls": [
+          "https://tradebindermtg.com/pages/buylist"
+        ]
+      }
+    ],
+    "synthesis": [
+      "Real posted wanted quantities and exact cash bids are stronger buyer-demand signals than store assortments or broad We buy collections slogans.",
+      "Do not apply generic 60–70% retail convention averages as fair-value answers. Cash terms use different Low/market baselines and inventory appetite; owner may have better executable buylist alternative.",
+      "Build liquid desirable core, treatment-aware specialty module and manageable low-desirability add-on module. Request paired core-only/mixed quotes; protect core alternative value and calculate incremental add-on advantage.",
+      "Use inventory holes and buyer-specific accepted treatments to customize modules, while freezing identical scope for competitive core bids.",
+      "Price-first process eligibility is an independent buyer dimension; highest indicative price does not compensate for unagreed onsite repricing.",
+      "A final event hotlist may appear closer to travel. Older LasVegas hotlist had English/NM/max8 restriction; never promote those amounts or scopes as Atlanta prices."
+    ],
+    "event_context": {
+      "fact": "Atlanta hosts World Championship32 and coincides with StarTrek global tabletop release November13.",
+      "inference": "Refresh format-specific staple needs, confirmed new-card synergies and reprints near quote acceptance. Event attendance and new-set excitement do not automatically produce a buying premium.",
+      "urls": [
+        "https://mcatlanta.mtgfestivals.com/",
+        "https://magic.wizards.com/en/news/feature/collecting-star-trek"
+      ]
+    }
+  },
+  "strategyResearch": {
+    "researched_at": "2026-10-04",
+    "purpose": "Evidence for advance-priced MagicCon vendor packages, not on-site discovery appraisals",
+    "conclusion": "A convention package should be a buyer-specific procurement offer with an executable outside option. Strong anchors may improve interest in add-ons, but no evidence establishes a universal bundle premium. Measure it by requesting comparable core-only and expanded-package cash bids.",
+    "findings": [
+      {
+        "id": "workflow-341",
+        "source": "https://www.threeforonetrading.com/en/sell-your-cards-atlanta-11-2026",
+        "type": "current primary dealer policy",
+        "fact": "Atlanta November 13–15, 2026 page accepts lists/photos and schedules a meeting; offer and payment follow card review at event.",
+        "application": "Known attendance and organized intake, but advance agreement requirement remains unverified. Ask whether they will write a specific USD cash package price, validity through handoff, with only identity/count/condition verification adjustments.",
+        "countercase": "Scheduling and spreadsheet submission do not establish a committed advance quote. Owner rejects the advertised default workflow."
+      },
+      {
+        "id": "workflow-scg",
+        "source": "https://help.starcitygames.com/en-US/selling-cards-to-us-1056972",
+        "type": "current primary dealer policy",
+        "fact": "Event booth first come first served with no appointments; advance contact informs staff of expected sell volume. Website selllist products may not all be bought at event. Itemized mail selllist prices locked only when shipment timing conditions met; final total subject to grading.",
+        "application": "Keep SCG buylist as outside option and potential demand reference, not assume event appointment or advance cash lock. Require event-specific written acceptance.",
+        "countercase": "2015 SCG launch article advertised pre-approved event requests, but current policy must prevail. Do not generalize old arrangements."
+      },
+      {
+        "id": "remote-verification",
+        "source": "https://www.coolstuffinc.com/page/6021",
+        "type": "primary dealer advertised service",
+        "fact": "LiveBuys advertises a remote meeting to go through a collection, followed by mailed cards and payment after verification, for buylist amounts at least $500.",
+        "application": "Remote photo/video verification can separate price discovery from physical handoff; investigate event-specific adaptation only if this dealer attends and agrees.",
+        "countercase": "Page mentions older chat platforms; availability must be confirmed. It promises mail workflow, not Atlanta event cash appointment."
+      },
+      {
+        "id": "dealer-hotlist",
+        "source": "https://www.tcgplayer.com/content/article/A-Weekend-Behind-the-Vendor-Booth/8fb9604b-5410-4604-98a4-cabb4551947c/",
+        "type": "experienced dealer finance article, historical",
+        "fact": "Visible hotlists identify inventory a dealer most wants. Competing hotlist evidence may induce a preferred buyer to match a weak line rather than splitting the sale.",
+        "application": "Extract exact-printing USD bid, wanted quantity, capture time and event scope; use dealer-specific hotlist match to pick anchors and negotiate before travel.",
+        "countercase": "Historic example does not prove current Atlanta bids or price matching policy. A strong hotlist card can simply sell well alone; bundling may transfer its value to weaker cards without increasing total."
+      },
+      {
+        "id": "vendor-specialism",
+        "source": "https://www.quietspeculation.com/2016/10/finance101-selling-cards/",
+        "type": "experienced finance author Jim Casale, 2016",
+        "fact": "Know best online buylist and achievable self-sale economics before negotiating; vendors differ in specialties and willingness to haggle. Author observed early-event cash availability.",
+        "application": "Buyer-specific packages outperform one undifferentiated export. Negotiate scheduled handoff and payment availability in advance rather than rely on historical Friday/Sunday rules.",
+        "countercase": "Named vendor specialties and instantaneous payment claims are historical, not current verified promises. No guarantee conventions beat today's best executable buylist."
+      },
+      {
+        "id": "smallcards-efficiency",
+        "source": "https://www.quietspeculation.com/2016/10/insider-gp-atlanta-vendor-report/",
+        "type": "experienced seller field report, David Schumann 2016",
+        "fact": "Pre-pricing and sorting smaller cards reduced lookup work; author sold $227.50 of cards retailing below $2.50 but spent a long time across vendors and retained unsold stock. An advertised vendor was not observed on-site.",
+        "application": "Take preparation efficiencies from 'ogre boxes': exact ordered lists, labeled lots, transparent pricing. Convert them into pre-accepted package manifests and add-on schedules rather than roaming appraisal sessions.",
+        "countercase": "Classic ogreing lets vendors cherry-pick and does not meet owner's workflow. Cheap cards may add processing burden and depress willingness to buy a bundle; listed attendance may differ from actual attendance."
+      },
+      {
+        "id": "wholelot-risk",
+        "source": "https://www.quietspeculation.com/2016/10/insider-i-used-the-ion-core-scanner-to-sort-my-cards-and-maximize-buylisting-efficiency-part-2/",
+        "type": "experienced seller field report, Adam Yurchick 2016",
+        "fact": "Local shop preferred a few quick-flip items from an itemized collection; distributing the rest face-to-face required substantial travel and interactions. Author chose mailed buylists for wider coverage.",
+        "application": "Do not assume desirable anchors make every slow card acceptable. Compare full-package offer with anchors' outside option plus accepted incremental add-on offer; preserve best fallback for rejected cards.",
+        "countercase": "A package may be worse than a focused staple tranche even after reducing transaction count. Owner is patient and should retain cards where concession overwhelms convenience."
+      },
+      {
+        "id": "foreign-liquidity",
+        "source": "https://cardconduit.com/reviews?page=190&stars=5",
+        "type": "primary service team response, specific case",
+        "fact": "Card Conduit says many US buyers do not buy non-English cards and an unusual card with very low sales rate can receive a poor bid even when rare.",
+        "application": "Separate language/treatment collector premium from functional-card demand. Exact-language completed USD comps and a specialist buyer's written bid are required; do not apply service's generalized discount to inventory.",
+        "countercase": "Japanese showcase treatments with real volume differ from generic foreign-language cards. Specialist appetite can beat a generalized service route; no automatic language penalty."
+      },
+      {
+        "id": "spread-signal",
+        "source": "https://www.mtggoldfish.com/articles/using-your-tools-buylists-spreads-and-foil-multipliers",
+        "type": "historical finance framework, 2015",
+        "fact": "Buy/retail spread can expose dealer appetite and supply differences can explain foil premiums; treatment labels alone do not establish scarcity.",
+        "application": "Use bid versus comparable realized net and exact printing supply, not fixed cash percentage of TCG mid. Preserve both channel advantage and hold thesis separately.",
+        "countercase": "Historical fixed spread bands and foil multipliers are not stable modern thresholds. Self-sale ask and TCG reference need scope checking; high bid may be stale or quantity limited."
+      },
+      {
+        "id": "anecdote-triangulation",
+        "source": "https://www.reddit.com/r/mtgfinance/comments/qw569w/",
+        "type": "anonymous seller/dealer anecdotes, 2021",
+        "fact": "Commenters describe convention demand for readily resalable tournament/Commander staples and weaker bids on slow or volatile inventory.",
+        "application": "Corroborates why resale fit matters, but only actual buyer bids establish an offer. Candidate ranking should include realized sales, supply and buyer specialism.",
+        "countercase": "Anecdotal percentages are not adopted; conventions and individual buyers vary substantially."
+      },
+      {
+        "id": "payment-check",
+        "source": "https://help.starcitygames.com/en-US/receiving-payment-1056898",
+        "type": "current primary dealer policy",
+        "fact": "SCG event booths carry limited cash; alternative payment mechanics apply.",
+        "application": "Agree payment amount/method/availability alongside package price before traveling. 'Cash value' and physical cash are separate fields.",
+        "countercase": "Large public dealer name does not guarantee cash on hand or the owner's desired handoff workflow."
+      }
+    ],
+    "package_design": {
+      "classes": [
+        "buyer-specific liquid anchors",
+        "specialist collector tranche",
+        "optional lower-desirability add-ons with measurable incremental bid",
+        "excluded hold candidates and price-uncertain cards"
+      ],
+      "outside_option": "Best realizable alternative for exactly the offered quantities, after batch shipping/payment costs, supported by currently accepted bids. Self-sale alternative is modeled from comparable realized sales after fees/postage, not all TCG mid values added together.",
+      "bundle_experiment": "For identical anchors and fixed date, request core-only cash bid Q(C), then core+add-ons Q(C+A). Incremental add-on bid = Q(C+A)-Q(C). Compare this with executable outside option for A. Also verify anchor concessions versus independent outside option for C; a high-looking add-on increment may hide sacrificed anchor price.",
+      "acceptance": "Accept package only when overall net premium/convenience meets owner preference and anchor value is protected; do not demand arbitrary line-item retail percentages. Whole-package committed price may work even without full buyer internal allocations, but itemized adjustment schedule must prevent unilateral repricing.",
+      "quote_contract_fields": [
+        "immutable manifest version/hash",
+        "exact printing/finish/language/condition/quantities",
+        "USD cash-value total and payment method",
+        "core-only and expanded-package totals or itemized prices",
+        "quote validity through agreed handoff",
+        "only permitted adjustment reasons and price schedule",
+        "named buyer and event-specific appointment or express handoff plan",
+        "right to decline affected lines or whole package if verification disputes remain",
+        "no substitution or cherry-picking without revised advance agreement"
+      ],
+      "unproven_hypotheses": [
+        "anchors subsidize weak cards",
+        "convention cash bids consistently exceed online buylists",
+        "all special printings attract specialist premium",
+        "early-event selling always improves offer",
+        "public vendor list guarantees attendance and acceptance"
+      ]
+    }
+  }
+}

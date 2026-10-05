@@ -127,3 +127,14 @@ Oct 4 follow-up: compact list badges, concise AI take with expandable evidence. 
 Owner-authorized additions-only reconciliation of Sell (1).csv found all 723 prior source identities and quantities unchanged, plus 35 lots / 36 copies. Canonical stock is 758 lots / 853 copies. Source rows/hash persist in SQL; snapshot is retired after acceptance. Replay adds zero stock. Owner corrections and choices preserved. Backup full-content restoration, 20 canonical invariant checks and 52 unit tests passed. New source hydration and individual reviews documented in scan-additions.md when completed. MagicCon advance itemized quote methodology is in magiccon-advance-quote-methodology.md; no buyer contacted or quote agreed.
 
 New-scan completion: 35 exact Scryfall/Mana Pool matches; all four dated USD history series present for every addition. 35 individual AI reviews saved as a345fa5a-1daf-5b4f-ad75-6131ab369c9a. A serialization defect was corrected by132 explicit superseding observations; graph-date coverage checked.53 tests and20 canonical checks pass. See scan-additions.md.
+
+MagicCon research: broad online review of 10 buyer candidates and experienced
+selling guidance is saved in magiccon-package-research.md and
+magiccon-research-sources.json. Proposed package: buyer-specific desirable core,
+specialist module and optional slower add-ons; paired bids measure incremental
+value while protecting the core's outside alternative. Only Three for One's
+upcoming Atlanta attendance was independently confirmed in this pass; its default
+estimate/review process does not meet the owner's advance-price requirement.
+Other buyers require event and process qualification. Retained inventory examples
+illustrate candidate roles without claiming refreshed executable quotes. No
+outreach, reservations, stock changes, UI changes or accepted sale occurred.
