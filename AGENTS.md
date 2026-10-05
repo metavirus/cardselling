@@ -89,3 +89,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Collection-wide AI review
+
+The owner wants every printing analyzed, with prominent per-card model-written
+interpretation and list alerts. Scan the full collection for dealer cash exceeding
+captured gross prices or modeled self-sale net, repeated same-day sale/reference
+discrepancies, supported patient-price bands, meaningful whole-lot upside, timing
+changes, and exact-treatment buyer fit. Separate arithmetic/pattern detection from
+model-written reasoning; persist dated reviews and their input snapshots. Never
+represent templated rules alone as individualized AI judgment. Keep owner choices
+separate. Avoid generic praise, unsupported scarcity, forecasts, or penny chasing.

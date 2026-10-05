@@ -4,6 +4,7 @@ import {database} from "@/db/client";
 
 export type PricePoint={date:string;cents:number};
 export type ReviewCard={
+ analystReview?:{headline:string;commentary:string;nextStep:string;asOf:string;current:boolean};
  lotId:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
  marketHistory:{tcg:PricePoint[];ck:PricePoint[];ckRetail?:PricePoint[];manaPoolRetail?:PricePoint[]};recentSales:PricePoint[];
@@ -180,7 +181,7 @@ export async function getReviewData():Promise<ReviewData>{
   if(Number.isFinite(observed)&&age>=0&&age<=30)prior.d30++;
   if(Number.isFinite(observed)&&age>=0&&age<=90)prior.d90++;
   activity.set(sale.lot_id,prior);
-  if(sale.quantity!==1||!Number.isFinite(observed)||age<0||age>120)continue;
+  if(sale.quantity!==1||!Number.isFinite(observed)||age<0||age>90)continue;
   const price=cents(sale.numeric_value);if(price==null)continue;
   if(!recentSales.has(sale.lot_id))recentSales.set(sale.lot_id,[]);
   recentSales.get(sale.lot_id)!.push({date:iso(sale.observed_at)!,cents:price});
@@ -225,6 +226,9 @@ export async function getReviewData():Promise<ReviewData>{
    optimisticNetCents:proposal?.source_snapshot.retail.optimistic_order_economics?.netCents??null,
    rationale:proposal?.rationale??null,counterargument:proposal?.counterargument??null};
  });
+ const analystRows=await db.execute(sql`SELECT DISTINCT ON (d.lot_id) d.lot_id,d.proposal,r.input_manifest FROM canonical_decisions d JOIN canonical_decision_runs r ON r.id=d.run_id WHERE r.prompt_version='collection-ai-review-v1' ORDER BY d.lot_id,r.created_at DESC`);
+ const analystMap=new Map((analystRows.rows as unknown as {lot_id:string;proposal:{headline:string;commentary:string;nextStep:string;input_snapshot:{quantity:number;ckSourceDate:string|null;askCapturedAt:string|null}};input_manifest:{asOf:string}}[]).map(r=>[r.lot_id,{quantity:r.proposal.input_snapshot.quantity,headline:r.proposal.headline,commentary:r.proposal.commentary,nextStep:r.proposal.nextStep,asOf:r.input_manifest.asOf,current:r.input_manifest.asOf===evidenceAsOf}]));
+ for(const card of cards){const saved=analystMap.get(card.lotId);if(saved){const {quantity,...review}=saved;card.analystReview={...review,current:review.current&&quantity===card.quantity};}}
  const reviewed=lots.filter(x=>x.proposal),reviewedCopies=reviewed.reduce((sum,x)=>sum+x.available_quantity,0);
  const reviewedGrossCents=reviewed.reduce((sum,x)=>sum+(x.proposal?.gross_cents??0),0);
  if(reviewed.length!==run.input_manifest.reviewed_lots||reviewedCopies!==run.input_manifest.reviewed_copies||reviewedGrossCents!==run.input_manifest.reviewed_gross_cents)

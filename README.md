@@ -180,3 +180,8 @@ reference and optional CK retail reference, alongside Mana Pool sale dots and
 separately sourced current dealer markers. Channel comparison and timing context
 are separate; old reviewed proposals are retained as history. See
 `docs/trend-normalization.md` for applied coverage and reproducible ingestion.
+
+Every lot now has a saved model-written review and live evidence findings. The
+collection surfaces strong buylist cases, sale/reference discrepancies and
+self-sale candidates; card details explain the dollars, timing and next move.
+See `docs/collection-ai-analysis.md` for the review and persistence contract.

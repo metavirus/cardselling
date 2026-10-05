@@ -105,3 +105,17 @@ source-separated quote markers, shared-date timing context and current-evidence
 channel comparisons replace weekly chart sampling and unconditional old-proposal
 priority. EUR excluded at the owner's request. Details: trend-normalization.md
 and trend-source-research.md. No stock or owner decision changed.
+
+## Collection-wide model review (October 4 evening)
+
+All 723 lots / 817 copies now have individually authored analytical reviews in
+canonical_decisions, run f5e23e64-ecc2-5c44-a184-5151d25dc772. Each has a distinct
+headline, economic/timing interpretation, next move, and pinned input snapshot.
+The app exposes per-card AI analysis, scenario dollars, strong SELL alerts,
+sale/reference discrepancy and self-sale candidate filters. At default costs:
+13 strong modeled-net buylist cases, 399 same-day sale/reference discrepancies,
+and six self-sale comparison candidates. Full 90-day median is now consistent
+between the comparison cards and analysis; retained observations are unchanged.
+47 tests, build and typecheck passed. Import staging, exact replay and untouched
+stock/owner-choice checks passed; prewrite backup restoration was verified.
+See collection-ai-analysis.md. No sale or owner plan was executed.
