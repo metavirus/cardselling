@@ -14,6 +14,11 @@ test('same-day reference comparisons exclude unmatched and zero days',()=>{
  const c=card({recentSales:[p('2026-10-01',200),p('2026-10-02',200),p('2026-10-03',200)],marketHistory:{tcg:[],ck:[],manaPoolRetail:[p('2026-10-01',100),p('2026-10-02',0)]}});
  const a=analyzeCard(c,S,asOf);assert.equal(a.pairedSales,1);assert.ok(!a.findings.some(f=>f.id==='sales-above-reference'));
 });
+
+test('direct CK absence supersedes favorable historical cash leads',()=>{
+ const c=card({ckDirectNotListed:true,ckCents:null,ckCapacity:null,ckSourceDate:null,marketHistory:{tcg:[],ck:[p('2026-10-04',500)],manaPoolRetail:[]},recentSales:[p('2026-09-20',200),p('2026-09-21',200)]});
+ const a=analyzeCard(c,S,asOf);assert.ok(!a.findings.some(f=>f.id==='dealer-history-candidate'));assert.equal(a.findings.find(f=>f.id==='capacity').label,'Exact version not listed by CK');assert.equal(a.breakEven,null);
+});
 test('isolated upper sale is not a supported upper band',()=>{
  const a=analyzeCard(card({recentSales:[p('2026-09-28',100),p('2026-09-29',100),p('2026-09-30',100),p('2026-10-01',1000)]}),S,asOf);assert.notEqual(a.upperPrice,1000);
 });

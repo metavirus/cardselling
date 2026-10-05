@@ -14,7 +14,7 @@ from complete results have their old operational quotes suppressed. The live
 labels. Fresh direct checks resolve daily-history discrepancies; historical points
 remain dated chart evidence. Inventory and owner choices are untouched.
 
-All758 lots have individually authored reviews, but their last written checkpoint predates subsequent evidence and model-version changes. Live calculations/detectors recalculate; written narratives remain explicitly dated. Plans/notes, cost settings and workspace preferences now persist in SQL through migration0004. Existing browser drafts transfer on the owning browser's next successful load; that legacy transfer remains unverified. Quote/sale tables exist but application execution workflows remain unimplemented.
+All758 lots have current individually authored reviews as of the October5,1:34PM PDT evidence checkpoint, saved in SQL run `57a3089b-219b-56c1-a05e-820980ab9c5e`. The collection-wide reassessment changes62 suggested channels using current CK cash/capacity, shipping v4, recent sales and effort; inventory and owner selections are preserved. Live calculations/detectors recalculate; written narratives remain explicitly dated. Plans/notes, cost settings and workspace preferences persist in SQL through migration0004. Existing browser drafts transfer on the owning browser's next successful load; that legacy transfer remains unverified. Quote/sale tables exist but application execution workflows remain unimplemented.
 
 TCG references have unresolved aggregate shipping basis; do not use them as directly comparable merchandise proceeds. Mana Pool sale samples are bounded, and activity bars are observed units rather than complete volume. See tcgplayer-price-normalization.md and sales-volume-signals.md.
 

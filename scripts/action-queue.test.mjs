@@ -30,6 +30,11 @@ test('model-authored buylist preference cannot bypass unavailable dealer capacit
  assert.equal(read(c).kind,'verify');assert.equal(read(c).dollars,null);
 });
 
+test('authored hold reason does not invent a weakening CK trajectory',()=>{
+ const c={...base,analystReview:{current:true,channel:'hold_watch',nextStep:'Watch for repeat sales supporting the higher range.',timing:'Wait for stronger exact-product evidence.',priceScenario:{grossCents:100,basis:'Captured median'}}};
+ const a=read(c);assert.equal(a.kind,'watch');assert.equal(a.reason,c.analystReview.nextStep);assert.doesNotMatch(a.reason,/CK is the preferred/);
+});
+
 
 test('limited evidence distinguishes a favorable cash comparison from missing data',()=>{
  const insight={category:'review',upperExtra:null,findings:[{id:'thin-sales'}]};

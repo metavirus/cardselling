@@ -38,7 +38,7 @@ export function analyzeCard(card:ReviewCard,settings:Settings,asOf:string,collec
  const latestRef=(p:{date:string;cents:number}[])=>p.filter(x=>x.cents>0&&age(x.date,asOf)>=0&&age(x.date,asOf)<=7).toSorted((a,b)=>a.date.localeCompare(b.date)).at(-1)?.cents??null;
  const tcg=latestRef(card.marketHistory.tcg),mpNow=latestRef(card.marketHistory.manaPoolRetail??[]);
  const historyBid=latestRef(card.marketHistory.ck);
- const historyCandidate=card.ckCents===null&&historyBid!==null&&net!==null&&sales.length>=2&&historyBid>=net;
+ const historyCandidate=!card.ckDirectNotListed&&card.ckCents===null&&historyBid!==null&&net!==null&&sales.length>=2&&historyBid>=net;
  if(historyCandidate)findings.push({id:'dealer-history-candidate',label:'Verify CK · history favors buylisting',tone:'sell',detail:`Recent CK history indicates ${money(historyBid!)} per copy versus ${money(net!)} modeled net from the captured sale median. Confirm the exact product's current cash price and wanted quantity before adding it to a shipment. This historical indication is not an available bid.`});
  const robustSales=sales.length>=5&&recent.length>=3&&new Set(sales.map(p=>day(p.date))).size>=3;
  const saleCeiling=robustSales?Math.max(...values):null;
@@ -53,7 +53,7 @@ export function analyzeCard(card:ReviewCard,settings:Settings,asOf:string,collec
  findings.push({id:'timing',label:timing.title,tone:timing.regime==='diverging'?'watch':'neutral',detail:timing.reason+(timing.marketContext?` ${timing.marketContext}.`:'')});
  if(timing.conflict)findings.push({id:'quote-conflict',label:'Dealer sources disagree',tone:'watch',detail:timing.conflict});
  if((card.scgCents??0)>(card.ckCents??0)&&card.scgSourceDate&&age(card.scgSourceDate,asOf)<=7)findings.push({id:'scg-higher',label:'Higher SCG quote to check',tone:'opportunity',detail:`SCG indicates ${money(card.scgCents!)} per copy${card.ckCents!==null?`, ${money((card.scgCents!-card.ckCents)*card.quantity)} more across this lot than CK`:''}. Confirm buying quantity before treating it as a whole-lot option.`});
- if(!ckReady)findings.push({id:'capacity',label:quoteFresh?'CK does not cover this holding':'Refresh the CK offer',tone:'watch',detail:quoteFresh?`${card.ckCapacity??'Unknown'} wanted versus ${collectionQuantity} copies of this variant/grade across your collection. A quoted price alone does not establish an available whole-lot exit.`:'A compatible CK quote from the last seven days is needed for a current cash comparison.'});
+ if(!ckReady)findings.push({id:'capacity',label:card.ckDirectNotListed?'Exact version not listed by CK':quoteFresh?'CK does not cover this holding':'Refresh the CK offer',tone:'watch',detail:card.ckDirectNotListed?'The latest direct CK check did not list this exact printing and finish. Compare other channels; older CK history is not an available cash offer.':quoteFresh?`${card.ckCapacity??'Unknown'} wanted versus ${collectionQuantity} copies of this variant/grade across your collection. A quoted price alone does not establish an available whole-lot exit.`:'A compatible CK quote from the last seven days is needed for a current cash comparison.'});
  const older=sales.filter(p=>age(p.date,asOf)>30);
  if(recent.length>=5&&older.length>=5&&new Set(recent.map(p=>day(p.date))).size>=3&&new Set(older.map(p=>day(p.date))).size>=3){
   const recentMedian=median(recent.map(p=>p.cents))!,olderMedian=median(older.map(p=>p.cents))!,change=Math.round((recentMedian/olderMedian-1)*100);

@@ -4,6 +4,30 @@ October 4, 2026. Applied detector plus model-written per-printing reviews.
 
 ## Current refreshed checkpoint
 
+October 5 reassessment: run `57a3089b-219b-56c1-a05e-820980ab9c5e` saves
+fresh individual reviews for all **758 lots / 853 copies**, using evidence through
+`2026-10-05T20:33:58.080Z`, including the 48 latest exact CK checks. All 758 reviews
+are current on the application read path. Other sources retain their dated captures.
+
+Suggested channels changed for 62 lots after reassessing current cash/capacity,
+shipping v4, typical net proceeds, recent sales and effort. Primary channels:
+434 CK, 126 patient self-sale, 73 MagicCon quotes, 82 alternative buylist and
+43 shared bundles. The separate action queue has 389 CK comparisons, 198 quote
+inquiries, 126 listing tests and 45 timing watches. These remain suggestions;
+owner selections and inventory were preserved.
+
+Small retail premiums can still favor the convenience of a CK batch. Repeated
+higher recent sales merit a patient test where meaningful; two sales on one day
+are not evidence of a sustained trend. Missing or zero-capacity cash bids cannot
+support a CK shipment recommendation. Verified absence now reads “Exact version
+not listed by CK” rather than asking the owner to confirm an already checked quote.
+
+Validation: SQL trial and applied run preserve inventory and owner-choice counts;
+application read path reports 758 current reviews. Ninety tests pass, one isolated
+SQL test is skipped, and production build/typecheck pass.
+
+## Previous checkpoint
+
 Run `035aef03-2759-5eeb-ab24-4e087017c235` revises all **758 lots / 853 copies**
 against evidence captured through `2026-10-05T05:50:55.685Z` (October 4 local).
 Two agents reassessed the prior individualized interpretations and current

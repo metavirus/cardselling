@@ -40,7 +40,7 @@ export function actionFor(card:ReviewCard,insight:CardInsight,settings:Settings,
   else if(['hold','hold_watch'].includes(review.channel)){kind='watch';}
   else if(review.channel==='verify'){kind='verify';}
   if(timing.conflict)kind='verify';
-  reason=kind==='verify'?'Confirm current exact-product cash, capacity or comparable evidence.':kind==='watch'?'CK is the preferred channel, but its weaker trajectory against a rising reference warrants a fresh timing comparison.':review.nextStep;
+  reason=kind==='verify'?'Confirm current exact-product cash, capacity or comparable evidence.':kind==='watch'&&review.channel==='ck_buylist'?'CK is the preferred channel, but its weaker trajectory against a rising reference warrants a fresh timing comparison.':review.nextStep;
   const scenario=review.priceScenario?.grossCents;
   const reviewedNet=scenario==null?null:estimate({...card,medianCents:scenario},{...settings,basis:'median'}).net;
   const reviewedGap=cashReady&&reviewedNet!==null?(reviewedNet-card.ckCents!)*card.quantity:null;
