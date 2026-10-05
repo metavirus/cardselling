@@ -119,3 +119,5 @@ between the comparison cards and analysis; retained observations are unchanged.
 47 tests, build and typecheck passed. Import staging, exact replay and untouched
 stock/owner-choice checks passed; prewrite backup restoration was verified.
 See collection-ai-analysis.md. No sale or owner plan was executed.
+
+Oct 4 follow-up: compact list badges, concise AI take with expandable evidence. Targeted SOA hydration applied for 5 exact Japanese products /8 lots:809 CK history points and10 dealer facts, preserving original dates. Eight revised immutable AI reviews saved as4ec1dd70-2877-5be2-a7ad-a16e68e52e76. Exact accepted product aliases share histories and dealer capacity; separate physical lots retained. Crop Rotation116 wants zero.48 tests/build/typecheck passed; desktop/mobile checked; stock817 copies/723 lots and27 browser draft plans unchanged. See soa-market-hydration.md.

@@ -4,14 +4,17 @@ import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {appClient} from './database.mjs';
 const inputBytes=readFileSync('.local/analysis/full-input.json'),input=JSON.parse(inputBytes);
-const reviews=[0,1,2].flatMap(i=>JSON.parse(readFileSync(`.local/analysis/analyst-${i}.json`,'utf8')));
+const partial=process.argv.includes('--soa');
+const reviews=partial?JSON.parse(readFileSync('.local/analysis/analyst-soa.json','utf8')):[0,1,2].flatMap(i=>JSON.parse(readFileSync(`.local/analysis/analyst-${i}.json`,'utf8')));
 const ids=new Set(input.cards.map(c=>c.lotId));
-assert.equal(reviews.length,input.cards.length);assert.equal(new Set(reviews.map(r=>r.lotId)).size,ids.size);
+if(!partial)assert.equal(reviews.length,input.cards.length);
+assert.equal(new Set(reviews.map(r=>r.lotId)).size,reviews.length);
+if(partial){const soa=input.cards.filter(c=>c.setCode==='soa'&&c.printedLanguage==='ja'&&['80','116','72','124','126'].includes(c.collectorNumber));assert.deepEqual(reviews.map(r=>r.lotId).sort(),soa.map(c=>c.lotId).sort());}
 for(const r of reviews){assert.ok(ids.has(r.lotId));for(const k of ['headline','commentary','nextStep'])assert.ok(typeof r[k]==='string'&&r[k].length>10&&r[k].length<6000,`${r.lotId} ${k}`);}
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const combined=JSON.stringify(reviews),fingerprint=hash(Buffer.concat([inputBytes,Buffer.from(combined)]));
 const id=`${fingerprint.slice(0,8)}-${fingerprint.slice(8,12)}-5${fingerprint.slice(13,16)}-a${fingerprint.slice(17,20)}-${fingerprint.slice(20,32)}`;
-const manifest={asOf:input.asOf,input_sha256:hash(inputBytes),review_sha256:hash(combined),lot_count:reviews.length,copy_count:input.inventoryCopies,analysis_version:'collection-synthesis-v1',settings:{postage:135,tracked:550,materials:25,batch:1000,basis:'median'},review_origin:'Codex agents individually reviewed each lot; primary agent audited examples and collection coverage',detector_source_sha256:hash(readFileSync('src/lib/card-insights.ts'))};
+const manifest={asOf:input.asOf,input_sha256:hash(inputBytes),review_sha256:hash(combined),lot_count:reviews.length,copy_count:reviews.reduce((n,r)=>n+input.cards.find(c=>c.lotId===r.lotId).quantity,0),analysis_version:'collection-synthesis-v1',settings:{postage:135,tracked:550,materials:25,batch:1000,basis:'median'},review_origin:'Codex agents individually reviewed each lot; primary agent audited examples and collection coverage',detector_source_sha256:hash(readFileSync('src/lib/card-insights.ts'))};
 const c=await appClient();
 try{
  await c.query('BEGIN');

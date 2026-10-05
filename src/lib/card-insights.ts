@@ -89,6 +89,6 @@ export function analyzeCard(card:ReviewCard,settings:Settings,asOf:string,collec
 
 export function analyzeCollection(cards:ReviewCard[],settings:Settings,asOf:string){
  const holdings=new Map<string,number>();
- for(const c of cards){const k=c.variantId+'|'+c.grade;holdings.set(k,(holdings.get(k)??0)+c.quantity);}
- return new Map(cards.map(c=>[c.lotId,analyzeCard(c,settings,asOf,holdings.get(c.variantId+'|'+c.grade))]));
+ for(const c of cards){const k=(c.printingKey??c.variantId)+'|'+c.grade;holdings.set(k,(holdings.get(k)??0)+c.quantity);}
+ return new Map(cards.map(c=>[c.lotId,analyzeCard(c,settings,asOf,holdings.get((c.printingKey??c.variantId)+'|'+c.grade))]));
 }

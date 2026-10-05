@@ -40,3 +40,9 @@ test('same-day dealer conflict blocks compelling conclusion and no premium is in
 test('flat repeated prices do not become a higher-price opportunity',()=>{
  const c=card({recentSales:Array.from({length:8},(_,i)=>p(`2026-09-${20+i}`,200))});assert.equal(analyzeCard(c,S,asOf).upperPrice,null);
 });
+
+test('accepted printing aliases share dealer capacity despite different variant IDs',()=>{
+ const c=card({printingKey:'exact-ja-nonfoil',ckCapacity:1});
+ const result=analyzeCollection([c,card({lotId:'b',variantId:'other',printingKey:'exact-ja-nonfoil',ckCapacity:1})],S,asOf);
+ for(const a of result.values())assert.ok(a.findings.some(f=>f.id==='capacity'));
+});

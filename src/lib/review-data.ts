@@ -5,7 +5,7 @@ import {database} from "@/db/client";
 export type PricePoint={date:string;cents:number};
 export type ReviewCard={
  analystReview?:{headline:string;commentary:string;nextStep:string;asOf:string;current:boolean};
- lotId:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
+ lotId:string;printingKey?:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
  marketHistory:{tcg:PricePoint[];ck:PricePoint[];ckRetail?:PricePoint[];manaPoolRetail?:PricePoint[]};recentSales:PricePoint[];
  semantic:{traits:string[];typeLine:string|null;edhrecRank:number|null;releasedAt:string|null;
@@ -84,9 +84,11 @@ export async function getReviewData():Promise<ReviewData>{
     LEFT JOIN canonical_decisions d ON d.lot_id=i.lot_id AND d.run_id=${run.id}
     ORDER BY i.name,i.set_code,i.collector_number,i.finish,i.lot_id`),
   db.execute(sql`SELECT max(captured_at) latest FROM canonical_captures WHERE use_state='eligible'`),
-  db.execute(sql`SELECT e.variant_id,m.condition_scope,m.provider,m.product_id,e.capture_id,e.mapping_id,e.metric,e.numeric_value,e.quantity,
+  db.execute(sql`SELECT target.variant_id,m.condition_scope,m.provider,m.product_id,e.capture_id,e.mapping_id,e.metric,e.numeric_value,e.quantity,
     e.captured_at,e.window_start AS source_date FROM canonical_eligible_evidence e
-    JOIN canonical_product_mappings m ON m.id=e.mapping_id
+    JOIN canonical_product_mappings m ON m.id=e.mapping_id JOIN canonical_product_mappings target ON target.provider=m.provider AND target.product_id=m.product_id
+ AND target.condition_scope=m.condition_scope AND target.finish_scope=m.finish_scope AND target.language_scope=m.language_scope
+ AND target.status='accepted' AND NOT EXISTS (SELECT 1 FROM canonical_product_mappings replacement WHERE replacement.supersedes_id=target.id)
     WHERE (m.provider='Card Kingdom/public_buylist' AND e.metric IN ('public_cash_buylist_indication','public_max_wanted_quantity'))
        OR (m.provider='TCGSentry/Card Kingdom' AND e.metric IN ('exported_ck_cash_buylist_indication','exported_ck_wanted_quantity'))
        OR (m.provider='TCGSentry/Star City Games' AND e.metric='exported_scg_cash_buylist_indication')`),
@@ -97,10 +99,12 @@ export async function getReviewData():Promise<ReviewData>{
     ORDER BY lot_id,captured_at DESC,id DESC`),
   db.execute(sql`SELECT lot_id,numeric_value,quantity,observed_at,capture_id,captured_at FROM canonical_lot_market_evidence
     WHERE metric='reported_sale_price' AND condition_scope=condition_normalized AND observed_at IS NOT NULL`),
-  db.execute(sql`SELECT DISTINCT ON (m.variant_id) m.variant_id,e.numeric_value,e.window_start AS source_date
-    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id
+  db.execute(sql`SELECT DISTINCT ON (target.variant_id) target.variant_id,e.numeric_value,e.window_start AS source_date
+    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id JOIN canonical_product_mappings target ON target.provider=m.provider AND target.product_id=m.product_id
+ AND target.condition_scope=m.condition_scope AND target.finish_scope=m.finish_scope AND target.language_scope=m.language_scope
+ AND target.status='accepted' AND NOT EXISTS (SELECT 1 FROM canonical_product_mappings replacement WHERE replacement.supersedes_id=target.id)
     WHERE m.provider='MTGJSON/tcgplayer' AND e.metric='daily_retail_reference'
-    ORDER BY m.variant_id,e.window_start DESC,e.id DESC`),
+    ORDER BY target.variant_id,e.window_start DESC,e.id DESC`),
   db.execute(sql`SELECT DISTINCT ON (m.variant_id) m.variant_id,m.product_id,r.raw
     FROM canonical_product_mappings m
     LEFT JOIN LATERAL (SELECT raw FROM card_reference_snapshots
@@ -113,13 +117,15 @@ export async function getReviewData():Promise<ReviewData>{
   // Retain daily observations, including flat days. Window clipping must not
   // erase flat runs or hide intraweek peaks.
   db.execute(sql`WITH daily AS (
-    SELECT DISTINCT ON (m.variant_id,m.provider,m.condition_scope,e.metric,e.window_start)
-      m.variant_id,m.provider,m.condition_scope,e.metric,e.numeric_value,e.window_start AS source_date
-    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id
+    SELECT DISTINCT ON (target.variant_id,m.provider,m.condition_scope,e.metric,e.window_start)
+      target.variant_id,m.provider,m.condition_scope,e.metric,e.numeric_value,e.window_start AS source_date
+    FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id JOIN canonical_product_mappings target ON target.provider=m.provider AND target.product_id=m.product_id
+ AND target.condition_scope=m.condition_scope AND target.finish_scope=m.finish_scope AND target.language_scope=m.language_scope
+ AND target.status='accepted' AND NOT EXISTS (SELECT 1 FROM canonical_product_mappings replacement WHERE replacement.supersedes_id=target.id)
     WHERE e.currency='USD' AND e.numeric_value>0 AND (
       (m.provider IN ('MTGJSON/tcgplayer','MTGJSON/cardkingdom','MTGJSON/manapool') AND e.metric='daily_retail_reference')
        OR (m.provider='MTGJSON/cardkingdom' AND e.metric='indicated_nm_buylist'))
-    ORDER BY m.variant_id,m.provider,m.condition_scope,e.metric,e.window_start,e.captured_at DESC,e.id DESC
+    ORDER BY target.variant_id,m.provider,m.condition_scope,e.metric,e.window_start,e.captured_at DESC,e.id DESC
   ), bounded AS (
     SELECT *,max(source_date) OVER (PARTITION BY variant_id,provider,condition_scope,metric) latest FROM daily
   ) SELECT variant_id,provider,condition_scope,metric,numeric_value,source_date FROM bounded
@@ -205,7 +211,7 @@ export async function getReviewData():Promise<ReviewData>{
   const ask=asks.get(lot.lot_id),tcgValue=tcg.get(lot.variant_id),sample=samples.get(lot.lot_id)??[];
   const scgValue=scg.get(k);
   const cardRef=imageRows.get(lot.variant_id),raw=cardRef?.raw,activityRow=activity.get(lot.lot_id);
-  return {lotId:lot.lot_id,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
+  return {lotId:lot.lot_id,printingKey:`${cardRef?.product_id??lot.variant_id}|${lot.finish}|${lot.printed_language}`,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
    images:cardImages(cardRef),
    marketHistory:{tcg:histories.get(`${lot.variant_id}|MTGJSON/tcgplayer|not_applicable|daily_retail_reference`)??[],
     ck:histories.get(`${lot.variant_id}|MTGJSON/cardkingdom|${lot.condition_normalized}|indicated_nm_buylist`)??[],
@@ -236,3 +242,4 @@ export async function getReviewData():Promise<ReviewData>{
  return {runId:run.id,asOf:evidenceAsOf,evidenceAsOf,reviewAsOf:run.input_manifest.report_as_of,
   inventoryLots:stock.lots,inventoryCopies:stock.copies,reviewedLots:reviewed.length,reviewedCopies,reviewedGrossCents,cards};
 }
+
