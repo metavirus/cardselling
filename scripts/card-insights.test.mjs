@@ -5,6 +5,11 @@ registerHooks({resolve(s,c,n){if(s==='./selling-economics'||s==='./price-trends'
 const {analyzeCard,analyzeCollection,analysisDefaults:S}=await import('../src/lib/card-insights.ts');
 const asOf='2026-10-04T20:00:00Z',p=(date,cents)=>({date,cents});
 const card=(changes={})=>({lotId:'a',variantId:'v',grade:'near_mint',name:'Test',finish:'normal',quantity:1,ckCents:200,ckCapacity:20,ckSourceDate:asOf,scgCents:null,scgSourceDate:null,askCents:150,medianCents:150,semantic:{traits:[],competingQuantity:10,saleSampleCapped:true,edhrecRank:null},marketHistory:{tcg:[p('2026-10-04',150)],ck:[],manaPoolRetail:[p('2026-10-04',100)]},recentSales:[],...changes});
+test('favorable history is a verification candidate without inventing a covered bid',()=>{
+ const c=card({ckCents:null,ckCapacity:null,ckSourceDate:null,marketHistory:{tcg:[],ck:[p('2026-10-04',200)],manaPoolRetail:[]},recentSales:[p('2026-09-20',200),p('2026-09-21',200)]});
+ const a=analyzeCard(c,S,asOf);assert.ok(a.findings.some(f=>f.id==='dealer-history-candidate'));assert.equal(a.confidence,'limited');assert.equal(a.breakEven,null);assert.ok(!a.findings.some(f=>f.id==='dealer-dominates'||f.id==='dealer-net-dominates'));
+ for(const change of [{ckCents:100,ckCapacity:0},{marketHistory:{tcg:[],ck:[p('2026-08-01',200)],manaPoolRetail:[]}},{marketHistory:{tcg:[],ck:[p('2026-10-04',1)],manaPoolRetail:[]}}])assert.ok(!analyzeCard({...c,...change},S,asOf).findings.some(f=>f.id==='dealer-history-candidate'));
+});
 test('same-day reference comparisons exclude unmatched and zero days',()=>{
  const c=card({recentSales:[p('2026-10-01',200),p('2026-10-02',200),p('2026-10-03',200)],marketHistory:{tcg:[],ck:[],manaPoolRetail:[p('2026-10-01',100),p('2026-10-02',0)]}});
  const a=analyzeCard(c,S,asOf);assert.equal(a.pairedSales,1);assert.ok(!a.findings.some(f=>f.id==='sales-above-reference'));

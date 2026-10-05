@@ -48,4 +48,13 @@ Final verification: 53 unit tests and 20 canonical checks pass.
 
 All 35 added lots /36 copies now have individually authored immutable AI reviews, run a345fa5a-1daf-5b4f-ad75-6131ab369c9a. Existing reviews and owner choices are unchanged.
 
+Buylist visibility follow-up: all35 additions' four price-history series were
+checked for nonempty coverage and valid dates. Strong buylist cases now includes
+five history-based verification candidates: Arcane Signet SLD2464 foil,
+Cabal Stronghold DOM238 nonfoil, Dust Bowl EOS102 foil, Exotic Orchard WHO1084
+foil and Okina CHK280 nonfoil. Rows say Verify CK and show dated history prices;
+unknown buying quantities remain unknown and shipment totals do not treat them
+as covered bids. Existing confirmed-quantity signals retain their stronger SELL
+label.54 tests, build and typecheck passed; running UI shows18 strong cases.
+
 Post-ingestion backup restored with every public table’s full content fingerprint matching the completed database. Original D:/Repository/Desktop/Sell (1).csv was hash-checked and discarded as requested; its758 raw rows,35 accepted additions and source hash remain in SQL and verified backup.

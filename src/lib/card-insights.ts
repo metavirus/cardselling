@@ -37,6 +37,9 @@ export function analyzeCard(card:ReviewCard,settings:Settings,asOf:string,collec
  }
  const latestRef=(p:{date:string;cents:number}[])=>p.filter(x=>x.cents>0&&age(x.date,asOf)>=0&&age(x.date,asOf)<=7).toSorted((a,b)=>a.date.localeCompare(b.date)).at(-1)?.cents??null;
  const tcg=latestRef(card.marketHistory.tcg),mpNow=latestRef(card.marketHistory.manaPoolRetail??[]);
+ const historyBid=latestRef(card.marketHistory.ck);
+ const historyCandidate=card.ckCents===null&&historyBid!==null&&net!==null&&sales.length>=2&&historyBid>=net;
+ if(historyCandidate)findings.push({id:'dealer-history-candidate',label:'Verify CK · history favors buylisting',tone:'sell',detail:`Recent CK history indicates ${money(historyBid!)} per copy versus ${money(net!)} modeled net from the captured sale median. Confirm the exact product's current cash price and wanted quantity before adding it to a shipment. This historical indication is not an available bid.`});
  const robustSales=sales.length>=5&&recent.length>=3&&new Set(sales.map(p=>day(p.date))).size>=3;
  const saleCeiling=robustSales?Math.max(...values):null;
  const prevailing=[tcg,mpNow,saleCeiling].filter((x):x is number=>x!==null);
@@ -63,6 +66,7 @@ export function analyzeCard(card:ReviewCard,settings:Settings,asOf:string,collec
  let category:CardInsight['category']='compare',headline='Compare the available channels',nextStep='Check a current buyer quote against comparable sale proceeds.';
  if(timing.conflict){category='review';headline='Resolve the conflicting dealer quote';nextStep='Open the exact dealer product and verify its cash bid before acting.';}
  else if(dominant||netDominant){category='dealer';headline=dominant?'Compelling CK cash opportunity':'CK beats even the high-sale net scenario';nextStep='Verify the exact bid and wanted quantity, then include this lot in a worthwhile dealer batch.';}
+ else if(historyCandidate){category='dealer';headline='Verify the favorable CK history indication';nextStep='Check the exact cash bid and buying quantity; captured history favors the dealer route over typical modeled self-sale proceeds.';}
  else if(upperExtra!==null&&upperExtra>=1500){category='patient';headline='Patient self-sale has meaningful upside';nextStep=`Test ${money(upperPrice!)} per copy, grounded in repeated sales; review results before lowering the price.`;}
  else if(ckReady&&robustSales&&gap!==null&&gap<1500&&(upperExtra===null||upperExtra<1500)){category='dealer';headline=timing.regime==='diverging'?'Buylist fits; timing deserves a look':'Buylist saves work for little sacrifice';nextStep=timing.regime==='diverging'?'Compare the recent sale direction before accepting a bid; there is no cash deadline.':'Verify the bid and batch this with other dealer sales; the observed upside does not justify a separate listing.';}
  else if(robustSales&&net!==null&&((gap!==null&&gap>=1500)||(!ckReady&&net*card.quantity>=3000))){category='patient';headline='Comparable sales support self-selling';nextStep=`Use the ${money(mid!)} captured median as a starting comparison and test a listing if the extra dollars justify fulfillment.`;}
