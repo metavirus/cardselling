@@ -84,6 +84,9 @@ browser-saved working plans/notes across Undecided, Buylist, Sell myself,
 MagicCon and Hold. Only existing analyst proposals are labeled as assessed.
 This is not a canonical sale or owner-choice workflow. Scheduled collectors,
 vendor communication and hosting remain unimplemented. See `interface-design.md`.
+The detail panel now includes read-only printing traits, bounded Mana Pool sale
+activity, competing supply and channel research leads. Coverage and limits are
+in `semantic-signal-audit.md`; these are not new stored dispositions.
 
 ## Operational checks
 

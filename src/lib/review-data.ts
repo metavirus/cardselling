@@ -5,6 +5,9 @@ import {database} from "@/db/client";
 export type ReviewCard={
  lotId:string;variantId:string;name:string;setCode:string;collectorNumber:string;finish:string;printedLanguage:string;grade:string;quantity:number;
  images:{thumb:string;normal:string;large:string}[];
+ semantic:{traits:string[];typeLine:string|null;edhrecRank:number|null;releasedAt:string|null;
+  observedSales30:number;observedSales90:number;saleSampleCapped:boolean;latestObservedSaleAt:string|null;
+  competingQuantity:number|null};
  proposal:"buylist"|null;ckCents:number|null;ckCapacity:number|null;ckSource:"direct_public"|"tcgsentry_export"|null;
  ckSourceDate:string|null;ckProductUrl:string|null;ckDirectNotListed:boolean;
  scgCents:number|null;scgSourceDate:string|null;askCents:number|null;askCapturedAt:string|null;
@@ -21,9 +24,12 @@ type Lot={lot_id:string;variant_id:string;name:string;set_code:string;collector_
 type Evidence={variant_id:string;condition_scope:string;provider:string;product_id:string;capture_id:string;mapping_id:string;metric:string;numeric_value:string;
  quantity:number|null;captured_at:Date|string;source_date:Date|string|null};
 type Ask={lot_id:string;numeric_value:string;captured_at:Date|string};
-type Sale={lot_id:string;numeric_value:string;quantity:number;observed_at:Date|string};
+type Sale={lot_id:string;numeric_value:string;quantity:number;observed_at:Date|string;capture_id:string;captured_at:Date|string};
 type Absent={provider_subject:string};
-type ImageRow={variant_id:string;product_id:string;raw:{image_uris?:Record<string,string>;card_faces?:{image_uris?:Record<string,string>}[]}|null};
+type ImageRow={variant_id:string;product_id:string;raw:{image_uris?:Record<string,string>;card_faces?:{image_uris?:Record<string,string>}[];
+ promo_types?:string[];frame_effects?:string[];full_art?:boolean;textless?:boolean;border_color?:string;
+ set_type?:string;type_line?:string;edhrec_rank?:number;released_at?:string}|null};
+type Supply={lot_id:string;numeric_value:string};
 const iso=(x:Date|string|null|undefined)=>x==null?null:new Date(x).toISOString();
 function cardImages(row:ImageRow|undefined){
  const source=row?.raw;
@@ -39,6 +45,25 @@ function cardImages(row:ImageRow|undefined){
   large:`https://api.scryfall.com/cards/${id}?format=image&version=large`
  }]:[];
 }
+const traitNames:Record<string,string>={showcase:"Showcase",extendedart:"Extended art",retro:"Retro frame",
+ raisedfoil:"Raised foil",surgefoil:"Surge foil",rainbowfoil:"Rainbow foil",halofoil:"Halo foil",
+ ripplefoil:"Ripple foil",textured:"Textured foil",stepandcompleat:"Step-and-compleat foil",
+ oilslick:"Oil slick foil",poster:"Poster treatment",shatteredglass:"Shattered glass art",
+ godzillaseries:"Godzilla series",boosterfun:"Booster Fun",
+ firstplacefoil:"First-place foil",boxtopper:"Box topper",sldbonus:"Secret Lair bonus",
+ serialized:"Serialized",datestamped:"Date-stamped",prerelease:"Prerelease promo"};
+function printingTraits(row:ImageRow|undefined,finish:string,setCode:string){
+ const card=row?.raw;if(!card)return [];
+ const tags=new Set<string>();
+ if(setCode==='sld')tags.add('Secret Lair');
+ if(card.border_color==='borderless')tags.add('Borderless');
+ if(card.full_art)tags.add('Full art');
+ if(card.textless)tags.add('Textless');
+ if(finish==='etched')tags.add('Etched foil');
+ for(const tag of [...card.frame_effects??[],...card.promo_types??[]])if(traitNames[tag])tags.add(traitNames[tag]);
+ if(card.promo_types?.includes('universesbeyond'))tags.add('Universes Beyond');
+ return [...tags];
+}
 function cents(x:string|null|undefined):number|null{if(x==null)return null;const n=Math.round(Number(x)*100);if(!Number.isSafeInteger(n)||n<0)throw new Error("Invalid source price");return n;}
 function median(values:number[]):number|null{if(!values.length)return null;const s=values.toSorted((a,b)=>a-b),m=Math.floor(s.length/2);return Math.round(s.length%2?s[m]:(s[m-1]+s[m])/2);}
 const key=(variant:string,grade:string)=>`${variant}|${grade}`;
@@ -48,7 +73,7 @@ export async function getReviewData():Promise<ReviewData>{
  const run=(await db.execute(sql`SELECT id,input_manifest FROM canonical_decision_runs
   WHERE prompt_version='human-requested-just-sell-first-pass-v1' ORDER BY created_at DESC LIMIT 1`)).rows[0] as unknown as Run|undefined;
  if(!run)throw new Error("No reviewed buylist run is available");
- const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult,imagesResult]=await Promise.all([
+ const [stockResult,lotsResult,capturesResult,bidsResult,absentResult,asksResult,salesResult,tcgResult,imagesResult,supplyResult]=await Promise.all([
   db.execute(sql`SELECT count(*)::int lots,coalesce(sum(available_quantity),0)::int copies FROM canonical_inventory`),
   db.execute(sql`SELECT i.lot_id,i.variant_id,i.name,i.set_code,i.collector_number,i.finish,i.printed_language,
     i.condition_normalized,i.available_quantity,d.proposal FROM canonical_inventory i
@@ -66,7 +91,7 @@ export async function getReviewData():Promise<ReviewData>{
   db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value,captured_at FROM canonical_lot_market_evidence
     WHERE metric='lowest_asking_price' AND condition_scope=condition_normalized
     ORDER BY lot_id,captured_at DESC,id DESC`),
-  db.execute(sql`SELECT lot_id,numeric_value,quantity,observed_at FROM canonical_lot_market_evidence
+  db.execute(sql`SELECT lot_id,numeric_value,quantity,observed_at,capture_id,captured_at FROM canonical_lot_market_evidence
     WHERE metric='reported_sale_price' AND condition_scope=condition_normalized AND observed_at IS NOT NULL`),
   db.execute(sql`SELECT DISTINCT ON (m.variant_id) m.variant_id,e.numeric_value,e.window_start AS source_date
     FROM canonical_eligible_evidence e JOIN canonical_product_mappings m ON m.id=e.mapping_id
@@ -77,7 +102,10 @@ export async function getReviewData():Promise<ReviewData>{
     LEFT JOIN LATERAL (SELECT raw FROM card_reference_snapshots
       WHERE scryfall_id=m.product_id::uuid LIMIT 1) r ON true
     WHERE m.provider='Scryfall' AND m.status='accepted'
-    ORDER BY m.variant_id,m.id`)
+    ORDER BY m.variant_id,m.id`),
+  db.execute(sql`SELECT DISTINCT ON (lot_id) lot_id,numeric_value FROM canonical_lot_market_evidence
+    WHERE metric='available_quantity' AND condition_scope=condition_normalized
+    ORDER BY lot_id,captured_at DESC,id DESC`)
  ]);
  const stock=stockResult.rows[0] as unknown as {lots:number;copies:number}|undefined;
  const lots=lotsResult.rows as unknown as Lot[];
@@ -106,9 +134,24 @@ export async function getReviewData():Promise<ReviewData>{
  const asks=new Map((asksResult.rows as unknown as Ask[]).map(x=>[x.lot_id,x]));
  const tcg=new Map((tcgResult.rows as unknown as {variant_id:string;numeric_value:string;source_date:Date|string}[]).map(x=>[x.variant_id,x]));
  const imageRows=new Map((imagesResult.rows as unknown as ImageRow[]).map(x=>[x.variant_id,x]));
- const now=Date.now(),samples=new Map<string,number[]>();
- for(const sale of salesResult.rows as unknown as Sale[]){
+ const supply=new Map((supplyResult.rows as unknown as Supply[]).map(x=>[x.lot_id,Number(x.numeric_value)]));
+ const now=Date.parse(evidenceAsOf),samples=new Map<string,number[]>();
+ const activity=new Map<string,{all:number;last:Date|string|null;d30:number;d90:number}>();
+ const saleRows=salesResult.rows as unknown as Sale[];
+ const latestSaleCapture=new Map<string,{id:string;time:number}>();
+ for(const sale of saleRows){
+  const time=Date.parse(String(sale.captured_at)),prior=latestSaleCapture.get(sale.lot_id);
+  if(!prior||time>prior.time||(time===prior.time&&sale.capture_id>prior.id))latestSaleCapture.set(sale.lot_id,{id:sale.capture_id,time});
+ }
+ for(const sale of saleRows){
+  if(sale.capture_id!==latestSaleCapture.get(sale.lot_id)?.id)continue;
   const observed=Date.parse(String(sale.observed_at)),age=(now-observed)/86_400_000;
+  const prior=activity.get(sale.lot_id)??{all:0,last:null,d30:0,d90:0};
+  prior.all++;
+  if(!prior.last||observed>Date.parse(String(prior.last)))prior.last=sale.observed_at;
+  if(Number.isFinite(observed)&&age>=0&&age<=30)prior.d30++;
+  if(Number.isFinite(observed)&&age>=0&&age<=90)prior.d90++;
+  activity.set(sale.lot_id,prior);
   if(sale.quantity!==1||!Number.isFinite(observed)||age<0||age>120)continue;
   const price=cents(sale.numeric_value);if(price==null)continue;
   if(!samples.has(sale.lot_id))samples.set(sale.lot_id,[]);samples.get(sale.lot_id)!.push(price);
@@ -124,8 +167,14 @@ export async function getReviewData():Promise<ReviewData>{
   if(wanted!==null&&(!Number.isSafeInteger(wanted)||wanted<0))throw new Error("Invalid dealer wanted quantity");
   const ask=asks.get(lot.lot_id),tcgValue=tcg.get(lot.variant_id),sample=samples.get(lot.lot_id)??[];
   const scgValue=scg.get(k);
+  const cardRef=imageRows.get(lot.variant_id),raw=cardRef?.raw,activityRow=activity.get(lot.lot_id);
   return {lotId:lot.lot_id,variantId:lot.variant_id,name:lot.name,setCode:lot.set_code,collectorNumber:lot.collector_number,finish:lot.finish,
-   images:cardImages(imageRows.get(lot.variant_id)),
+   images:cardImages(cardRef),
+   semantic:{traits:printingTraits(cardRef,lot.finish,lot.set_code),typeLine:raw?.type_line??null,
+    edhrecRank:Number.isSafeInteger(raw?.edhrec_rank)?raw!.edhrec_rank!:null,releasedAt:raw?.released_at??null,
+    observedSales30:activityRow?.d30??0,observedSales90:activityRow?.d90??0,
+    saleSampleCapped:(activityRow?.all??0)>=20,latestObservedSaleAt:iso(activityRow?.last),
+    competingQuantity:supply.get(lot.lot_id)??null},
    printedLanguage:lot.printed_language,grade:lot.condition_normalized,quantity:lot.available_quantity,
    proposal:proposal?"buylist":null,ckCents:cents(ck?.price.numeric_value),ckCapacity:wanted,ckSource,
    ckSourceDate:iso(ck?.price.captured_at),ckProductUrl:ckSource==='direct_public'?ck?.price.product_id??null:null,

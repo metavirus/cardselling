@@ -52,4 +52,13 @@ owner's individual physical copy. The app does not store image binaries.
 Image interaction was checked at desktop and 390px mobile widths: thumbnails
 load, the enlarged image opens and closes, and a two-faced card switches faces.
 
+Each card's detail panel also presents read-only selling signals: Scryfall
+printing traits and type, bounded Mana Pool exact-product sale records in
+30-/90-day windows anchored to the latest evidence capture per lot, same-grade listed supply,
+and Scryfall-transmitted EDHREC rank when present. It offers separately labeled
+channel research leads, with source limitations shown nearby. These leads do
+not assign owner plans or change stored analyst proposals. The experimental
+effort thresholds and collection-wide coverage are documented in
+`semantic-signal-audit.md`.
+
 Verified at desktop 1440x1000 and mobile 390x844: all 723 lots / 817 copies are accessible; filters, search, draft persistence, and editable estimates work. The 20-proposal selection reconciles to 29 copies, 181.00 dollars in CK bids and 132.37 dollars in modeled self-sale net. Raising postage by 0.50 dollars reduces that net by 14.50 dollars. Production build and TypeScript checks pass.

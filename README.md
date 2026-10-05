@@ -42,6 +42,9 @@ plans and notes in this browser. See `docs/interface-design.md` for scope and
 the distinction between browser drafts and canonical owner decisions.
 Card thumbnails and larger click/tap views use exact-printing Scryfall art;
 the images load from Scryfall while online.
+The detail view also shows printing traits, bounded sale activity, competing
+stock and channel research leads; see `docs/semantic-signal-audit.md` for
+coverage, examples and interpretation limits.
 The server-only `/api/health` endpoint reports readiness without connection details.
 
 ## Commands
