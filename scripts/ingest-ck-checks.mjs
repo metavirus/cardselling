@@ -56,7 +56,13 @@ try{
   assert.equal(search.searchParams.get('filter[name]'),row.name);
   const locator=`${i+1}/${row.lot_id}`;
   if(row.status==='listed'){
-   assert.equal(row.printed_language,'en');assert.equal(row.condition_normalized,'near_mint');
+   // Native Japanese-only products have explicit JPN editions and treatment titles.
+   // Never infer language from an English-priced counterpart.
+   assert.ok(row.printed_language==='en'||(row.printed_language==='ja'&&
+    new URL(row.product_url).pathname.includes('mystical-archive-jpn/')&&
+    row.product_title.includes('JPN Alternate Art')&&
+    row.product_title.includes(String(row.collector_number).padStart(4,'0'))));
+   assert.equal(row.condition_normalized,'near_mint');
    assert.ok(Number.isFinite(row.cash_usd)&&row.cash_usd>0&&Math.round(row.cash_usd*100)/100===row.cash_usd);
    assert.ok(Number.isSafeInteger(row.max_quantity)&&row.max_quantity>=0);
    const product=new URL(row.product_url);

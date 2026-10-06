@@ -1,5 +1,18 @@
 # Daily pricing hydration
 
+October 6 verification: the morning public/dealer refresh applied successfully
+with protected inventory and choices unchanged. Current dealer hydration covers
+700 CK cash/capacity pairs and 695 SCG bids. Additional direct public checks at
+9:00–9:02 AM Pacific covered all 11 selected lots retaining older evidence:
+nine current cash/capacity pairs and two exact versions absent from complete
+title results. Capture `6c81a4c5-f074-5daa-ab6c-8cf23caee4fe` is saved in SQL.
+Native JPN alternate-art products require their explicit JPN edition, treatment
+title and matching collector number; an English counterpart never authorizes
+a Japanese product quote. All remaining 223 buylist selections have October 6
+cash/capacity evidence. Four unavailable selections were cleared under the
+owner's standing request, separately from the scheduled refresh. Collection-wide
+coverage remains incomplete; older unmatched-source dates are retained.
+
 Run `npm run data:refresh` from the repository. See `canonical-store.md` for
 the maintained source contract, automatic ingestion, retries and replay checks.
 The active Codex heartbeat runs every day at 8 AM America/Los_Angeles.
