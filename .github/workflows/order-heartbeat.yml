@@ -1,0 +1,71 @@
+name: Order heartbeat
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: order-heartbeat
+  cancel-in-progress: false
+jobs:
+  check:
+    if: github.repository == 'metavirus/cardselling' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check and seal
+        continue-on-error: true
+        env:
+          SELLER_EMAIL: ${{ secrets.MANAPOOL_SELLER_EMAIL }}
+          SELLER_TOKEN: ${{ secrets.MANAPOOL_ACCESS_TOKEN }}
+          RECEIVER_KEY: ${{ vars.SNIPER_ORDER_RECEIVER_KEY }}
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import {randomBytes,publicEncrypt,createCipheriv} from 'node:crypto';
+          import {writeFileSync} from 'node:fs';
+          async function collect(){
+            const headers={'X-ManaPool-Email':process.env.SELLER_EMAIL,'X-ManaPool-Access-Token':process.env.SELLER_TOKEN};
+            const ids=new Set(), cursors=new Set();
+            let cursor=null;
+            do {
+              const url=new URL('https://manapool.com/api/v1/seller/orders');
+              url.searchParams.set('limit','500');
+              if(cursor)url.searchParams.set('cursor',cursor);
+              const res=await fetch(url,{headers,redirect:'error',signal:AbortSignal.timeout(12000)});
+              if(!res.ok)throw Error();
+              const page=await res.json();
+              if(!Array.isArray(page.orders)||!page.pagination||!('next_cursor' in page.pagination))throw Error();
+              for(const o of page.orders){
+                if(!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(o.id))throw Error();
+                ids.add(o.id);
+              }
+              cursor=page.pagination.next_cursor;
+              if(cursor!==null&&(typeof cursor!=='string'||!cursor||cursors.has(cursor)))throw Error();
+              cursors.add(cursor);
+            }while(cursor);
+            return [...ids];
+          }
+          let payload={status:'deferred'};
+          for(let i=0;i<2;i++){
+            try{payload={status:'ok',ids:await collect()};break;}
+            catch{if(!i)await new Promise(r=>setTimeout(r,2500));}
+          }
+          const key=randomBytes(32),iv=randomBytes(12);
+          const cipher=createCipheriv('aes-256-gcm',key,iv);
+          const data=Buffer.from(JSON.stringify(payload));
+          const padded=Buffer.alloc(Math.ceil((data.length+4)/4096)*4096);
+          padded.writeUInt32BE(data.length);data.copy(padded,4);
+          const encrypted=Buffer.concat([cipher.update(padded),cipher.final()]);
+          const wrapped=publicEncrypt({key:Buffer.from(process.env.RECEIVER_KEY,'base64'),oaepHash:'sha256'},key);
+          writeFileSync('inbox.bin',Buffer.concat([wrapped,iv,cipher.getAuthTag(),encrypted]));
+          NODE
+      - name: Deposit envelope
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inbox
+          path: inbox.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 2
